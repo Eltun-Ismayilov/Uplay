@@ -1,10 +1,9 @@
 ﻿namespace Uplay.Domain.Entities.Models
 {
-    public class AppFile : CommonEntity
+    public class About : CommonEntity
     {
         public string Name { get; set; }
-        public string Path { get; set; }
+        public string Description { get; set; }
         public ICollection<AboutFile> AboutFiles { get; set; }
-        public ICollection<RegistrationFile> RegistrationFiles { get; set; }
     }
 }
