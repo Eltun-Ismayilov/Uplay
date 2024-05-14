@@ -25,6 +25,10 @@ namespace Uplay.Api.Controllers.v1
         public async Task<ActionResult> GetFile([FromRoute] string token)
         {
             var response = await _minioService.GetObject(token);
+
+            //var url =  _minioService.GenerateFileUrl(token);
+
+            //return Ok(url);
             return File(response.Bytes, response.ContentType);
         }
 

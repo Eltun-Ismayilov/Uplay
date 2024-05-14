@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Uplay.Application.Extensions;
 using Uplay.Application.Helpers;
 using Uplay.Application.Models.Minio;
+using static System.Net.WebRequestMethods;
 
 namespace Uplay.Application.Services.MinioFile
 {
@@ -31,13 +32,11 @@ namespace Uplay.Application.Services.MinioFile
 
             var host = _httpContextAccessor?.HttpContext?.Request.Host.Value;
 
-            string protocol = environment switch
-            {
-                "staging" or "production" or "testing" => "https",
-                _ => "http"
-            };
+            string protocol = "https";
 
-            return $"{protocol}://{host}/api/v1/file/getFile/{token}";
+            return $"{protocol}://{host}/api/v1/file/{token}";
+
+            //http://localhost:7260/api/v1/file/638201fb-3f34-4ac8-bf4b-02ba60705f6c
         }
         public async Task<GetFileResponse> GetObject(string token)
         {
