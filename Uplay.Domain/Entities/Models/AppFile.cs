@@ -2,9 +2,8 @@
 {
     public class AppFile : CommonEntity
     {
+        public string Token { get; set; }
         public string Name { get; set; }
-        public string Path { get; set; }
-        public ICollection<AboutFile> AboutFiles { get; set; }
-        public ICollection<RegistrationFile> RegistrationFiles { get; set; }
+        public double Size { get; set; }
     }
 }

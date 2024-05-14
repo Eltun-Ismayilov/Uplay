@@ -21,9 +21,9 @@ namespace Uplay.Application.Mappings
                 methInfo?.Invoke(instance, new object[] { this });
             }
 
-            CreateMap<IFormFile, AppFile>()
-                .ForMember(e => e.Name, d => d.MapFrom(p => p.FileName))
-                .ForMember(e => e.Path, d => d.MapFrom(p => p.SaveFileToFolderAndGetPath(FileHelperExtension.FileType.Photo)));
+           // CreateMap<IFormFile, AppFile>()
+               // .ForMember(e => e.Name, d => d.MapFrom(p => p.FileName))
+             //   .ForMember(e => e.Path, d => d.MapFrom(p => p.SaveFileToFolderAndGetPath(FileHelperExtension.FileType.Photo)));
         }
     }
 }

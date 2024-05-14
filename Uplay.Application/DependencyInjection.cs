@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Minio;
 using System.Reflection;
 using Uplay.Application.Mappings;
 using Uplay.Application.Services;
+using Uplay.Application.Services.MinioFile;
 
 namespace Uplay.Application
 {
@@ -12,9 +14,13 @@ namespace Uplay.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddServices();
 
-            //services.AddAutoMapper(typeof(AssemblyMappingProfile));
+            services.AddMinio(configureClient => configureClient
+                    .WithEndpoint(configuration["Minio:Client"])
+                    .WithCredentials(configuration["Minio:AccessKey"], configuration["Minio:SecretKey"])
+                    .WithSSL(Convert.ToBoolean(configuration["Minio:SSLEnable"])));
+
+            services.AddServices();
 
             services.AddFluentValidation(fv =>
             {

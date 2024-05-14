@@ -14,7 +14,7 @@ namespace Uplay.Persistence
         {
             var conStr = configuration["ConnectionStrings"];
 
-            services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(conStr));
+            services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(conStr));
 
             services.AddRepos();
 

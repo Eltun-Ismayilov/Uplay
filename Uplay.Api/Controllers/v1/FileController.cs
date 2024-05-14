@@ -1,32 +1,61 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Uplay.Api.Contracts;
-using Uplay.Application.Services.File;
-using static System.Net.Mime.MediaTypeNames;
+using System.Drawing;
+using Uplay.Application.Extensions;
+using Uplay.Application.Services.MinioFile;
+using Uplay.Domain.Entities.Models;
+using Uplay.Persistence.Repository.Concrete;
 
 namespace Uplay.Api.Controllers.v1
 {
-    public class FileController : BaseController
+    [ApiController]
+    [Route("api/v1/[controller]")]
+    public class FileController : ControllerBase
     {
-        private readonly IFileService _imageService;
-        public FileController(IFileService imageService)
+        private readonly IMinioService _minioService;
+        private readonly AppFileRepository _appFileRepository;
+        public FileController(IMinioService minioService,
+            AppFileRepository appFileRepository)
         {
-            _imageService = imageService;
+            _minioService = minioService;
+            _appFileRepository = appFileRepository;
         }
 
-        [HttpPost(ApiRoutes.FileRoute.Create)]
-        public async Task<IActionResult> Create(IFormFile file)
+        [HttpGet("{token}")]
+
+        public async Task<ActionResult> GetFile([FromRoute] string token)
         {
-            await _imageService.UploadPhoto(file);
-            return Ok();
+            var response = await _minioService.GetObject(token);
+            return File(response.Bytes, response.ContentType);
         }
 
-
-        [HttpGet(ApiRoutes.FileRoute.GetAll)]
-        public async Task<object> GetAll(string cyrptedPhoto)
+        [HttpPost]
+        [Route("download")]
+        public async Task<ActionResult> DownloadFile(IFormFile file)
         {
-            var data = await _imageService.GetPhoto(cyrptedPhoto);
-            return File(data, Image.Jpeg);
+            if (file == null || file.Length <= 0)
+            {
+                return BadRequest("Invalid file");
+            }
+
+            try
+            {
+                var token = await _minioService.PutObject(new(file));
+
+                var appFile = new AppFile
+                {
+                    Token = token,
+                    Name = file.FileName,
+                    Size = file.Length
+                };
+
+                await _appFileRepository.InsertAsync(appFile,true);
+
+                return Ok(token);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
-
 }
