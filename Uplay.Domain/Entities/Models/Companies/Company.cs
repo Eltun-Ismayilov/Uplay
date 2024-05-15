@@ -1,4 +1,5 @@
-﻿using Uplay.Domain.Entities.Models.Users;
+﻿using Uplay.Domain.Entities.Models.Miscs;
+using Uplay.Domain.Entities.Models.Users;
 
 namespace Uplay.Domain.Entities.Models.Companies
 {

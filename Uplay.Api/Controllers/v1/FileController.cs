@@ -1,65 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Drawing;
-using Uplay.Application.Extensions;
-using Uplay.Application.Services.MinioFile;
-using Uplay.Domain.Entities.Models;
-using Uplay.Persistence.Repository.Concrete;
+using Uplay.Api.Contracts;
+using Uplay.Application.Services.AppFiles;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Uplay.Api.Controllers.v1
 {
-    [ApiController]
-    [Route("api/v1/[controller]")]
-    public class FileController : ControllerBase
+    public class FileController : BaseController
     {
-        private readonly IMinioService _minioService;
-        private readonly AppFileRepository _appFileRepository;
-        public FileController(IMinioService minioService,
-            AppFileRepository appFileRepository)
+        private readonly IFileService _imageService;
+        public FileController(IFileService imageService)
         {
-            _minioService = minioService;
-            _appFileRepository = appFileRepository;
+            _imageService = imageService;
         }
 
-        [HttpGet("{token}")]
-
-        public async Task<ActionResult> GetFile([FromRoute] string token)
+        [HttpPost(ApiRoutes.FileRoute.Create)]
+        public async Task<IActionResult> Create(IFormFile file)
         {
-            var response = await _minioService.GetObject(token);
-
-            //var url =  _minioService.GenerateFileUrl(token);
-
-            //return Ok(url);
-            return File(response.Bytes, response.ContentType);
+            await _imageService.UploadPhoto(file);
+            return Ok();
         }
 
-        [HttpPost]
-        [Route("download")]
-        public async Task<ActionResult> DownloadFile(IFormFile file)
+
+        [HttpGet(ApiRoutes.FileRoute.GetAll)]
+        public async Task<object> GetAll(string cyrptedPhoto)
         {
-            if (file == null || file.Length <= 0)
-            {
-                return BadRequest("Invalid file");
-            }
-
-            try
-            {
-                var token = await _minioService.PutObject(new(file));
-
-                var appFile = new AppFile
-                {
-                    Token = token,
-                    Name = file.FileName,
-                    Size = file.Length
-                };
-
-                await _appFileRepository.InsertAsync(appFile,true);
-
-                return Ok(token);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            var data = await _imageService.GetPhoto(cyrptedPhoto);
+            return File(data, Image.Jpeg);
         }
     }
 }

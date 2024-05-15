@@ -5,7 +5,7 @@
     /// Email-Corpatativ ve sexsi giris ucun olacaq
     /// Name-User name
     /// </summary>
-    public class User
+    public class User:CommonEntity
     {
         public string Name { get; set; } 
         public string UserName { get; set; } 

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Uplay.Domain.Entities.Models.Companies;
+using Uplay.Domain.Entities.Models.Miscs;
 
 namespace Uplay.Domain.Entities.Models.PlayLists
 {
-    public class PlayList
+    public class PlayList:CommonEntity
     {
         public string Title { get; set; }
         public int FileId { get; set; }

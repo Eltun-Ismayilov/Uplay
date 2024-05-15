@@ -1,6 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using Uplay.Domain.Entities;
-using Uplay.Domain.Entities.Models;
+using Uplay.Domain.Entities.Models.Companies;
+using Uplay.Domain.Entities.Models.Landing;
+using Uplay.Domain.Entities.Models.Miscs;
+using Uplay.Domain.Entities.Models.PlayLists;
+using Uplay.Domain.Entities.Models.Pricings;
+using Uplay.Domain.Entities.Models.Users;
 
 namespace Uplay.Persistence.Data
 {
@@ -8,9 +14,56 @@ namespace Uplay.Persistence.Data
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
+        #region Companies
+
+        public virtual DbSet<Branch> Branchs { get; set; } = null!;
+        public virtual DbSet<BranchCategory> BranchCategories { get; set; } = null!;
+        public virtual DbSet<BranchFeedback> BranchFeedbacks { get; set; } = null!;
+        public virtual DbSet<BranchReview> BranchReviews { get; set; } = null!;
+        public virtual DbSet<Company> Companies { get; set; } = null!;
+        public virtual DbSet<CompanyBranch> CompanyBranchs { get; set; } = null!;
+
+        #endregion
+        #region Landings
+        public virtual DbSet<About> Abouts { get; set; } = null!;
+        public virtual DbSet<AboutFile> AboutFiles { get; set; } = null!;
+        public virtual DbSet<AboutType> AboutTypes { get; set; } = null!;
+        public virtual DbSet<Category> Categories { get; set; } = null!;
+        public virtual DbSet<Contact> Contacts { get; set; } = null!;
+        public virtual DbSet<Faq> Faqs { get; set; } = null!;
+        public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
+        public virtual DbSet<Partner> Partners { get; set; } = null!;
+        public virtual DbSet<PublicReview> PublicReviews { get; set; } = null!;
+        public virtual DbSet<Review> Reviews { get; set; } = null!;
+        public virtual DbSet<Service> Services { get; set; } = null!;
+        public virtual DbSet<ServiceType> ServiceTypes { get; set; } = null!;
+        public virtual DbSet<SocialLink> SocialLinks { get; set; } = null!;
+        public virtual DbSet<YouBusines> YouBusineses { get; set; } = null!;
+
+        #endregion
+        #region Miscs
         public virtual DbSet<AppFile> Files { get; set; } = null!;
 
+        #endregion
+        #region PlayLists
+        public virtual DbSet<PlayList> PlayLists { get; set; } = null!;
+        public virtual DbSet<PlayListStatusHistory> PlayListStatusHistories { get; set; } = null!;
 
+        #endregion
+        #region Pricings
+        public virtual DbSet<Pricing> Pricings { get; set; } = null!;
+        public virtual DbSet<PricingSection> PricingSections { get; set; } = null!;
+        public virtual DbSet<PricingType> PricingTypes { get; set; } = null!;
+
+        #endregion
+        #region Users
+        public virtual DbSet<User> Users { get; set; } = null!;
+        #endregion
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             foreach (var entry in ChangeTracker.Entries())

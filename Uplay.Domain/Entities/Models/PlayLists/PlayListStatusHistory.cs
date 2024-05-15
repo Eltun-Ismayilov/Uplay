@@ -2,7 +2,7 @@
 
 namespace Uplay.Domain.Entities.Models.PlayLists
 {
-    public class PlayListStatusHistory
+    public class PlayListStatusHistory:CommonEntity
     {
         public int PlayListId { get; set; }
         public PlayList PlayList { get; set; }

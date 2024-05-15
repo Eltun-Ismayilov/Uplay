@@ -4,7 +4,7 @@ using Uplay.Domain.Enum;
 
 namespace Uplay.Domain.Entities.Models.Companies
 {
-    public class Branch
+    public class Branch:CommonEntity
     {
         public string Name { get; set; }
         public string City { get; set; }

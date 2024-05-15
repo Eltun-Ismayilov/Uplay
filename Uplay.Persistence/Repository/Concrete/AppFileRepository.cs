@@ -1,4 +1,4 @@
-﻿using Uplay.Domain.Entities.Models;
+﻿using Uplay.Domain.Entities.Models.Miscs;
 using Uplay.Persistence.Data;
 
 namespace Uplay.Persistence.Repository.Concrete
