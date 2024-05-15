@@ -4,7 +4,7 @@
     /// 1.Partners
     /// 2.Clients
     /// </summary>
-    public class DesignForType:CommonEntity
+    public class ServiceType:CommonEntity
     {
         public string Name { get; set; }
     }

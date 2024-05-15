@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Uplay.Domain.Entities.Models.PlayLists;
+﻿using Uplay.Domain.Entities.Models.PlayLists;
 using Uplay.Domain.Entities.Models.Users;
+using Uplay.Domain.Enum;
 
 namespace Uplay.Domain.Entities.Models.Companies
 {
@@ -15,6 +11,8 @@ namespace Uplay.Domain.Entities.Models.Companies
         public string Location { get; set; }
         public int OnwerId { get; set; }
         public User Onwer { get; set; }
+        public AccauntStatusEnum Status { get; set; }
         public virtual ICollection<PlayList> PlayLists { get; set; }
+        public virtual ICollection<BranchCategory> BranchCategories { get; set; }
     }
 }
