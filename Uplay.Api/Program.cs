@@ -13,7 +13,7 @@ Accessor.AppConfiguration = configuration;
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ApiExceptionFilterAttribute>();
-}).AddFluentValidation(x => x.AutomaticValidationEnabled = false);
+}).AddFluentValidationCustom();
 
 
 builder.Services.AddApplication(configuration);

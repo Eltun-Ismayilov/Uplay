@@ -6,7 +6,6 @@ using Minio;
 using System.Reflection;
 using Uplay.Application.Mappings;
 using Uplay.Application.Services;
-using Uplay.Application.Services.MinioFile;
 
 namespace Uplay.Application
 {
@@ -32,6 +31,11 @@ namespace Uplay.Application
             services.Configure<ApiBehaviorOptions>(options =>
             {
                 options.SuppressModelStateInvalidFilter = true;
+            });
+
+            services.AddAutoMapper(config =>
+            {
+                config.AddProfile(new AssemblyMappingProfile(typeof(AssemblyMappingProfile).Assembly));
             });
 
             return services;
