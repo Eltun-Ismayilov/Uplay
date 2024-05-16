@@ -14,29 +14,39 @@ namespace Uplay.Persistence
         {
             var conStr = configuration["ConnectionStrings"];
 
-            services.AddDbContext<AppDbContext>(opt => opt.UseNpgsql(conStr));
+            services.AddDbContext<AppDbContext>(options => options.UseNpgsql(conStr,
+                b => b.MigrationsAssembly(typeof(DependencyInjection)
+                    .Assembly
+                    .FullName)));
 
             services.AddRepos();
 
             return services;
         }
+
         private static IServiceCollection AddRepos(this IServiceCollection services)
         {
+            // services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            //
+            // var assembly = Assembly.GetExecutingAssembly();
+            // var types = assembly.GetTypes()
+            //     .Where(e =>
+            //         e.IsClass
+            //         && e.IsSubclassOf(typeof(Repository<>)))
+            //     .ToList();
+            //
+            // foreach (var type in types)
+            // {
+            //     var nestedInterface =
+            //         type.GetInterfaces().First(x => x.GetInterfaces().Contains(typeof(IRepository<>)));
+            //
+            //     services.AddScoped(nestedInterface, type);
+            // }
+            
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
-            var assembly = Assembly.GetExecutingAssembly();
-            var types = assembly
-                .GetTypes()
-                .Where(e => !e.IsAbstract
-                 && e.BaseType is not null
-                 && e.BaseType.IsGenericType
-                 && e.BaseType.GetGenericTypeDefinition() == typeof(BaseRepository<>))
-                .ToList();
-
-            foreach (var type in types)
-            {
-                var data = services.AddScoped(type);
-            }
+            services.AddScoped(typeof(IFaqRepository), typeof(FaqRepository));
+            services.AddScoped(typeof(IPartnerRepository), typeof(PartnerRepository));    
+            services.AddScoped(typeof(IContactRepository), typeof(ContactRepository));
             return services;
         }
     }

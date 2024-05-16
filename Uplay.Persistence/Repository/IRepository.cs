@@ -37,11 +37,11 @@ namespace Uplay.Persistence.Repository
         Task<IList<T>> GetAllAsync(Func<IQueryable<T>, IQueryable<T>> func = null,
             bool includeDeleted = true);
 
-        Task<int> InsertAsync(T entity, bool saveChanges = false);
+        Task<int> InsertAsync(T entity, bool saveChanges = true);
 
         Task InsertRangeAsync(IList<T> entities, bool saveChanges = false);
 
-        Task UpdateAsync(T entity, bool saveChanges = false);
+        Task UpdateAsync(T entity, bool saveChanges = true);
 
         Task UpdateAsync(IList<T> entities, bool saveChanges = false);
 

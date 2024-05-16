@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using System.Reflection;
 using Uplay.Application.Extensions;
-using Uplay.Domain.Entities.Models;
+using Uplay.Domain.Entities.Models.Miscs;
 
 namespace Uplay.Application.Mappings
 {
@@ -17,13 +17,13 @@ namespace Uplay.Application.Mappings
             foreach (var type in types)
             {
                 var instance = Activator.CreateInstance(type);
-                var methInfo = type.GetMethod("Mapping") ?? type.GetInterface("IMapWith`1").GetMethod("Mapping");
+                var methInfo = type.GetMethod("Mapping") ?? type.GetInterface("IMapFrom`1").GetMethod("Mapping");
                 methInfo?.Invoke(instance, new object[] { this });
             }
 
-           // CreateMap<IFormFile, AppFile>()
-               // .ForMember(e => e.Name, d => d.MapFrom(p => p.FileName))
-             //   .ForMember(e => e.Path, d => d.MapFrom(p => p.SaveFileToFolderAndGetPath(FileHelperExtension.FileType.Photo)));
+            CreateMap<IFormFile, AppFile>()
+                .ForMember(e => e.Name, d => d.MapFrom(p => p.FileName))
+                .ForMember(e => e.Path, d => d.MapFrom(p => p.SaveFileToFolderAndGetPath(FileHelperExtension.FileType.Photo)));
         }
     }
 }

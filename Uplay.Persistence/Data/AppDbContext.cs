@@ -12,7 +12,13 @@ namespace Uplay.Persistence.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+        public AppDbContext()
+        {
+            
+        }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+        {
+        }
 
         #region Companies
 
@@ -24,7 +30,9 @@ namespace Uplay.Persistence.Data
         public virtual DbSet<CompanyBranch> CompanyBranchs { get; set; } = null!;
 
         #endregion
+
         #region Landings
+
         public virtual DbSet<About> Abouts { get; set; } = null!;
         public virtual DbSet<AboutFile> AboutFiles { get; set; } = null!;
         public virtual DbSet<AboutType> AboutTypes { get; set; } = null!;
@@ -41,34 +49,49 @@ namespace Uplay.Persistence.Data
         public virtual DbSet<YouBusines> YouBusineses { get; set; } = null!;
 
         #endregion
+
         #region Miscs
+
         public virtual DbSet<AppFile> Files { get; set; } = null!;
 
         #endregion
+
         #region PlayLists
+
         public virtual DbSet<PlayList> PlayLists { get; set; } = null!;
         public virtual DbSet<PlayListStatusHistory> PlayListStatusHistories { get; set; } = null!;
 
         #endregion
+
         #region Pricings
+
         public virtual DbSet<Pricing> Pricings { get; set; } = null!;
         public virtual DbSet<PricingSection> PricingSections { get; set; } = null!;
         public virtual DbSet<PricingType> PricingTypes { get; set; } = null!;
 
         #endregion
+
         #region Users
+
         public virtual DbSet<User> Users { get; set; } = null!;
+
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql("Server=89.117.63.250;Port=5433;Database=Uplay-Development;User Id=postgres;Password=eltun123;",
+                b => b.MigrationsAssembly("Uplay.Persistence"));
+        }
+
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             foreach (var entry in ChangeTracker.Entries())
             {
-
                 switch (entry.State)
                 {
                     case EntityState.Added:
@@ -91,10 +114,9 @@ namespace Uplay.Persistence.Data
                             trackupdate.UpdatedDate = DateTime.UtcNow.AddHours(4);
 
                         break;
-
                 }
-
             }
+
             return base.SaveChangesAsync(cancellationToken);
         }
     }
