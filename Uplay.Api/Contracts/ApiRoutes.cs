@@ -20,7 +20,14 @@
             public const string Create = Base + "/faq";
             public const string Delete = Base + "/faq/:id";
         }
-        
+        public struct ServiceRoute
+        {
+            public const string GetAll = Base + "/service";
+            public const string Get = Base + "/service/:id";
+            public const string Update = Base + "/service/:id";
+            public const string Create = Base + "/service";
+            public const string Delete = Base + "/service/:id";
+        }
         public struct PartnerRoute
         {
             public const string GetAll = Base + "/partner";

@@ -47,6 +47,7 @@ namespace Uplay.Persistence
             services.AddScoped(typeof(IFaqRepository), typeof(FaqRepository));
             services.AddScoped(typeof(IPartnerRepository), typeof(PartnerRepository));    
             services.AddScoped(typeof(IContactRepository), typeof(ContactRepository));
+            services.AddScoped(typeof(IServiceRepository), typeof(ServiceRepository));
             return services;
         }
     }
