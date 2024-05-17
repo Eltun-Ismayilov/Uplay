@@ -167,7 +167,7 @@ namespace Uplay.Persistence.Repository.Concrete
             return await getByIdsAsync();
         }
 
-        public async Task<int> InsertAsync(T entity, bool saveChanges = false)
+        public async Task<int> InsertAsync(T entity, bool saveChanges = true)
         {
             if (entity == null)
                 throw new ArgumentNullException(nameof(entity));
@@ -198,11 +198,11 @@ namespace Uplay.Persistence.Repository.Concrete
                     throw new InvalidOperationException("EntityState not valid for update");
 
                 case EntityState.Detached:
+                case EntityState.Modified:
                     Table.Update(entity);
                     break;
 
                 case EntityState.Unchanged:
-                case EntityState.Modified:
                     break;
 
                 default:

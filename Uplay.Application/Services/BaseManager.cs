@@ -18,6 +18,10 @@ namespace Uplay.Application.Services
             //_authService = httpContextAccessor.HttpContext?.RequestServices?.GetService<IAuthService>() ??
             //               throw new ArgumentException("Auth service can't be null");
         }
-
+        
+        protected BaseManager(IMapper mapper)
+        {
+            Mapper = mapper;
+        }
     }
 }
