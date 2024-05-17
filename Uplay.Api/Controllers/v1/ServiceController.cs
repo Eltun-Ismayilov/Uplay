@@ -31,6 +31,7 @@ namespace Uplay.Api.Controllers.v1
             var data = await _serviceService.Create(command);
             return Ok(data.Value);
         }
+
         [HttpGet(ApiRoutes.ServiceRoute.Get)]
         public async Task<ActionResult<FaqGetResponse>> Get([Required] int id)
         {
@@ -46,9 +47,9 @@ namespace Uplay.Api.Controllers.v1
         }
 
         [HttpPut(ApiRoutes.ServiceRoute.Update)]
-        public async Task<IActionResult> Update(int faqId, [FromForm] SaveServiceRequest updateServiceDto)
+        public async Task<IActionResult> Update(int id, [FromForm] SaveServiceRequest updateServiceDto)
         {
-            await _serviceService.Update(faqId, updateServiceDto);
+            await _serviceService.Update(id, updateServiceDto);
             return NoContent();
         }
     }

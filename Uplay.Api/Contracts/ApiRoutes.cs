@@ -36,6 +36,14 @@
             public const string Create = Base + "/partner";
             public const string Delete = Base + "/partner/:id";
         }
+        public struct PublicReviewRoute
+        {
+            public const string GetAll = Base + "/publicReview";
+            public const string Get = Base + "/publicReview/:id";
+            public const string Update = Base + "/publicReview/:id";
+            public const string Create = Base + "/publicReview";
+            public const string Delete = Base + "/publicReview/:id";
+        }
         
         public struct ContactRoute
         {
