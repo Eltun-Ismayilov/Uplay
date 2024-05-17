@@ -9,11 +9,11 @@ using Uplay.Persistence.Repository;
 
 namespace Uplay.Application.Services.PublicReviews
 {
-    public class PublicReviewService : BaseManager, IPublicReviewService
+    public class PublicReviewManager : BaseManager, IPublicReviewService
     {
         private readonly IPublicReviewRepository _publicReviewRepository;
 
-        public PublicReviewService(
+        public PublicReviewManager(
             IPublicReviewRepository publicReviewRepository, 
             IMapper mapper) : base(mapper)
         {

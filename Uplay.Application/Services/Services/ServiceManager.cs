@@ -13,11 +13,11 @@ using Uplay.Persistence.Repository.Concrete;
 
 namespace Uplay.Application.Services.Services
 {
-    public class ServiceService : BaseManager, IServiceService
+    public class ServiceManager : BaseManager, IServiceService
     {
         private readonly IServiceRepository _serviceRepository;
 
-        public ServiceService(
+        public ServiceManager(
             IServiceRepository serviceRepository,
             IMapper mapper) : base(mapper)
         {

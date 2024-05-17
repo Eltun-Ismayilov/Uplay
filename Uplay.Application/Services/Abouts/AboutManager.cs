@@ -6,11 +6,11 @@ using Uplay.Persistence.Repository;
 
 namespace Uplay.Application.Services.Abouts
 {
-    public class AboutService : BaseManager, IAboutService
+    public class AboutManager : BaseManager, IAboutService
     {
         private readonly IAboutRepository _aboutRepository;
 
-        public AboutService(
+        public AboutManager(
             IAboutRepository aboutRepository,
             IMapper mapper
             )
