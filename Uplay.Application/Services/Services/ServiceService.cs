@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Microsoft.AspNetCore.Mvc;
 using Uplay.Application.Exceptions;
 using Uplay.Application.Mappings;
@@ -6,6 +7,7 @@ using Uplay.Application.Models;
 using Uplay.Application.Models.Partners;
 using Uplay.Application.Models.Services;
 using Uplay.Domain.Entities.Models.Landing;
+using Uplay.Domain.Enum;
 using Uplay.Persistence.Repository;
 using Uplay.Persistence.Repository.Concrete;
 
@@ -16,7 +18,7 @@ namespace Uplay.Application.Services.Services
         private readonly IServiceRepository _serviceRepository;
 
         public ServiceService(
-            IServiceRepository serviceRepository, 
+            IServiceRepository serviceRepository,
             IMapper mapper) : base(mapper)
         {
             _serviceRepository = serviceRepository;
@@ -52,11 +54,14 @@ namespace Uplay.Application.Services.Services
             return response;
         }
 
-        public async Task<ServiceGetAllResponse> GetAll(PaginationFilter paginationFilter)
+        public async Task<ServiceGetAllResponse> GetAll(ServiceTypeEnum serviceTypeId, PaginationFilter paginationFilter)
         {
             ServiceGetAllResponse response = new();
 
-            var services = _serviceRepository.GetListQuery();
+            if ((int)serviceTypeId != 1 && (int)serviceTypeId != 2)
+                throw new NotFoundException("ServiceTypeId not found");
+
+            var services = _serviceRepository.GetListByServiceTypeIdQuery(serviceTypeId);
 
             var list = await services.PaginatedMappedListAsync<ServiceDto, Service>(Mapper, paginationFilter.PageNumber,
                 paginationFilter.PageSize);

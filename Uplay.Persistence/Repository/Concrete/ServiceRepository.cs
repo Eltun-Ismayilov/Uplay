@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Uplay.Domain.Entities.Models.Landing;
+using Uplay.Domain.Enum;
 using Uplay.Persistence.Data;
 
 namespace Uplay.Persistence.Repository.Concrete
@@ -10,12 +11,13 @@ namespace Uplay.Persistence.Repository.Concrete
         {
         }
 
-        public IQueryable<Service> GetListQuery()
+        public IQueryable<Service> GetListByServiceTypeIdQuery(ServiceTypeEnum serviceTypeId)
         {
             var serviceListquery = AsQueryable().AsNoTracking()
                 .Include(x => x.File)
-                .Include(x=>x.ServiceType)
-                .OrderByDescending(x => x.Id);
+                .Include(x => x.ServiceType)
+                .OrderByDescending(x => x.Id)
+                .Where(x => x.ServiceTypeId == (int)serviceTypeId);
 
             return serviceListquery;
         }
@@ -24,7 +26,7 @@ namespace Uplay.Persistence.Repository.Concrete
         {
             var service = await AsQueryable().AsNoTracking()
                 .Include(x => x.File)
-                .Include(x=>x.ServiceType)
+                .Include(x => x.ServiceType)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             return service;
