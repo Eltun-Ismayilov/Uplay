@@ -36,6 +36,12 @@
             public const string Create = Base + "/partner";
             public const string Delete = Base + "/partner/:id";
         }
+        public struct AboutRoute
+        {
+            public const string Get = Base + "/about";
+            public const string Update = Base + "/about/:id";
+            public const string Create = Base + "/about";
+        }
         public struct PublicReviewRoute
         {
             public const string GetAll = Base + "/publicReview";
