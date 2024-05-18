@@ -10,12 +10,16 @@ namespace Uplay.Persistence.Repository.Concrete
         {
         }
 
-        public IQueryable<About> GetListQuery()
+        public async Task<About> GetByAboutIdQuery(int id)
         {
-            var aboutListquery = AsQueryable().AsNoTracking()
-                .OrderByDescending(x => x.Id);
+            var about = await AsQueryable().AsNoTracking()
+                  .Include(x => x.AboutTypes)
+                    .ThenInclude(x => x.File)
+                  .Include(x => x.AboutFiles)
+                   .ThenInclude(x => x.File)
+                  .FirstOrDefaultAsync(x => x.Id == id);
 
-            return aboutListquery;
+            return about;
         }
 
         public async Task<About> GetQuery()

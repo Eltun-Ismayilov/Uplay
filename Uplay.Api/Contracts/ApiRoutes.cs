@@ -20,6 +20,13 @@
             public const string Create = Base + "/faq";
             public const string Delete = Base + "/faq/:id";
         }
+        public struct SocialLinkRoute
+        {
+            public const string Get = Base + "/socialLink";
+            public const string Update = Base + "/socialLink/:id";
+            public const string Create = Base + "/socialLink";
+        }
+        
         public struct ServiceRoute
         {
             public const string GetAll = Base + "/service";
@@ -39,7 +46,7 @@
         public struct AboutRoute
         {
             public const string Get = Base + "/about";
-            public const string Update = Base + "/about";
+            public const string Update = Base + "/about/:id";
             public const string Create = Base + "/about";
         }
         public struct PublicReviewRoute

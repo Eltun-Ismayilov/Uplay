@@ -22,7 +22,10 @@ namespace Uplay.Api.Controllers.v1
 
         [HttpPost(ApiRoutes.AboutRoute.Create)]
         public async Task<ActionResult<int>> Create([Required][FromForm] SaveAboutRequest command)
-            => Ok(await _aboutService.Create(command));
+        {
+            var data= await _aboutService.Create(command);
+            return data.Value;
+        }
 
 
         [HttpGet(ApiRoutes.AboutRoute.Get)]
@@ -32,9 +35,9 @@ namespace Uplay.Api.Controllers.v1
 
 
         [HttpPut(ApiRoutes.AboutRoute.Update)]
-        public async Task<IActionResult> Update([FromForm] SaveAboutRequest updateAboutDto)
+        public async Task<IActionResult> Update([Required] int id, [FromForm] SaveAboutRequest updateAboutDto)
         {
-            await _aboutService.Update( updateAboutDto);
+            await _aboutService.Update(id, updateAboutDto);
             return NoContent();
         }
     }
