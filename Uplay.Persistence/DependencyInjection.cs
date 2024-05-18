@@ -50,7 +50,9 @@ namespace Uplay.Persistence
             services.AddScoped(typeof(IServiceRepository), typeof(ServiceRepository));
             services.AddScoped(typeof(IPublicReviewRepository), typeof(PublicReviewRepository));
             services.AddScoped(typeof(IAboutRepository), typeof(AboutRepository));
-
+            services.AddScoped(typeof(ISocialLinkRepository), typeof(SocialLinkRepository));
+            services.AddScoped(typeof(IAboutFileRepository), typeof(AboutFileRepository));
+            services.AddScoped(typeof(IAboutTypeRepository), typeof(AboutTypeRepository));
             return services;
         }
     }
