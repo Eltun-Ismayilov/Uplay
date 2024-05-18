@@ -4,6 +4,6 @@ namespace Uplay.Persistence.Repository
 {
     public interface IAboutRepository : IRepository<About>
     {
-        IQueryable<About> GetListQuery();
+       Task<About> GetQuery();
     }
 }

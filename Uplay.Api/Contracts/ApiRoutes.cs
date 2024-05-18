@@ -39,7 +39,7 @@
         public struct AboutRoute
         {
             public const string Get = Base + "/about";
-            public const string Update = Base + "/about/:id";
+            public const string Update = Base + "/about";
             public const string Create = Base + "/about";
         }
         public struct PublicReviewRoute
