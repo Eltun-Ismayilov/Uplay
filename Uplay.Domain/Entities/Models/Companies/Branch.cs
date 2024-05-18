@@ -1,4 +1,5 @@
-﻿using Uplay.Domain.Entities.Models.PlayLists;
+﻿using Uplay.Domain.Entities.Models.Landing;
+using Uplay.Domain.Entities.Models.PlayLists;
 using Uplay.Domain.Entities.Models.Users;
 using Uplay.Domain.Enum;
 
@@ -14,5 +15,7 @@ namespace Uplay.Domain.Entities.Models.Companies
         public AccauntStatusEnum Status { get; set; }
         public virtual ICollection<PlayList> PlayLists { get; set; }
         public virtual ICollection<BranchCategory> BranchCategories { get; set; }
+        public virtual ICollection<Feedback> Feedbacks { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using Uplay.Persistence.Data;
 namespace Uplay.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240515125335_mig_1")]
+    [Migration("20240518145206_mig_1")]
     partial class mig_1
     {
         /// <inheritdoc />
@@ -103,76 +103,6 @@ namespace Uplay.Persistence.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("BranchCategories", "Company");
-                });
-
-            modelBuilder.Entity("Uplay.Domain.Entities.Models.Companies.BranchFeedback", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeleteDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("FeedbackId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("FeedbackId");
-
-                    b.ToTable("BranchFeedbacks", "Company");
-                });
-
-            modelBuilder.Entity("Uplay.Domain.Entities.Models.Companies.BranchReview", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeleteDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<bool>("Deleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<int>("ReviewId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("ReviewId");
-
-                    b.ToTable("BranchReviews", "Company");
                 });
 
             modelBuilder.Entity("Uplay.Domain.Entities.Models.Companies.Company", b =>
@@ -490,6 +420,9 @@ namespace Uplay.Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BranchId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -507,6 +440,8 @@ namespace Uplay.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
 
                     b.ToTable("Feedbacks", "Landing");
                 });
@@ -591,6 +526,9 @@ namespace Uplay.Persistence.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BranchId")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("timestamp with time zone");
 
@@ -608,6 +546,8 @@ namespace Uplay.Persistence.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BranchId");
 
                     b.ToTable("Reviews", "Landing");
                 });
@@ -1084,44 +1024,6 @@ namespace Uplay.Persistence.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("Uplay.Domain.Entities.Models.Companies.BranchFeedback", b =>
-                {
-                    b.HasOne("Uplay.Domain.Entities.Models.Companies.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Uplay.Domain.Entities.Models.Landing.Feedback", "Feedback")
-                        .WithMany()
-                        .HasForeignKey("FeedbackId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("Feedback");
-                });
-
-            modelBuilder.Entity("Uplay.Domain.Entities.Models.Companies.BranchReview", b =>
-                {
-                    b.HasOne("Uplay.Domain.Entities.Models.Companies.Branch", "Branch")
-                        .WithMany()
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Uplay.Domain.Entities.Models.Landing.Review", "Review")
-                        .WithMany()
-                        .HasForeignKey("ReviewId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("Review");
-                });
-
             modelBuilder.Entity("Uplay.Domain.Entities.Models.Companies.Company", b =>
                 {
                     b.HasOne("Uplay.Domain.Entities.Models.Miscs.AppFile", "File")
@@ -1205,6 +1107,17 @@ namespace Uplay.Persistence.Migrations
                     b.Navigation("File");
                 });
 
+            modelBuilder.Entity("Uplay.Domain.Entities.Models.Landing.Feedback", b =>
+                {
+                    b.HasOne("Uplay.Domain.Entities.Models.Companies.Branch", "Branch")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
+                });
+
             modelBuilder.Entity("Uplay.Domain.Entities.Models.Landing.Partner", b =>
                 {
                     b.HasOne("Uplay.Domain.Entities.Models.Miscs.AppFile", "File")
@@ -1225,6 +1138,17 @@ namespace Uplay.Persistence.Migrations
                         .IsRequired();
 
                     b.Navigation("File");
+                });
+
+            modelBuilder.Entity("Uplay.Domain.Entities.Models.Landing.Review", b =>
+                {
+                    b.HasOne("Uplay.Domain.Entities.Models.Companies.Branch", "Branch")
+                        .WithMany("Reviews")
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Branch");
                 });
 
             modelBuilder.Entity("Uplay.Domain.Entities.Models.Landing.Service", b =>
@@ -1313,7 +1237,11 @@ namespace Uplay.Persistence.Migrations
                 {
                     b.Navigation("BranchCategories");
 
+                    b.Navigation("Feedbacks");
+
                     b.Navigation("PlayLists");
+
+                    b.Navigation("Reviews");
                 });
 
             modelBuilder.Entity("Uplay.Domain.Entities.Models.Companies.Company", b =>

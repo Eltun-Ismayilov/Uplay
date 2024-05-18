@@ -9,7 +9,6 @@ namespace Uplay.Persistence.Migrations
     /// <inheritdoc />
     public partial class mig_1 : Migration
     {
-
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -110,24 +109,6 @@ namespace Uplay.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Feedbacks",
-                schema: "Landing",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeleteDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Feedbacks", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "PricingTypes",
                 schema: "Pricing",
                 columns: table => new
@@ -143,24 +124,6 @@ namespace Uplay.Persistence.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PricingTypes", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reviews",
-                schema: "Landing",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeleteDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reviews", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -597,14 +560,14 @@ namespace Uplay.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BranchFeedbacks",
-                schema: "Company",
+                name: "Feedbacks",
+                schema: "Landing",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     BranchId = table.Column<int>(type: "integer", nullable: false),
-                    FeedbackId = table.Column<int>(type: "integer", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     DeleteDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -612,52 +575,12 @@ namespace Uplay.Persistence.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BranchFeedbacks", x => x.Id);
+                    table.PrimaryKey("PK_Feedbacks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BranchFeedbacks_Branchs_BranchId",
+                        name: "FK_Feedbacks_Branchs_BranchId",
                         column: x => x.BranchId,
                         principalSchema: "Company",
                         principalTable: "Branchs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BranchFeedbacks_Feedbacks_FeedbackId",
-                        column: x => x.FeedbackId,
-                        principalSchema: "Landing",
-                        principalTable: "Feedbacks",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "BranchReviews",
-                schema: "Company",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    BranchId = table.Column<int>(type: "integer", nullable: false),
-                    ReviewId = table.Column<int>(type: "integer", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeleteDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BranchReviews", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_BranchReviews_Branchs_BranchId",
-                        column: x => x.BranchId,
-                        principalSchema: "Company",
-                        principalTable: "Branchs",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BranchReviews_Reviews_ReviewId",
-                        column: x => x.ReviewId,
-                        principalSchema: "Landing",
-                        principalTable: "Reviews",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -690,6 +613,32 @@ namespace Uplay.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_PlayLists_Branchs_BranchId",
+                        column: x => x.BranchId,
+                        principalSchema: "Company",
+                        principalTable: "Branchs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reviews",
+                schema: "Landing",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    BranchId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeleteDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Deleted = table.Column<bool>(type: "boolean", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reviews", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reviews_Branchs_BranchId",
                         column: x => x.BranchId,
                         principalSchema: "Company",
                         principalTable: "Branchs",
@@ -793,30 +742,6 @@ namespace Uplay.Persistence.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BranchFeedbacks_BranchId",
-                schema: "Company",
-                table: "BranchFeedbacks",
-                column: "BranchId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BranchFeedbacks_FeedbackId",
-                schema: "Company",
-                table: "BranchFeedbacks",
-                column: "FeedbackId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BranchReviews_BranchId",
-                schema: "Company",
-                table: "BranchReviews",
-                column: "BranchId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BranchReviews_ReviewId",
-                schema: "Company",
-                table: "BranchReviews",
-                column: "ReviewId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Branchs_OnwerId",
                 schema: "Company",
                 table: "Branchs",
@@ -851,6 +776,12 @@ namespace Uplay.Persistence.Migrations
                 schema: "Company",
                 table: "CompanyBranchs",
                 column: "CompanyId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Feedbacks_BranchId",
+                schema: "Landing",
+                table: "Feedbacks",
+                column: "BranchId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Partners_FileId",
@@ -895,6 +826,12 @@ namespace Uplay.Persistence.Migrations
                 column: "FileId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Reviews_BranchId",
+                schema: "Landing",
+                table: "Reviews",
+                column: "BranchId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Services_FileId",
                 schema: "Landing",
                 table: "Services",
@@ -929,14 +866,6 @@ namespace Uplay.Persistence.Migrations
                 schema: "Company");
 
             migrationBuilder.DropTable(
-                name: "BranchFeedbacks",
-                schema: "Company");
-
-            migrationBuilder.DropTable(
-                name: "BranchReviews",
-                schema: "Company");
-
-            migrationBuilder.DropTable(
                 name: "CompanyBranchs",
                 schema: "Company");
 
@@ -946,6 +875,10 @@ namespace Uplay.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Faqs",
+                schema: "Landing");
+
+            migrationBuilder.DropTable(
+                name: "Feedbacks",
                 schema: "Landing");
 
             migrationBuilder.DropTable(
@@ -962,6 +895,10 @@ namespace Uplay.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "PublicReviews",
+                schema: "Landing");
+
+            migrationBuilder.DropTable(
+                name: "Reviews",
                 schema: "Landing");
 
             migrationBuilder.DropTable(
@@ -982,14 +919,6 @@ namespace Uplay.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "Categories",
-                schema: "Landing");
-
-            migrationBuilder.DropTable(
-                name: "Feedbacks",
-                schema: "Landing");
-
-            migrationBuilder.DropTable(
-                name: "Reviews",
                 schema: "Landing");
 
             migrationBuilder.DropTable(

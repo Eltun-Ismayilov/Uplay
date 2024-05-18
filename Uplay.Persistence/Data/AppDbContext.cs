@@ -24,8 +24,6 @@ namespace Uplay.Persistence.Data
 
         public virtual DbSet<Branch> Branchs { get; set; } = null!;
         public virtual DbSet<BranchCategory> BranchCategories { get; set; } = null!;
-        public virtual DbSet<BranchFeedback> BranchFeedbacks { get; set; } = null!;
-        public virtual DbSet<BranchReview> BranchReviews { get; set; } = null!;
         public virtual DbSet<Company> Companies { get; set; } = null!;
         public virtual DbSet<CompanyBranch> CompanyBranchs { get; set; } = null!;
 
@@ -84,7 +82,7 @@ namespace Uplay.Persistence.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Server=89.117.63.250;Port=5433;Database=Uplay-Development;User Id=postgres;Password=eltun123;",
+            optionsBuilder.UseNpgsql("Server=89.117.63.250;Port=5433;Database=Uplay-Dev;User Id=postgres;Password=eltun123;",
                 b => b.MigrationsAssembly("Uplay.Persistence"));
         }
 
