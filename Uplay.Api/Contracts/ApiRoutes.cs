@@ -64,5 +64,17 @@
             public const string Get = Base + "/contact/:id";
             public const string Create = Base + "/contact";
         }
+        
+        public struct ReviewRoute
+        {
+            public const string GetAll = Base + "/review/:id";
+            public const string Create = Base + "/review";
+        }
+        
+        public struct FeedbackRoute
+        {
+            public const string GetAll = Base + "/feedback/:id";
+            public const string Create = Base + "/feedback";
+        }
     }
 }

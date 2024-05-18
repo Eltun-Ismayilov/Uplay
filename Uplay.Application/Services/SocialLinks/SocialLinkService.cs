@@ -34,7 +34,6 @@ namespace Uplay.Application.Services.SocialLinks
             return response;
         }
 
-       
 
         public async Task<int> Update(int id, SaveSocialLinkRequest command)
         {
