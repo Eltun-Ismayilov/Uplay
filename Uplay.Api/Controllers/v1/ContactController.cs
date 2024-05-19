@@ -28,7 +28,7 @@ public class ContactController : BaseController
     }
 
     [HttpPost(ApiRoutes.ContactRoute.Create)]
-    public async Task<ActionResult<int>> Create([FromForm] SaveContactRequest command)
+    public async Task<ActionResult<int>> Create([FromBody] SaveContactRequest command)
     {
         var data = await _contactService.Create(command);
         return Ok(data.Value);
