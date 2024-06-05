@@ -48,20 +48,21 @@ namespace Uplay.Application.Services.Companys
 
             var email = new MimeMessage();
 
-            email.From.Add(MailboxAddress.Parse("felton63@ethereal.email"));
+            email.From.Add(MailboxAddress.Parse(_configuration["EmailSettings:UserName"]));
 
             email.To.Add(MailboxAddress.Parse(command.Onwer.Email));
 
-            email.Subject = "Uplay";
+
+            email.Subject = _configuration["EmailSettings:displayName"];
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Zehmet olmasa <a href={path}=>Link</a> vasitesile abuneliyi tamamlayin" };
 
             using var smtp = new SmtpClient();
-                smtp.Connect("smtp.ethereal.email", 587, SecureSocketOptions.StartTls);
-                smtp.Authenticate("felton63@ethereal.email", "WCt4S6X7Jz9CBvtKMH");
-                smtp.Send(email);
-                smtp.Disconnect(true);
-         
+            smtp.Connect(_configuration["EmailSettings:smtpServer"], Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
+            smtp.Authenticate(_configuration["EmailSettings:UserName"], _configuration["EmailSettings:password"]);
+            smtp.Send(email);
+            smtp.Disconnect(true);
+
             return data;
         }
     }

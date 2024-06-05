@@ -11,7 +11,7 @@ namespace Uplay.Api.Controllers.v1
         public UserController(IUserService userService)=> _userService=userService;
 
 
-        [HttpGet(ApiRoutes.UserRoute.SubscribeConfirm)]
+        [HttpGet("subscribe-confirm")]
         public async Task<ActionResult<int>> SubscibeConfirm(string token)
         {
             var data = await _userService.SubscibeConfirm(token);
