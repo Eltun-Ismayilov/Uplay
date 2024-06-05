@@ -15,19 +15,27 @@ namespace Uplay.Application.Services.Companys
     public class CompanyManager : BaseManager, ICompanyService
     {
         private readonly ICompanyRepository _companyRepository;
+        private readonly IUserRepository _userRepository;
         readonly IConfiguration _configuration;
         readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CompanyManager(IMapper mapper, ICompanyRepository companyRepository, IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
+        public CompanyManager(IMapper mapper, ICompanyRepository companyRepository, IConfiguration configuration, IHttpContextAccessor httpContextAccessor, IUserRepository userRepository)
             : base(mapper)
         {
             _companyRepository = companyRepository;
             _configuration = configuration;
             _httpContextAccessor = httpContextAccessor;
+            _userRepository = userRepository;
         }
 
         public async Task<ActionResult<int>> Create(SaveCompanyRequest command)
         {
+            var users= await _userRepository.GetAllAsync();
+
+            if(users.Any(x=>x.UserName==command.Onwer.UserName || x.Email == command.Onwer.Email))
+                throw new BadHttpRequestException("Daxil etdiyiniz Username ve ya Email adinda isdifadeci movcudur");
+
+
             var mapping = Mapper.Map<Company>(command);
 
             mapping.Onwer.Salt = Guid.NewGuid();
