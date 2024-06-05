@@ -10,11 +10,20 @@ namespace Uplay.Persistence.Repository.Concrete
         {
         }
 
-        public async Task<Company> SubscibeConfirmByCompanyId(int id)
+        public async Task<Company> GetByUserId(int id)
+        {
+            var company = await AsQueryable().AsNoTracking()
+                  .Include(x => x.Onwer)
+                  .FirstOrDefaultAsync(x => x.Id == id);
+
+            return company;
+        }
+
+        public async Task<Company> SubscibeConfirmByCompanyId(int userId)
         {
             var company = await AsQueryable().AsNoTracking()
                       .Include(x => x.Onwer)
-                      .FirstOrDefaultAsync(x => x.Id == id);
+                      .FirstOrDefaultAsync(x => x.OnwerId == userId);
 
             return company;
         }

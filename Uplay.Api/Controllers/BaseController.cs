@@ -7,6 +7,6 @@ namespace Uplay.Api.Controllers
 {
     [ApiController]
     [Validation]
-   // [Authorize]
+    //[Authorize]
     public class BaseController : Controller { }
 }

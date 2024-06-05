@@ -11,5 +11,12 @@ namespace Uplay.Persistence.Repository.Concrete
         {
         }
 
+        public async Task<User> Login(string username)
+        {
+            var user = await AsQueryable().AsNoTracking()
+                              .FirstOrDefaultAsync(x => x.UserName == username || x.Email == username);
+
+            return user;
+        }
     }
 }

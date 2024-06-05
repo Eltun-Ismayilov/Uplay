@@ -11,7 +11,7 @@
             public const string GetAll = Base + "/file";
             public const string Create = Base + "/file";
         }
-        
+
         public struct FaqRoute
         {
             public const string GetAll = Base + "/faq";
@@ -27,15 +27,15 @@
             public const string Create = Base + "/pricing";
             public const string Delete = Base + "/pricing/:id";
         }
-        
+
         public struct SocialLinkRoute
         {
             public const string Get = Base + "/socialLink";
             public const string Update = Base + "/socialLink/:id";
             public const string Create = Base + "/socialLink";
         }
-      
-        
+
+
         public struct ServiceRoute
         {
             public const string GetAll = Base + "/service";
@@ -58,6 +58,11 @@
             public const string Update = Base + "/about/:id";
             public const string Create = Base + "/about";
         }
+
+        public struct UserRoute
+        {
+            public const string Login = Base + "/login";
+        }
         public struct PublicReviewRoute
         {
             public const string GetAll = Base + "/publicReview";
@@ -66,7 +71,7 @@
             public const string Create = Base + "/publicReview";
             public const string Delete = Base + "/publicReview/:id";
         }
-        
+
         public struct ContactRoute
         {
             public const string GetAll = Base + "/contact";
@@ -79,13 +84,13 @@
             public const string Get = Base + "/contact/:id";
             public const string Create = Base + "/company";
         }
-        
+
         public struct ReviewRoute
         {
             public const string GetAll = Base + "/review/:id";
             public const string Create = Base + "/review";
         }
-        
+
         public struct FeedbackRoute
         {
             public const string GetAll = Base + "/feedback/:id";

@@ -6,5 +6,6 @@ namespace Uplay.Persistence.Repository
     public interface ICompanyRepository : IRepository<Company>
     {
         Task<Company> SubscibeConfirmByCompanyId(int id);
+        Task<Company> GetByUserId(int userId);
     }
 }

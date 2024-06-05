@@ -35,7 +35,6 @@ namespace Uplay.Application.Services.Companys
             if(users.Any(x=>x.UserName==command.Onwer.UserName || x.Email == command.Onwer.Email))
                 throw new BadHttpRequestException("Daxil etdiyiniz Username ve ya Email adinda isdifadeci movcudur");
 
-
             var mapping = Mapper.Map<Company>(command);
 
             mapping.Onwer.Salt = Guid.NewGuid();
@@ -60,16 +59,15 @@ namespace Uplay.Application.Services.Companys
 
             email.To.Add(MailboxAddress.Parse(command.Onwer.Email));
 
-
             email.Subject = _configuration["EmailSettings:displayName"];
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Zehmet olmasa <a href={path}=>Link</a> vasitesile abuneliyi tamamlayin" };
 
             using var smtp = new SmtpClient();
-            smtp.Connect(_configuration["EmailSettings:smtpServer"], Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
-            smtp.Authenticate(_configuration["EmailSettings:UserName"], _configuration["EmailSettings:password"]);
-            smtp.Send(email);
-            smtp.Disconnect(true);
+               smtp.Connect(_configuration["EmailSettings:smtpServer"], Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
+               smtp.Authenticate(_configuration["EmailSettings:UserName"], _configuration["EmailSettings:password"]);
+               smtp.Send(email);
+               smtp.Disconnect(true);
 
             return data;
         }

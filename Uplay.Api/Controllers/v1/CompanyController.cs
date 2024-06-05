@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models.Companies;
 using Uplay.Application.Services.Companys;
@@ -15,7 +16,7 @@ namespace Uplay.Api.Controllers.v1
             _companyService = companyService;
         }
 
-
+        [AllowAnonymous]
         [HttpPost(ApiRoutes.CompanyRoute.Create)]
         public async Task<ActionResult<int>> Create([FromForm] SaveCompanyRequest command)
         {
