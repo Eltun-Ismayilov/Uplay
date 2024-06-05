@@ -34,6 +34,10 @@
             public const string Update = Base + "/socialLink/:id";
             public const string Create = Base + "/socialLink";
         }
+        public struct UserRoute
+        {
+            public const string SubscribeConfirm = Base + "/subscribe-confirm";
+        }
         
         public struct ServiceRoute
         {
@@ -71,6 +75,12 @@
             public const string GetAll = Base + "/contact";
             public const string Get = Base + "/contact/:id";
             public const string Create = Base + "/contact";
+        }
+        public struct CompanyRoute
+        {
+            public const string GetAll = Base + "/contact";
+            public const string Get = Base + "/contact/:id";
+            public const string Create = Base + "/company";
         }
         
         public struct ReviewRoute
