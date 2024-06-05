@@ -52,6 +52,7 @@ namespace Uplay.Application.Services.Companys
 
             email.To.Add(MailboxAddress.Parse(command.Onwer.Email));
 
+
             email.Subject = _configuration["EmailSettings:displayName"];
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Zehmet olmasa <a href={path}=>Link</a> vasitesile abuneliyi tamamlayin" };
