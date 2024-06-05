@@ -34,10 +34,6 @@
             public const string Update = Base + "/socialLink/:id";
             public const string Create = Base + "/socialLink";
         }
-        public struct UserRoute
-        {
-            public const string SubscribeConfirm = Base + "/subscribe-confirm";
-        }
         
         public struct ServiceRoute
         {
