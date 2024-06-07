@@ -14,7 +14,7 @@ namespace Uplay.Persistence.Repository.Concrete
         {
             var company = await AsQueryable().AsNoTracking()
                   .Include(x => x.Onwer)
-                  .FirstOrDefaultAsync(x => x.Id == id);
+                  .FirstOrDefaultAsync(x => x.OnwerId == id);
 
             return company;
         }
