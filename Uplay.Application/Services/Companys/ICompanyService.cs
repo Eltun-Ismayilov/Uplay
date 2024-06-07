@@ -11,6 +11,7 @@ namespace Uplay.Application.Services.Companys
 {
     public interface ICompanyService : IBaseService
     {
-        Task<ActionResult<int>> Create(SaveCompanyRequest command);
+        Task<ActionResult<int>> CreateCorporateAsync(SaveCompanyRequest command);
+        Task<ActionResult<int>> CreatePersonalAsync(SavePersonalRequest command);
     }
 }

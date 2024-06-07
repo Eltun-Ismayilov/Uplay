@@ -80,9 +80,8 @@
         }
         public struct CompanyRoute
         {
-            public const string GetAll = Base + "/contact";
-            public const string Get = Base + "/contact/:id";
-            public const string Create = Base + "/company";
+            public const string CreateCorporate = Base + "/corporate";
+            public const string CreatePersonal = Base + "/personal";
         }
 
         public struct ReviewRoute
