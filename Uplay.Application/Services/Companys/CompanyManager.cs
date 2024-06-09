@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
-using System.Net.NetworkInformation;
-using System.Runtime.CompilerServices;
 using Uplay.Application.Extensions;
 using Uplay.Application.Models.Companies;
 using Uplay.Domain.Entities.Models.Companies;

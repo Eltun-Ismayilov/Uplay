@@ -1,6 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Linq.Expressions;
 using Uplay.Domain.Entities.Models.Companies;
-using Uplay.Domain.Entities.Models.Landing;
 using Uplay.Domain.Entities.Models.Users;
 
 namespace Uplay.Persistence.Repository
@@ -8,5 +7,8 @@ namespace Uplay.Persistence.Repository
     public interface IUserRepository : IRepository<User>
     {
         Task<User> Login(string username);
+        Task<User> GetUserByUsername(string username);
+        Task<User> GetUserByEmail(string email);
+        Task<User> CheckUser(Expression<Func<User, bool>> predicate);
     }
 }

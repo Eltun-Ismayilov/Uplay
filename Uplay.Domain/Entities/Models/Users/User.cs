@@ -1,4 +1,6 @@
-﻿namespace Uplay.Domain.Entities.Models.Users
+﻿using Uplay.Domain.Entities.Models.Companies;
+
+namespace Uplay.Domain.Entities.Models.Users
 {
     /// <summary>
     /// UserName -Branch eger var onun name olacaq sisteme giris ucun
@@ -15,5 +17,7 @@
         public string Password { get; set; }
         public Guid Salt { get; set; }
         public bool EmailConfirmed { get; set; }
+        
+        public virtual ICollection<Company> Companies { get; set; }
     }
 }

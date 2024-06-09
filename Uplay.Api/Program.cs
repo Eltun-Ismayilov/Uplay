@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Uplay.Api.Attributes;
 using Uplay.Application;
 using Uplay.Application.Extensions;
@@ -18,16 +20,14 @@ Accessor.AppConfiguration = configuration;
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ApiExceptionFilterAttribute>();
+    options.Filters.Add(new AuthorizeFilter((new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build())));
 }).AddFluentValidationCustom();
-
 
 builder.Services.AddApplication(configuration);
 builder.Services.AddPersistence(configuration);
 builder.Services.InstallServicesInAssembly(configuration);
 
-
 builder.Services.AddEndpointsApiExplorer();
-
 
 builder.Services.AddAuthentication(options =>
 {

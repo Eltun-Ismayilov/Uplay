@@ -2,9 +2,14 @@
 
 namespace Uplay.Application.Services.Users
 {
-    public interface IUserService:IBaseService
+    public interface IUserService : IBaseService
     {
         Task<string> SubscibeConfirm(string token);
         Task<UserLoginResponse> Login(UserLoginRequest request);
+        Task<UserLoginResponse> BranchLogin(UserLoginRequest request);
+        public string Username { get; set; }
+        Task<string> ResetPassword(ResetPasswordRequest request);
+        Task<string> SendForgotPasswordEmail(string email);
+        Task<string> ConfirmResetPassword(string token, ConfirmResetPasswordRequest request);
     }
 }

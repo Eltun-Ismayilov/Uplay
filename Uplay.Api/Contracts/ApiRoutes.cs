@@ -62,6 +62,10 @@
         public struct UserRoute
         {
             public const string Login = Base + "/login";
+            public const string LoginB = Base + "/loginb";
+            public const string ResetPassword = Base + "/resetPassword";
+            public const string ForgetPassword = Base + "/forgetpassword";
+            public const string ConfirmForgetPassword = Base + "/confirmforgotpassword";
         }
         public struct PublicReviewRoute
         {
@@ -94,6 +98,14 @@
         {
             public const string GetAll = Base + "/feedback/:id";
             public const string Create = Base + "/feedback";
+        }
+        
+        public struct BranchRoute
+        {
+            public const string CreateBranch= Base + "/branch";
+            public const string GetAllBranch = Base + "/branch";
+            public const string DeleteBranch= Base + "/branch/delete/:id";
+            public const string DisableBranch = Base + "/branch/disable/:id";
         }
     }
 }
