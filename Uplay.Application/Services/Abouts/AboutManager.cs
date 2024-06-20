@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Uplay.Application.Exceptions;
+using Uplay.Application.Extensions;
 using Uplay.Application.Models.Abouts;
 using Uplay.Application.Models.Contacts;
 using Uplay.Domain.Entities.Models.Landing;
@@ -17,11 +19,11 @@ namespace Uplay.Application.Services.Abouts
 
         public AboutManager(
             IAboutRepository aboutRepository,
-            IMapper mapper
-,
+            IMapper mapper,
+            IHttpContextAccessor httpContextAccessor,
             IAboutFileRepository aboutFileRepository,
             IAboutTypeRepository aboutTypeRepository)
-            : base(mapper)
+            : base(mapper, httpContextAccessor)
         {
             _aboutRepository = aboutRepository;
             _aboutFileRepository = aboutFileRepository;
@@ -34,7 +36,25 @@ namespace Uplay.Application.Services.Abouts
 
         public async Task<AboutGetResponse> Get()
         {
-            return new AboutGetResponse { AboutDto = Mapper.Map<AboutDto>(await _aboutRepository.GetQuery()) };
+            var about = await _aboutRepository.GetQuery();
+
+            var aboutDto = new AboutDto();
+
+            foreach (var aboutFile in about.AboutFiles)
+            {
+                var fileUrl = HttpContextAccessor.GeneratePhotoUrl(aboutFile.FileId);
+
+                aboutDto.AboutFiles.Add(new AboutFileDto { Id = aboutFile.Id, File = fileUrl });
+            }
+
+            foreach (var aboutType in about.AboutTypes)
+            {
+                var fileUrl = HttpContextAccessor.GeneratePhotoUrl(aboutType.FileId);
+
+                aboutDto.AboutTypes.Add(new  AboutTypeDto { Id = aboutType.Id,Name=aboutType.Name, File = fileUrl });
+            }
+
+            return new AboutGetResponse { AboutDto = aboutDto };
         }
 
         public async Task<int> Update(int id, SaveAboutRequest command)

@@ -5,6 +5,7 @@ using Uplay.Application.Extensions;
 using Uplay.Application.Mappings;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Branches;
+using Uplay.Application.Services.AppFiles;
 using Uplay.Domain.Entities.Models.Companies;
 using Uplay.Domain.Entities.Models.Users;
 using Uplay.Domain.Enum;
@@ -16,15 +17,19 @@ public class BranchManager : BaseManager, IBranchService
 {
     private readonly IBranchRepository _branchRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IFileService _fileService;
 
     public BranchManager(
         IMapper mapper,
         IUserRepository userRepository,
-        IBranchRepository branchRepository, IHttpContextAccessor contextAccessor)
+        IBranchRepository branchRepository,
+        IHttpContextAccessor contextAccessor,
+        IFileService fileService)
         : base(mapper, contextAccessor)
     {
         _userRepository = userRepository;
         _branchRepository = branchRepository;
+        _fileService = fileService;
     }
 
     public async Task<ActionResult<int>> CreateBranchAsync(SaveBranchRequest command)
@@ -65,6 +70,18 @@ public class BranchManager : BaseManager, IBranchService
             AesOperation.ComputeSha256Hash(command.Password + mapping.Onwer.Salt);
 
         mapping.Onwer.Password = passHash;
+
+        var qrCodebyte = QrCodeExtension.GenerateQr(command.QrCodeLink);
+
+        var appFile = await _fileService.UploadPhoto(qrCodebyte);
+
+        mapping.BranchQrCodes = new List<BranchQrCode>()
+        {
+            new BranchQrCode
+            {
+                AppFile = appFile
+            }
+        };
 
         var data = await _branchRepository.InsertAsync(mapping);
 

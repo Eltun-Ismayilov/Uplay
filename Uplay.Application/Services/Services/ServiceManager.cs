@@ -65,6 +65,7 @@ namespace Uplay.Application.Services.Services
 
             var list = await services.PaginatedMappedListAsync<ServiceDto, Service>(Mapper, paginationFilter.PageNumber,
                 paginationFilter.PageSize);
+
             response.ServiceDtos = list;
 
             return response;

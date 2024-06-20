@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
@@ -15,7 +16,7 @@ namespace Uplay.Api.Controllers.v1
         {
             _publicReviewService = publicReviewService;
         }
-
+        [AllowAnonymous]
         [HttpGet(ApiRoutes.PublicReviewRoute.GetAll)]
         public async Task<ActionResult<PublicReviewGetAllResponse>> GetAll([FromQuery] PaginationFilter paginationFilter)
         {
@@ -29,7 +30,7 @@ namespace Uplay.Api.Controllers.v1
             var data = await _publicReviewService.Create(command);
             return Ok(data.Value);
         }
-
+        [AllowAnonymous]
         [HttpGet(ApiRoutes.PublicReviewRoute.Get)]
         public async Task<ActionResult<PublicReviewGetResponse>> Get([Required] int id)
         {

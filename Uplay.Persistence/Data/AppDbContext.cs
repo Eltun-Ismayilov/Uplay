@@ -26,6 +26,7 @@ namespace Uplay.Persistence.Data
         public virtual DbSet<BranchCategory> BranchCategories { get; set; } = null!;
         public virtual DbSet<Company> Companies { get; set; } = null!;
         public virtual DbSet<CompanyBranch> CompanyBranchs { get; set; } = null!;
+        public virtual DbSet<BranchQrCode> BranchQrCodes { get; set; } = null!;
 
         #endregion
 
@@ -80,11 +81,11 @@ namespace Uplay.Persistence.Data
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseNpgsql("Server=89.117.63.250;Port=5433;Database=Uplay-Dev;User Id=postgres;Password=eltun123;",
-        //        b => b.MigrationsAssembly("Uplay.Persistence"));
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseNpgsql("Server=89.117.63.250;Port=5433;Database=Uplay-Dev;User Id=postgres;Password=eltun123;",
+                b => b.MigrationsAssembly("Uplay.Persistence"));
+        }
 
         public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {

@@ -7,6 +7,7 @@ using Uplay.Application.Services.Faqs;
 using Uplay.Application.Services.Services;
 using Uplay.Application.Models.Services;
 using Uplay.Domain.Enum;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Uplay.Api.Controllers.v1
 {
@@ -19,6 +20,7 @@ namespace Uplay.Api.Controllers.v1
         {
             _serviceService = serviceService;
         }
+        [AllowAnonymous]
         [HttpGet(ApiRoutes.ServiceRoute.GetAll)]
         public async Task<ActionResult<ServiceGetAllResponse>> GetAll([Required] ServiceTypeEnum serviceTypeId, [FromQuery] PaginationFilter paginationFilter)
         {
@@ -32,7 +34,7 @@ namespace Uplay.Api.Controllers.v1
             var data = await _serviceService.Create(command);
             return Ok(data.Value);
         }
-
+        [AllowAnonymous]
         [HttpGet(ApiRoutes.ServiceRoute.Get)]
         public async Task<ActionResult<FaqGetResponse>> Get([Required] int id)
         {

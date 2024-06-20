@@ -17,7 +17,7 @@ public class SaveBranchRequest: IMapFrom<Branch>
     public string ConfirmPassword { get; set; } = string.Empty;
     
     public List<int> CategoryIds { get; set; } = null!;
-    
+    public string QrCodeLink { get; set; } = string.Empty;
     public void Mapping(Profile profile)
     {
         profile.CreateMap<SaveBranchRequest, Branch>();

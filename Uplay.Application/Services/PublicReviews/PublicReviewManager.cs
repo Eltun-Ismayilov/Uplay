@@ -58,6 +58,7 @@ namespace Uplay.Application.Services.PublicReviews
 
             var list = await publicReviewQuery.PaginatedMappedListAsync<PublicReviewDto, PublicReview>(Mapper, paginationFilter.PageNumber,
                 paginationFilter.PageSize);
+
             response.PublicReviewDtos = list;
 
             return response;

@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 IConfiguration configuration = builder.Configuration;
 Accessor.AppConfiguration = configuration;
 
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ApiExceptionFilterAttribute>();
@@ -26,6 +26,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddApplication(configuration);
 builder.Services.AddPersistence(configuration);
 builder.Services.InstallServicesInAssembly(configuration);
+
 
 builder.Services.AddEndpointsApiExplorer();
 

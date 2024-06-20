@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models.SocialLinks;
@@ -22,7 +23,7 @@ namespace Uplay.Api.Controllers.v1
             var data = await _socialLinkService.Create(command);
             return Ok(data.Value);
         }
-
+        [AllowAnonymous]
         [HttpGet(ApiRoutes.SocialLinkRoute.Get)]
         public async Task<ActionResult<SocialLinkGetResponse>> Get()
         {

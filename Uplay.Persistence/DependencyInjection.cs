@@ -61,7 +61,8 @@ namespace Uplay.Persistence
             services.AddScoped(typeof(IUserRepository), typeof(UserRepository));
             services.AddScoped(typeof(ICompanyBranchRepository), typeof(CompanyBranchRepository));
             services.AddScoped(typeof(IBranchRepository), typeof(BranchRepository));
-                
+            services.AddScoped(typeof(IBranchQrCodeRepository), typeof(BranchQrCodeRepository));
+            
             return services;
         }
     }

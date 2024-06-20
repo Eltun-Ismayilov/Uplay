@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models.Abouts;
@@ -27,7 +28,7 @@ namespace Uplay.Api.Controllers.v1
             return data.Value;
         }
 
-
+        [AllowAnonymous]
         [HttpGet(ApiRoutes.AboutRoute.Get)]
         public async Task<ActionResult<AboutGetResponse>> Get()
                 => Ok(await _aboutService.Get());

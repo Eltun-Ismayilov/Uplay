@@ -14,6 +14,7 @@ namespace Uplay.Application.Models.Companies
         public string Location { get; set; } = string.Empty;
         public IFormFile File { get; set; } = null!;
         public SaveUserRequest Onwer { get; set; } = null!;
+        public string QrCodeLink { get; set; } = string.Empty;
         public void Mapping(Profile profile)
         {
             profile.CreateMap<SavePersonalRequest, Company>()

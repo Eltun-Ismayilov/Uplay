@@ -3,13 +3,22 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using SkiaSharp;
+using SkiaSharp.QrCode;
+using System.Collections;
+using System.Drawing;
+using System.Runtime.CompilerServices;
 using Uplay.Application.Extensions;
 using Uplay.Application.Models.Companies;
+using Uplay.Application.Services.AppFiles;
 using Uplay.Domain.Entities.Models.Companies;
+using Uplay.Domain.Entities.Models.Miscs;
 using Uplay.Domain.Enum;
 using Uplay.Persistence.Repository;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Uplay.Application.Services.Companys
 {
@@ -19,8 +28,10 @@ namespace Uplay.Application.Services.Companys
         private readonly IBranchRepository _branchRepository;
         private readonly IUserRepository _userRepository;
         private readonly ICompanyBranchRepository _companyBranchRepository;
+        private readonly IFileService _fileService;
         readonly IConfiguration _configuration;
         readonly IHttpContextAccessor _httpContextAccessor;
+        readonly IBranchQrCodeRepository _branchQrCodeRepository;
 
         public CompanyManager(
             IMapper mapper,
@@ -29,7 +40,9 @@ namespace Uplay.Application.Services.Companys
             IHttpContextAccessor httpContextAccessor,
             IUserRepository userRepository,
             IBranchRepository branchRepository,
-            ICompanyBranchRepository companyBranchRepository)
+            ICompanyBranchRepository companyBranchRepository,
+            IFileService fileService,
+            IBranchQrCodeRepository branchQrCodeRepository)
             : base(mapper)
         {
             _companyRepository = companyRepository;
@@ -38,6 +51,8 @@ namespace Uplay.Application.Services.Companys
             _userRepository = userRepository;
             _branchRepository = branchRepository;
             _companyBranchRepository = companyBranchRepository;
+            _fileService = fileService;
+            _branchQrCodeRepository = branchQrCodeRepository;
         }
 
         public async Task<ActionResult<int>> CreateCorporateAsync(SaveCompanyRequest command)
@@ -76,14 +91,13 @@ namespace Uplay.Application.Services.Companys
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Zehmet olmasa <a href={path}=>Link</a> vasitesile abuneliyi tamamlayin" };
 
             using var smtp = new SmtpClient();
-               smtp.Connect(_configuration["EmailSettings:smtpServer"], Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
-               smtp.Authenticate(_configuration["EmailSettings:UserName"], _configuration["EmailSettings:password"]);
-               smtp.Send(email);
-               smtp.Disconnect(true);
+            smtp.Connect(_configuration["EmailSettings:smtpServer"], Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
+            smtp.Authenticate(_configuration["EmailSettings:UserName"], _configuration["EmailSettings:password"]);
+            smtp.Send(email);
+            smtp.Disconnect(true);
 
             return data;
         }
-
         public async Task<ActionResult<int>> CreatePersonalAsync(SavePersonalRequest command)
         {
             var users = await _userRepository.GetAllAsync();
@@ -107,6 +121,10 @@ namespace Uplay.Application.Services.Companys
 
             var brachCategory = command.CategoryIds.Select(ctgId => new BranchCategory() { CategoryId = ctgId }).ToList();
 
+            var qrCodebyte = QrCodeExtension.GenerateQr(command.QrCodeLink);
+
+            var appFile = await _fileService.UploadPhoto(qrCodebyte);
+
             var branch = new Branch
             {
                 Name = command.BrandName,
@@ -115,12 +133,19 @@ namespace Uplay.Application.Services.Companys
                 Location = command.Location,
                 Status = AccauntStatusEnum.Active,
                 OnwerId = userId.OnwerId,
-                BranchCategories= brachCategory
+                BranchCategories = brachCategory,
+                BranchQrCodes = new List<BranchQrCode>()
+                {
+                    new BranchQrCode()
+                    {
+                         AppFile = appFile
+                    }
+                }
             };
 
             var brachId = await _branchRepository.InsertAsync(branch);
 
-            await _companyBranchRepository.InsertAsync(new CompanyBranch { BranchId=brachId,CompanyId=companyId});
+            await _companyBranchRepository.InsertAsync(new CompanyBranch { BranchId = brachId, CompanyId = companyId });
 
             string token = $"subscribetoken-{companyId}-{DateTime.Now:yyyyMMddHHmmss}";
 
@@ -139,12 +164,13 @@ namespace Uplay.Application.Services.Companys
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Zehmet olmasa <a href={path}=>Link</a> vasitesile abuneliyi tamamlayin" };
 
             using var smtp = new SmtpClient();
-               smtp.Connect(_configuration["EmailSettings:smtpServer"], Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
-               smtp.Authenticate(_configuration["EmailSettings:UserName"], _configuration["EmailSettings:password"]);
-               smtp.Send(email);
-               smtp.Disconnect(true);
+            smtp.Connect(_configuration["EmailSettings:smtpServer"], Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
+            smtp.Authenticate(_configuration["EmailSettings:UserName"], _configuration["EmailSettings:password"]);
+            smtp.Send(email);
+            smtp.Disconnect(true);
 
             return companyId;
         }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Uplay.Api.Contracts;
 using Uplay.Application.Services.AppFiles;
 using static System.Net.Mime.MediaTypeNames;
@@ -12,7 +13,7 @@ namespace Uplay.Api.Controllers.v1
         {
             _imageService = imageService;
         }
-
+        [AllowAnonymous]
         [HttpPost(ApiRoutes.FileRoute.Create)]
         public async Task<IActionResult> Create(IFormFile file)
         {
@@ -20,7 +21,7 @@ namespace Uplay.Api.Controllers.v1
             return Ok();
         }
 
-
+        [AllowAnonymous]
         [HttpGet(ApiRoutes.FileRoute.GetAll)]
         public async Task<object> GetAll(string cyrptedPhoto)
         {
