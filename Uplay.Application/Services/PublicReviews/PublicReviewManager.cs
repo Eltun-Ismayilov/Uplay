@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Uplay.Application.Exceptions;
+using Uplay.Application.Extensions;
 using Uplay.Application.Mappings;
 using Uplay.Application.Models;
 using Uplay.Application.Models.PublicReviews;
@@ -41,10 +42,15 @@ namespace Uplay.Application.Services.PublicReviews
         {
             PublicReviewGetResponse response = new();
 
-            var partner = await _publicReviewRepository.GetPublicReviewByIdAsync(id)
+            var publicReview = await _publicReviewRepository.GetPublicReviewByIdAsync(id)
                           ?? throw new NotFoundException("PublicReview not found");
 
-            var mapping = Mapper.Map<PublicReviewDto>(partner);
+            var mapping = Mapper.Map<PublicReviewDto>(publicReview);
+
+            var fileUrl = HttpContextAccessor.GeneratePhotoUrl(publicReview.FileId);
+
+            mapping.Url = fileUrl;
+
             response.PublicReviewDto = mapping;
 
             return response;
@@ -58,6 +64,16 @@ namespace Uplay.Application.Services.PublicReviews
 
             var list = await publicReviewQuery.PaginatedMappedListAsync<PublicReviewDto, PublicReview>(Mapper, paginationFilter.PageNumber,
                 paginationFilter.PageSize);
+
+
+            foreach (var publicReview in publicReviewQuery)
+            {
+                var fileUrl = HttpContextAccessor.GeneratePhotoUrl(publicReview.FileId);
+
+                var datas = list.Items.FirstOrDefault(x => x.Url == null);
+
+                datas.Url = fileUrl;
+            }
 
             response.PublicReviewDtos = list;
 

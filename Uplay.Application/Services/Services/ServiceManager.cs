@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Azure.Core;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Uplay.Application.Exceptions;
+using Uplay.Application.Extensions;
 using Uplay.Application.Mappings;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Partners;
@@ -19,7 +21,8 @@ namespace Uplay.Application.Services.Services
 
         public ServiceManager(
             IServiceRepository serviceRepository,
-            IMapper mapper) : base(mapper)
+            IHttpContextAccessor httpContextAccessor,
+            IMapper mapper) : base(mapper, httpContextAccessor)
         {
             _serviceRepository = serviceRepository;
         }
@@ -48,7 +51,13 @@ namespace Uplay.Application.Services.Services
             var service = await _serviceRepository.GetServiceByIdAsync(id)
                           ?? throw new NotFoundException("Service not found");
 
+
             var mapping = Mapper.Map<ServiceDto>(service);
+
+            var fileUrl = HttpContextAccessor.GeneratePhotoUrl(service.FileId);
+
+            mapping.Url = fileUrl;
+
             response.ServiceDto = mapping;
 
             return response;
@@ -65,6 +74,15 @@ namespace Uplay.Application.Services.Services
 
             var list = await services.PaginatedMappedListAsync<ServiceDto, Service>(Mapper, paginationFilter.PageNumber,
                 paginationFilter.PageSize);
+
+            foreach (var service in services)
+            {
+                var fileUrl = HttpContextAccessor.GeneratePhotoUrl(service.FileId);
+
+                var datas = list.Items.FirstOrDefault(x => x.Url == null);
+
+                datas.Url = fileUrl;
+            }
 
             response.ServiceDtos = list;
 

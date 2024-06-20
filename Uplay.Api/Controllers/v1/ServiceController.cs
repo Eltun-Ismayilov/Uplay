@@ -27,7 +27,6 @@ namespace Uplay.Api.Controllers.v1
             var data = await _serviceService.GetAll(serviceTypeId, paginationFilter);
             return Ok(data);
         }
-
         [HttpPost(ApiRoutes.ServiceRoute.Create)]
         public async Task<ActionResult<int>> Create([FromForm] SaveServiceRequest command)
         {
