@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
+using MongoDB.Driver;
 using Uplay.Persistence.Data;
 using Uplay.Persistence.Repository;
 using Uplay.Persistence.Repository.Concrete;
+using Uplay.Persistence.Repository.Mongo;
 
 namespace Uplay.Persistence
 {
@@ -18,6 +19,19 @@ namespace Uplay.Persistence
                 b => b.MigrationsAssembly(typeof(DependencyInjection)
                     .Assembly
                     .FullName)));
+            
+            services.AddSingleton<IMongoClient>(sp =>
+            { 
+                var conStr = configuration["MongoConStr"];
+                return new MongoClient(conStr);
+            });
+            
+            services.AddScoped(sp =>
+            {
+                var client = sp.GetRequiredService<IMongoClient>();
+                var database = configuration["MongoDb"];
+                return client.GetDatabase(database);
+            });
 
             services.AddRepos();
 
@@ -63,6 +77,7 @@ namespace Uplay.Persistence
             services.AddScoped(typeof(IBranchRepository), typeof(BranchRepository));
             services.AddScoped(typeof(IBranchQrCodeRepository), typeof(BranchQrCodeRepository));
             
+            services.AddScoped(typeof(ICoreRepo<>), typeof(CoreRepo<>));
             return services;
         }
     }
