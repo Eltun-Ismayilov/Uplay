@@ -12,7 +12,7 @@ namespace Uplay.Application.Models.PublicReviews
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<PublicReview, PublicReviewDto>()
+            profile.CreateMap<PublicReview, PublicReviewDto>();
         }
     }
 }
