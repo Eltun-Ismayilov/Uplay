@@ -71,7 +71,7 @@ public class BranchManager : BaseManager, IBranchService
 
         mapping.Onwer.Password = passHash;
 
-        var qrCodebyte = QrCodeExtension.GenerateQr(command.QrCodeLink);
+        var qrCodebyte = QrCodeExtension.GenerateQr("https://www.youtube.com/watch?v=ZUWcHFJOSig");//TODO
 
         var appFile = await _fileService.UploadPhoto(qrCodebyte);
 

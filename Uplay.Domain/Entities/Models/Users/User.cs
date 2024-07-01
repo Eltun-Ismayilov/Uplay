@@ -1,4 +1,5 @@
-﻿using Uplay.Domain.Entities.Models.Companies;
+﻿using System.Reflection.Metadata.Ecma335;
+using Uplay.Domain.Entities.Models.Companies;
 
 namespace Uplay.Domain.Entities.Models.Users
 {
@@ -17,7 +18,7 @@ namespace Uplay.Domain.Entities.Models.Users
         public string Password { get; set; }
         public Guid Salt { get; set; }
         public bool EmailConfirmed { get; set; }
-        
+        public int OtpCode { get; set; }
         public virtual ICollection<Company> Companies { get; set; }
     }
 }

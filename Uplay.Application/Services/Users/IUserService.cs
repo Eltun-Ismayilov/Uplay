@@ -4,7 +4,7 @@ namespace Uplay.Application.Services.Users
 {
     public interface IUserService : IBaseService
     {
-        Task<string> SubscibeConfirm(string token);
+        Task<string> SubscibeConfirm(int otp);
         Task<UserLoginResponse> Login(UserLoginRequest request);
         Task<UserLoginResponse> BranchLogin(UserLoginRequest request);
         public string Username { get; set; }

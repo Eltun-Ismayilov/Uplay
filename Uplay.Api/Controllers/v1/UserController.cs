@@ -20,9 +20,9 @@ namespace Uplay.Api.Controllers.v1
 
         [AllowAnonymous]
         [HttpGet("subscribe-confirm")]
-        public async Task<ActionResult<int>> SubscibeConfirm(string token)
+        public async Task<ActionResult<int>> SubscibeConfirm(int otp)
         {
-            var data = await _userService.SubscibeConfirm(token);
+            var data = await _userService.SubscibeConfirm(otp);
             return Ok(data);
         }
         [AllowAnonymous]

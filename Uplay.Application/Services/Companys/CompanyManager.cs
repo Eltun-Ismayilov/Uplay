@@ -68,17 +68,15 @@ namespace Uplay.Application.Services.Companys
 
             mapping.Onwer.EmailConfirmed = false;
 
+            var randomValue = GenerateRandomSixDigitNumber();
+
+            mapping.Onwer.OtpCode = randomValue;
+
             string passHash = AesOperation.ComputeSha256Hash(command.Onwer.Email + command.Onwer.Password + mapping.Onwer.Salt);
 
             mapping.Onwer.Password = passHash;
 
             var data = await _companyRepository.InsertAsync(mapping);
-
-            string token = $"subscribetoken-{data}-{DateTime.Now:yyyyMMddHHmmss}";
-
-            token = token.Encrypt("");
-
-            string path = $"{_httpContextAccessor.HttpContext?.Request.Scheme}://{_httpContextAccessor.HttpContext?.Request.Host.Value}/subscribe-confirm?token={token}";
 
             var email = new MimeMessage();
 
@@ -88,7 +86,7 @@ namespace Uplay.Application.Services.Companys
 
             email.Subject = _configuration["EmailSettings:displayName"];
 
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Zehmet olmasa <a href={path}=>Link</a> vasitesile abuneliyi tamamlayin" };
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Zehmet olmasa {randomValue} OTP codu ile girisivizi testiqleyin" };
 
             using var smtp = new SmtpClient();
             smtp.Connect(_configuration["EmailSettings:smtpServer"], Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
@@ -115,13 +113,17 @@ namespace Uplay.Application.Services.Companys
 
             mapping.Onwer.Password = passHash;
 
+            var randomValue = GenerateRandomSixDigitNumber();
+
+            mapping.Onwer.OtpCode = randomValue;
+
             var companyId = await _companyRepository.InsertAsync(mapping);
 
             var userId = await _companyRepository.GetByIdAsync(companyId);
 
             var brachCategory = command.CategoryIds.Select(ctgId => new BranchCategory() { CategoryId = ctgId }).ToList();
 
-            var qrCodebyte = QrCodeExtension.GenerateQr(command.QrCodeLink);
+            var qrCodebyte = QrCodeExtension.GenerateQr("https://www.youtube.com/watch?v=ZUWcHFJOSig"); //TODO
 
             var appFile = await _fileService.UploadPhoto(qrCodebyte);
 
@@ -138,7 +140,7 @@ namespace Uplay.Application.Services.Companys
                 {
                     new BranchQrCode()
                     {
-                         AppFile = appFile
+                         AppFile = appFile 
                     }
                 }
             };
@@ -146,12 +148,6 @@ namespace Uplay.Application.Services.Companys
             var brachId = await _branchRepository.InsertAsync(branch);
 
             await _companyBranchRepository.InsertAsync(new CompanyBranch { BranchId = brachId, CompanyId = companyId });
-
-            string token = $"subscribetoken-{companyId}-{DateTime.Now:yyyyMMddHHmmss}";
-
-            token = token.Encrypt("");
-
-            string path = $"{_httpContextAccessor.HttpContext?.Request.Scheme}://{_httpContextAccessor.HttpContext?.Request.Host.Value}/subscribe-confirm?token={token}";
 
             var email = new MimeMessage();
 
@@ -161,7 +157,7 @@ namespace Uplay.Application.Services.Companys
 
             email.Subject = _configuration["EmailSettings:displayName"];
 
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Zehmet olmasa <a href={path}=>Link</a> vasitesile abuneliyi tamamlayin" };
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Zehmet olmasa {randomValue} OTP codu ile girisivizi testiqleyin" };
 
             using var smtp = new SmtpClient();
             smtp.Connect(_configuration["EmailSettings:smtpServer"], Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
@@ -172,5 +168,11 @@ namespace Uplay.Application.Services.Companys
             return companyId;
         }
 
+        public static int GenerateRandomSixDigitNumber()
+        {
+            Random random = new Random();
+
+            return random.Next(100000, 999999 + 1);
+        }
     }
 }

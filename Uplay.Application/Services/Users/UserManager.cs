@@ -67,30 +67,18 @@ namespace Uplay.Application.Services.Users
             return new(GenerateToken(user));
         }
 
-        public async Task<string> SubscibeConfirm(string token)
+        public async Task<string> SubscibeConfirm(int otpCode)
         {
-            token = token.Decrypte("");
+            var user = await _userRepository.CheckOtpCode(otpCode);
 
-            Match match = Regex.Match(token, @"subscribetoken-(?<id>[a-zA-Z0-9]*)(.*)-(?<timeStampt>\d{14})");
+            if (user is null)
+                return "OTP codu yanlisdir.";
 
-            if (match.Success)
-            {
-                int companyId = Convert.ToInt32(match.Groups["id"].Value);
+            user.EmailConfirmed = true;
 
-                var company = await _companyRepository.SubscibeConfirmByCompanyId(companyId);
+            await _userRepository.SaveChangesAsync();
 
-                var user = await _userRepository.GetByIdAsync(company.OnwerId);
-
-                user.EmailConfirmed = true;
-
-                await _userRepository.SaveChangesAsync();
-
-                return "Qeydiyyat uğurla tamamlandi";
-            }
-            else
-            {
-                return "Nese düz getmədi";
-            }
+            return "Qeydiyyat uğurla tamamlandi";
         }
 
         public async Task<string> ResetPassword(ResetPasswordRequest request)
@@ -124,7 +112,7 @@ namespace Uplay.Application.Services.Users
             email.Subject = _configuration["EmailSettings:displayName"];
 
             email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-                { Text = $"Zehmet olmasa <a href={path}=>Link</a> vasitesile sifreni deyishin" };
+            { Text = $"Zehmet olmasa <a href={path}=>Link</a> vasitesile sifreni deyishin" };
 
             using var smtp = new SmtpClient();
             smtp.Connect(_configuration["EmailSettings:smtpServer"],
@@ -143,7 +131,7 @@ namespace Uplay.Application.Services.Users
             Match match = Regex.Match(token, @"confirmforgotpassword-(?<email>[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})");
 
             if (!match.Success) return "Error";
-            
+
             string email = match.Groups["email"].Value;
             var user = await _userRepository.GetUserByEmail(email);
 

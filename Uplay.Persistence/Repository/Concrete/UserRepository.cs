@@ -43,5 +43,13 @@ namespace Uplay.Persistence.Repository.Concrete
 
             return user;
         }
+
+        public async Task<User?> CheckOtpCode(int optCode)
+        {
+            var user = await AsQueryable()
+                              .FirstOrDefaultAsync(x => x.OtpCode==optCode);
+
+            return user;
+        }
     }
 }

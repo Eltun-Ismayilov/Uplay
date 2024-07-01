@@ -1,8 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using AutoMapper;
+﻿using AutoMapper;
+using System.ComponentModel.DataAnnotations;
 using Uplay.Application.Mappings;
 using Uplay.Domain.Entities.Models.Companies;
-using Uplay.Domain.Enum;
 
 namespace Uplay.Application.Models.Core.Branches;
 
@@ -17,7 +16,6 @@ public class SaveBranchRequest: IMapFrom<Branch>
     public string ConfirmPassword { get; set; } = string.Empty;
     
     public List<int> CategoryIds { get; set; } = null!;
-    public string QrCodeLink { get; set; } = string.Empty;
     public void Mapping(Profile profile)
     {
         profile.CreateMap<SaveBranchRequest, Branch>();
