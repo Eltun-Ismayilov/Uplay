@@ -96,12 +96,16 @@ namespace Uplay.Application.Services.Users
 
         public async Task<string> SendForgotPasswordEmail(string emailAddress)
         {
-            string token = $"confirmforgotpassword-{emailAddress}-{DateTime.Now:yyyyMMddHHmmss}";
+            var user = await _userRepository.GetUserByEmail(emailAddress);
 
-            token = token.Encrypt("");
+            if (user is null)
+                throw new NotFoundException($"Daxil Etdiyiniz {emailAddress} yoxdur");
 
-            string path =
-                $"{_contextAccessor.HttpContext?.Request.Scheme}://{_contextAccessor.HttpContext?.Request.Host.Value}/confirmforgotpassword?token={token}";
+            var randomValue = GenerateRandomSixDigitNumber();
+
+            user.OtpCode = randomValue;
+
+            await _userRepository.SaveChangesAsync();
 
             var email = new MimeMessage();
 
@@ -111,8 +115,7 @@ namespace Uplay.Application.Services.Users
 
             email.Subject = _configuration["EmailSettings:displayName"];
 
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
-            { Text = $"Zehmet olmasa <a href={path}=>Link</a> vasitesile sifreni deyishin" };
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Zehmet olmasa {randomValue} OTP codu ile girisivizi testiqleyin" };
 
             using var smtp = new SmtpClient();
             smtp.Connect(_configuration["EmailSettings:smtpServer"],
@@ -123,17 +126,15 @@ namespace Uplay.Application.Services.Users
 
             return "Qeydiyyat uğurla tamamlandi";
         }
-
-        public async Task<string> ConfirmResetPassword(string token, ConfirmResetPasswordRequest request)
+        public static int GenerateRandomSixDigitNumber()
         {
-            token = token.Decrypte("");
+            Random random = new Random();
 
-            Match match = Regex.Match(token, @"confirmforgotpassword-(?<email>[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})");
-
-            if (!match.Success) return "Error";
-
-            string email = match.Groups["email"].Value;
-            var user = await _userRepository.GetUserByEmail(email);
+            return random.Next(100000, 999999 + 1);
+        }
+        public async Task<string> ConfirmResetPassword(ConfirmResetPasswordRequest request)
+        {
+            var user = await _userRepository.GetUserByEmail(request.Email);
 
             user.Salt = Guid.NewGuid();
             string passHash = AesOperation.ComputeSha256Hash(user.Email + request.NewPassword + user.Salt);

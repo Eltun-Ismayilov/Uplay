@@ -32,7 +32,7 @@ namespace Uplay.Api.Controllers.v1
             var data = await _userService.Login(request);
             return Ok(data);
         }
-        
+
         [AllowAnonymous]
         [HttpPost(ApiRoutes.UserRoute.LoginB)]
         public async Task<IActionResult> BranchLogin([FromBody] UserLoginRequest request)
@@ -40,14 +40,14 @@ namespace Uplay.Api.Controllers.v1
             var data = await _userService.BranchLogin(request);
             return Ok(data);
         }
-        
+
         [HttpPost(ApiRoutes.UserRoute.ResetPassword)]
         public async Task<IActionResult> ResetPasword([FromBody] ResetPasswordRequest request)
         {
             var data = await _userService.ResetPassword(request);
             return Ok(data);
         }
-        
+
         [AllowAnonymous]
         [HttpPost(ApiRoutes.UserRoute.ForgetPassword)]
         public async Task<IActionResult> ForgetPassword([FromQuery] string email)
@@ -55,12 +55,12 @@ namespace Uplay.Api.Controllers.v1
             var data = await _userService.SendForgotPasswordEmail(email);
             return Ok(data);
         }
-        
+
         [AllowAnonymous]
         [HttpPost(ApiRoutes.UserRoute.ConfirmForgetPassword)]
-        public async Task<IActionResult> ConfirmForgetPassword([FromQuery] string token, [FromBody] ConfirmResetPasswordRequest request)
+        public async Task<IActionResult> ConfirmForgetPassword([FromBody] ConfirmResetPasswordRequest request)
         {
-            var data = await _userService.ConfirmResetPassword(token, request);
+            var data = await _userService.ConfirmResetPassword(request);
             return Ok(data);
         }
     }

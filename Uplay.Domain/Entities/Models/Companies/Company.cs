@@ -10,7 +10,7 @@ namespace Uplay.Domain.Entities.Models.Companies
     {
         public string BrandName { get; set; }
         public string CompanyName { get; set; }
-        public string Tin { get; set; }
+        public string? Tin { get; set; }
         public int BranchCount { get; set; }
         public string City { get; set; }
         public string Location { get; set; }

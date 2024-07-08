@@ -59,8 +59,8 @@ namespace Uplay.Application.Services.Companys
         {
             var users = await _userRepository.GetAllAsync();
 
-            if (users.Any(x => x.UserName == command.Onwer.UserName || x.Email == command.Onwer.Email))
-                throw new BadHttpRequestException("Daxil etdiyiniz Username ve ya Email adinda isdifadeci movcudur");
+            if (users.Any(x => x.UserName == command.Onwer.UserName || x.Email == command.Onwer.Email || x.UserName == command.Onwer.UserName))
+                throw new BadHttpRequestException("Daxil etdiyiniz Username,Email ve ya UserName adinda isdifadeci movcudur");
 
             var mapping = Mapper.Map<Company>(command);
 
@@ -100,8 +100,8 @@ namespace Uplay.Application.Services.Companys
         {
             var users = await _userRepository.GetAllAsync();
 
-            if (users.Any(x => x.UserName == command.Onwer.UserName || x.Email == command.Onwer.Email))
-                throw new BadHttpRequestException("Daxil etdiyiniz Username ve ya Email adinda isdifadeci movcudur");
+            if (users.Any(x => x.UserName == command.Onwer.UserName || x.Email == command.Onwer.Email || x.Phone == command.Onwer.Phone))
+                throw new BadHttpRequestException("Daxil etdiyiniz Username,Email ve ya Nomre adinda isdifadeci movcudur");
 
             var mapping = Mapper.Map<Company>(command);
 
@@ -140,7 +140,7 @@ namespace Uplay.Application.Services.Companys
                 {
                     new BranchQrCode()
                     {
-                         AppFile = appFile 
+                         AppFile = appFile
                     }
                 }
             };

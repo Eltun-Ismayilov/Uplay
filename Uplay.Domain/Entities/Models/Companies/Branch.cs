@@ -8,7 +8,7 @@ namespace Uplay.Domain.Entities.Models.Companies
     public class Branch:CommonEntity
     {
         public string Name { get; set; }
-        public string Tin { get; set; }
+        public string? Tin { get; set; }
         public virtual ICollection<BranchCategory> BranchCategories { get; set; }
         public string City { get; set; }
         public string Location { get; set; }

@@ -10,6 +10,6 @@ namespace Uplay.Application.Services.Users
         public string Username { get; set; }
         Task<string> ResetPassword(ResetPasswordRequest request);
         Task<string> SendForgotPasswordEmail(string email);
-        Task<string> ConfirmResetPassword(string token, ConfirmResetPasswordRequest request);
+        Task<string> ConfirmResetPassword( ConfirmResetPasswordRequest request);
     }
 }
