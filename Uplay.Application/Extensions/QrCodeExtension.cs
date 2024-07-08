@@ -18,7 +18,7 @@ namespace Uplay.Application.Extensions
                     var canvas = surface.Canvas;
                     canvas.Render(qr, info.Width, info.Height);
                     var route = Directory.GetCurrentDirectory();
-                    string url = Path.Combine(route, "Images", "Group.jpg");
+                    string url = Path.Combine(route, "wwwroot\\Images", "Group.jpg");
                     using (var inputStream = System.IO.File.OpenRead(url))
                     using (var image = surface.Snapshot())
                     using (var originalBitmap = SKBitmap.Decode(inputStream))

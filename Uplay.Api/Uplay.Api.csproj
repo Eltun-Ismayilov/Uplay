@@ -33,4 +33,8 @@
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\Images\Group.jpg" />
+  </ItemGroup>
+
 </Project>
