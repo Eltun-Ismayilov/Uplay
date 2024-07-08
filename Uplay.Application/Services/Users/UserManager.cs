@@ -218,5 +218,38 @@ namespace Uplay.Application.Services.Users
                        .Split(" ")[1] ??
                    string.Empty;
         }
+
+        public async Task<string> SendOtpAsync(string emailAddress)
+        {
+            var user = await _userRepository.GetUserByEmail(emailAddress);
+
+            if (user is null)
+                throw new NotFoundException($"Daxil Etdiyiniz {emailAddress} yoxdur");
+
+            var randomValue = GenerateRandomSixDigitNumber();
+
+            user.OtpCode = randomValue;
+
+            await _userRepository.SaveChangesAsync();
+
+            var email = new MimeMessage();
+
+            email.From.Add(MailboxAddress.Parse(_configuration["EmailSettings:UserName"]));
+
+            email.To.Add(MailboxAddress.Parse(emailAddress));
+
+            email.Subject = _configuration["EmailSettings:displayName"];
+
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Zehmet olmasa {randomValue} OTP codu ile girisivizi testiqleyin" };
+
+            using var smtp = new SmtpClient();
+            smtp.Connect(_configuration["EmailSettings:smtpServer"],
+                Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
+            smtp.Authenticate(_configuration["EmailSettings:UserName"], _configuration["EmailSettings:password"]);
+            smtp.Send(email);
+            smtp.Disconnect(true);
+
+            return "Qeydiyyat uğurla tamamlandi";
+        }
     }
 }

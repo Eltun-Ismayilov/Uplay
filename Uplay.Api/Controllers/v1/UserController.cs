@@ -25,6 +25,16 @@ namespace Uplay.Api.Controllers.v1
             var data = await _userService.SubscibeConfirm(otp);
             return Ok(data);
         }
+
+        [AllowAnonymous]
+        [HttpPost(ApiRoutes.UserRoute.SendOtp)]
+        public async Task<ActionResult<int>> SendOtp(string emailAddress)
+        {
+            var data = await _userService.SendOtpAsync(emailAddress);
+            return Ok(data);
+        }
+        
+
         [AllowAnonymous]
         [HttpPost(ApiRoutes.UserRoute.Login)]
         public async Task<IActionResult> Login([FromBody] UserLoginRequest request)

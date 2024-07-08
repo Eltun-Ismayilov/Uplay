@@ -20,6 +20,11 @@
             public const string Create = Base + "/faq";
             public const string Delete = Base + "/faq/:id";
         }
+        public struct CityRoute
+        {
+            public const string City = Base + "/CityRoute";
+        }
+        
         public struct PricingRoute
         {
             public const string GetAll = Base + "/pricing/:id";
@@ -66,6 +71,8 @@
             public const string ResetPassword = Base + "/resetPassword";
             public const string ForgetPassword = Base + "/forgetpassword";
             public const string ConfirmForgetPassword = Base + "/confirmforgotpassword";
+            public const string SendOtp = Base + "/SendOtp";
+            
         }
         public struct PublicReviewRoute
         {
