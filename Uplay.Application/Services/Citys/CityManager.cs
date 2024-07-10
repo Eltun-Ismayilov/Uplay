@@ -17,27 +17,58 @@ namespace Uplay.Application.Services.Citys
         {
 
         }
-
         public async Task<List<CityDto>> GetCities()
         {
-            string url = $"https://migration.gov.az/api/v1/office";
-
-            HttpClient client = new HttpClient();
-
-            var response = await client.GetAsync(url);
-
-            string content = response.Content.ReadAsStringAsync().Result;
-
-            if (response.IsSuccessStatusCode)
+            var city = new List<CityDto>()
             {
-                var cities = JsonConvert.DeserializeObject<Root>(content);
+                new CityDto()
+                {
+                    Id = 3,
+                    Name="Bakı şəhər regional miqrasiya baş idarəsi"
+                },
+                new CityDto()
+                {
+                    Id = 4,
+                    Name="Lənkəran regional miqrasiya idarəsi"
+                },
+                new CityDto()
+                {
+                    Id = 5,
+                    Name="Yevlax regional miqrasiya idarəsi"
+                },
+                new CityDto()
+                {
+                    Id = 6,
+                    Name="Ağsu regional miqrasiya idarəsi"
+                },
+                new CityDto()
+                {
+                    Id = 7,
+                    Name="Şəki regional miqrasiya idarəsi"
+                },
 
-                var data = Mapper.Map<List<CityDto>>(cities.data);
-
-                return data;
-            }
-
-            throw new Exception("Ex");
+                new CityDto()
+                {
+                    Id = 8,
+                    Name="Xaçmaz regional miqrasiya idarəsi"
+                },
+                new CityDto()
+                {
+                    Id = 9,
+                    Name="Gəncə regional miqrasiya idarəsi"
+                },
+                new CityDto()
+                {
+                    Id = 10,
+                    Name="Şirvan regional miqrasiya idarəsi"
+                },
+                new CityDto()
+                {
+                    Id = 11,
+                    Name="Naxçıvan regional miqrasiya baş idarəsi"
+                },
+            };
+            return city;    
         }
     }
 }
