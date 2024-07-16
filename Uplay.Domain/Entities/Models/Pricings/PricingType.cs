@@ -6,6 +6,7 @@
     /// </summary>
     public class PricingType : CommonEntity
     {
-        public string Name { get; set; }
+        public string Name { get; set; } // sadə, premium paketlər
+      
     }
 }

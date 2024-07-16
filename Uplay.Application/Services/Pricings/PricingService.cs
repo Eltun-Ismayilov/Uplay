@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure;
 using Microsoft.AspNetCore.Mvc;
 using Uplay.Application.Exceptions;
 using Uplay.Application.Models.Pricings;
@@ -43,11 +44,23 @@ namespace Uplay.Application.Services.Pricings
             return 204;
         }
 
-        public async Task<PricingGetResponse> GetAll(PricingTypeEnum pricingTypeId)
+        public async Task<PricingDetailsDto> Get(int pricingId, int date)
+        {
+            var pricing = await _pricingRepository.GetPricingById(pricingId, date);
+
+            var dto = Mapper.Map<PricingDetailsDto>(pricing);
+
+            if (pricing.Monthly == 12)
+                dto.PriceDiscount = (pricing.Price - ((3 * pricing.Price * pricing.MonthDiscount) / 100))*3  + (9 * pricing.Price);
+
+            return dto;
+        }
+
+        public async Task<PricingGetResponse> GetAll()
         {
             PricingGetResponse response = new();
 
-            var pricingQuery = _pricingRepository.GetListByPricingTypeIdQuery((int)pricingTypeId);
+            var pricingQuery = _pricingRepository.GetListByPricingTypeIdQuery();
 
             var list = Mapper.Map<List<PricingDto>>(pricingQuery);
 

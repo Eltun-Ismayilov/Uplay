@@ -9,7 +9,7 @@ namespace Uplay.Application.Models.Companies
     {
         public string BrandName { get; set; } = string.Empty;
         public string Tin { get; set; } = string.Empty;
-        public List<int> CategoryIds { get; set; } = null!;
+        public List<int> CategoryIds { get; set; } =new();
         public string City { get; set; } = string.Empty;
         public string Location { get; set; } = string.Empty;
         public IFormFile File { get; set; } = null!;

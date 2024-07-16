@@ -22,13 +22,23 @@ namespace Uplay.Persistence.Repository.Concrete
             return pricing;
         }
 
-        public IQueryable<Pricing> GetListByPricingTypeIdQuery(int pricingTypeId)
+        public IQueryable<Pricing> GetListByPricingTypeIdQuery()
         {
             var pricingListquery = AsQueryable().AsNoTracking()
-                .Include(x=>x.PricingType)
-                .Include(x=>x.PricingSections)
-                .OrderByDescending(x => x.Id)
-                .Where(x => x.PricingTypeId == pricingTypeId);
+                .Include(x => x.PricingType)
+                .Include(x => x.PricingSections);
+
+            return pricingListquery;
+        }
+
+        public async Task<Pricing?> GetPricingById(int pricingId, int date)
+        {
+            int checkId = date == 1 ? 1 : 12;
+
+            var pricingListquery = await AsQueryable().AsNoTracking()
+                 .Include(x => x.PricingType)
+                 .Include(x => x.PricingSections)
+                 .FirstOrDefaultAsync(x => x.Monthly == checkId && x.Id == pricingId);
 
             return pricingListquery;
         }

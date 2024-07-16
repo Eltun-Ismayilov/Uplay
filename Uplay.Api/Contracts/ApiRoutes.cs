@@ -27,7 +27,8 @@
         
         public struct PricingRoute
         {
-            public const string GetAll = Base + "/pricing/:id";
+            public const string GetAll = Base + "/pricing";
+            public const string Get = Base + "/pricing/:id";
             public const string Update = Base + "/pricing/:id";
             public const string Create = Base + "/pricing";
             public const string Delete = Base + "/pricing/:id";

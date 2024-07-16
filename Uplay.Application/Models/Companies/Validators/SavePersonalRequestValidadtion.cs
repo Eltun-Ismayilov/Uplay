@@ -11,8 +11,8 @@ namespace Uplay.Application.Models.Companies.Validators
             RuleFor(a => a.Location).NotNull().NotEmpty().WithMessage("Location is required");
             RuleFor(a => a.File).NotNull().NotEmpty().WithMessage("File is required");
             RuleFor(x => x.CategoryIds)
-                        .NotNull().WithMessage("CategoryIds cannot be null")
-                        .Must(x => x != null && x.Count <= 3)
+                        .NotNull().NotEmpty().WithMessage("CategoryIds cannot be null")
+                        .Must(x => x != null && x.Count > 2)
                         .WithMessage("CategoryIds must contain at least 3 items.");
         }
     }

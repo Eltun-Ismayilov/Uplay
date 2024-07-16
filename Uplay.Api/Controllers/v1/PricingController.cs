@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
@@ -22,33 +23,44 @@ namespace Uplay.Api.Controllers.v1
             _pricingService = pricingService;
         }
 
-        [HttpPost(ApiRoutes.PricingRoute.Create)]
-        public async Task<ActionResult<int>> Create([FromBody] SavePricingRequest command)
-        {
-            var data = await _pricingService.Create(command);
-            return Ok(data.Value);
-        }
 
+
+        [AllowAnonymous]
         [HttpGet(ApiRoutes.PricingRoute.GetAll)]
-        public async Task<ActionResult<PricingGetResponse>> GetAll([Required] PricingTypeEnum pricingTypeId)
+        public async Task<ActionResult<PricingGetResponse>> GetAll()
         {
-            var data = await _pricingService.GetAll(pricingTypeId);
+            var data = await _pricingService.GetAll();
             return Ok(data);
         }
 
-        [HttpPut(ApiRoutes.PricingRoute.Update)]
-        public async Task<IActionResult> Update(int id, [FromBody] SavePricingRequest request)
-        {
-            await _pricingService.Update(id, request);
-            return NoContent();
-        }
+        //[AllowAnonymous]
+        //[HttpGet(ApiRoutes.PricingRoute.Get)]
+        //public async Task<ActionResult<PricingDetailsDto>> Get(int pricingId, int date)
+        //{
+        //    var data = await _pricingService.Get(pricingId, date);
+        //    return Ok(data);
+        //}
 
 
-        [HttpDelete(ApiRoutes.PricingRoute.Delete)]
-        public async Task<IActionResult> Delete([Required] int id)
-        {
-            await _pricingService.Delete(id);
-            return NoContent();
-        }
+        //[HttpPut(ApiRoutes.PricingRoute.Update)]
+        //public async Task<IActionResult> Update(int id, [FromBody] SavePricingRequest request)
+        //{
+        //    await _pricingService.Update(id, request);
+        //    return NoContent();
+        //}
+
+        //[HttpDelete(ApiRoutes.PricingRoute.Delete)]
+        //public async Task<IActionResult> Delete([Required] int id)
+        //{
+        //    await _pricingService.Delete(id);
+        //    return NoContent();
+        //}
+
+        //[HttpPost(ApiRoutes.PricingRoute.Create)]
+        //public async Task<ActionResult<int>> Create([FromBody] SavePricingRequest command)
+        //{
+        //    var data = await _pricingService.Create(command);
+        //    return Ok(data.Value);
+        //}
     }
 }
