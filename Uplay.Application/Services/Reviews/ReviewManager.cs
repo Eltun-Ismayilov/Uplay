@@ -19,9 +19,13 @@ public class ReviewManager: BaseManager, IReviewService
 
     public async Task<ActionResult<int>> Create(SaveReviewRequest command)
     {
+
         var mapping = Mapper.Map<Review>(command);
+
         var data = await _reviewRepository.InsertAsync(mapping);
+
         return data;
+
     }
 
     public async Task<ReviewGetAllResponse> GetAll(int id, PaginationFilter paginationFilter)
