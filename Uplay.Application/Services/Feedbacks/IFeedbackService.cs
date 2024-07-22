@@ -9,4 +9,8 @@ public interface IFeedbackService : IBaseService
 {
     Task<ActionResult<int>> Create(SaveFeedbackRequest command);
     Task<FeedbackGetAllResponse> GetAll(int id, PaginationFilter paginationFilter);
+    Task<ActionResult<int>> CreateFeedbackType(SaveFeedbackTypeRequest command);
+    Task<ActionResult<int>> DeleteFeedbackType(int feedbackTypeId);
+    Task<ActionResult<int>> UpdateFeedbackType(int feedbackTypeId, SaveFeedbackTypeRequest request);
+    Task<FeedbackTypeGetAllReponse> GetAllFeedbackTypes(PaginationFilter paginationFilter);
 }

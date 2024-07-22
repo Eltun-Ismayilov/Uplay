@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Reviews;
@@ -7,6 +8,7 @@ using Uplay.Application.Services.Reviews;
 
 namespace Uplay.Api.Controllers.v1;
 
+[AllowAnonymous]
 public class ReviewController : BaseController
 {
     private readonly IReviewService _reviewService;

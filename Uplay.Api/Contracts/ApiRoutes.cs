@@ -115,5 +115,13 @@
             public const string DeleteBranch= Base + "/branch/delete/:id";
             public const string DisableBranch = Base + "/branch/disable/:id";
         }
+        
+        public struct FeedbackTypeRoute
+        {
+            public const string GetAll = Base + "/feedbackType";
+            public const string Create = Base + "/feedbackType";
+            public const string Update = Base + "/feedbackType/:id";
+            public const string Delete = Base + "/feedbackType/:id";
+        }
     }
 }

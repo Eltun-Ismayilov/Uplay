@@ -12,6 +12,11 @@ public class FeedbackRepository: BaseRepository<Feedback>, IFeedbackRepository
 
     public IQueryable<Feedback> GetFeedbacksByBranch(int id)
     {
-       return GetTable().AsNoTracking().Include(x=>x.Branch).Where(x => x.BranchId == id).AsQueryable();
+       return GetTable()
+           .AsNoTracking()
+           // .Include(x=>x.Branch)
+           .Include(x=>x.FeedbackType)
+           .Where(x => x.BranchId == id)
+           .AsQueryable();
     }
 }

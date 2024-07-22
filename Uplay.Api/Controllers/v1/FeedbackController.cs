@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Feedbacks;
@@ -6,7 +7,7 @@ using Uplay.Application.Models.Feedbacks;
 using Uplay.Application.Services.Feedbacks;
 
 namespace Uplay.Api.Controllers.v1;
-
+[AllowAnonymous]
 public class FeedbackController : BaseController
 {
     private readonly IFeedbackService _feedbackService;
