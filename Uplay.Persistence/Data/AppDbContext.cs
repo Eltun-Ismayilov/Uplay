@@ -3,6 +3,7 @@ using System.Reflection;
 using Uplay.Domain.Entities;
 using Uplay.Domain.Entities.Models.Companies;
 using Uplay.Domain.Entities.Models.Landing;
+using Uplay.Domain.Entities.Models.Landings;
 using Uplay.Domain.Entities.Models.Miscs;
 using Uplay.Domain.Entities.Models.PlayLists;
 using Uplay.Domain.Entities.Models.Pricings;
@@ -46,6 +47,7 @@ namespace Uplay.Persistence.Data
         public virtual DbSet<ServiceType> ServiceTypes { get; set; } = null!;
         public virtual DbSet<SocialLink> SocialLinks { get; set; } = null!;
         public virtual DbSet<YouBusines> YouBusineses { get; set; } = null!;
+        public virtual DbSet<FeedbackType> FeedbackTypes { get; set; } = null!;
 
         #endregion
 
