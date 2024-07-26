@@ -119,6 +119,7 @@
             public const string GetAllBranch = Base + "/branch";
             public const string DeleteBranch= Base + "/branch/delete/:id";
             public const string DisableBranch = Base + "/branch/disable/:id";
+            public const string GetBranchIdByQrcode = Base + "/branch/qrCode/:id";
         }
         
         public struct FeedbackTypeRoute

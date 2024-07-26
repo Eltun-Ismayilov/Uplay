@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Branches;
@@ -40,6 +41,13 @@ public class BranchController : BaseController
     public async Task<ActionResult<BranchGetAllResponse>> GetAll([FromQuery] PaginationFilter paginationFilter)
     {
         var data = await _branchService.GetAll(paginationFilter);
+        return Ok(data);
+    }
+    [AllowAnonymous]
+    [HttpPost(ApiRoutes.BranchRoute.GetBranchIdByQrcode)]
+    public async Task<ActionResult<string>> GetBranchIdByQrcode([Required][FromQuery] int id)
+    {
+        var data = await _branchService.GetByBranchIdAsync(id);
         return Ok(data);
     }
 }

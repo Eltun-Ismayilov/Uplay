@@ -4,6 +4,7 @@ namespace Uplay.Domain.Entities.Models.Companies
 {
     public class BranchQrCode: CommonEntity
     {
+        public Guid operationId { get; set; }
         public int BranchId { get; set; }
         public Branch Branch { get; set; }
         public int AppFileId { get; set; }

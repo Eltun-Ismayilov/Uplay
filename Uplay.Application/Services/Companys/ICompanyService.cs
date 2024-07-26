@@ -13,5 +13,6 @@ namespace Uplay.Application.Services.Companys
     {
         Task<ActionResult<int>> CreateCorporateAsync(SaveCompanyRequest command);
         Task<ActionResult<int>> CreatePersonalAsync(SavePersonalRequest command);
+        Task<ActionResult<int>> GetOperationId(Guid operationId);
     }
 }
