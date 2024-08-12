@@ -8,6 +8,7 @@ public class SaveFeedbackRequestValidator: BaseValidator<SaveFeedbackRequest>
     public SaveFeedbackRequestValidator()
     {
         RuleFor(x => x.Name).NotEmpty().WithMessage("Name is required");
+        RuleFor(x => x.Desc).NotEmpty().WithMessage("Desc is required");
         RuleFor(x => x.BranchId).NotEmpty().WithMessage("Branch is required");
     }
 }
