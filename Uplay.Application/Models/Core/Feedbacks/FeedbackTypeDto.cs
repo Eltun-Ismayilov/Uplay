@@ -6,4 +6,5 @@ namespace Uplay.Application.Models.Core.Feedbacks;
 public class FeedbackTypeDto : BaseDto, IMapFrom<FeedbackType>
 {
     public string Name { get; set; }
+    public string Desc { get; set; }
 }

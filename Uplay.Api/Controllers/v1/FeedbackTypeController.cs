@@ -20,7 +20,7 @@ public class FeedbackTypeController : BaseController
     }
 
     [HttpGet(ApiRoutes.FeedbackTypeRoute.GetAll)]
-    public async Task<ActionResult<FeedbackGetAllResponse>> GetAll([FromQuery] PaginationFilter paginationFilter)
+    public async Task<ActionResult<FeedbackTypeGetAllReponse>> GetAll([FromQuery] PaginationFilter paginationFilter)
     {
         var data = await _feedbackService.GetAllFeedbackTypes(paginationFilter);
         return Ok(data);

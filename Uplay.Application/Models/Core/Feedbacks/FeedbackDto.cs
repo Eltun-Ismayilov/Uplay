@@ -9,7 +9,7 @@ namespace Uplay.Application.Models.Feedbacks;
 public class FeedbackDto: BaseDto, IMapFrom<Feedback>
 {
     public string Name { get; set; }
-    public string Desc { get; set; }
+    //public string Desc { get; set; }
     public BranchDto Branch { get; set; }
     public FeedbackTypeDto FeedbackType { get; set; }
 }

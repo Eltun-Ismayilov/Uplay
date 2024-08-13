@@ -6,7 +6,7 @@ namespace Uplay.Domain.Entities.Models.Landing
     public class Feedback:CommonEntity
     {
         public string Name { get; set; }
-        public string Desc { get; set; }
+        //public string Desc { get; set; }
         public int FeedbackTypeId { get; set; }
         public FeedbackType FeedbackType { get; set; }
         public int BranchId { get; set; }
