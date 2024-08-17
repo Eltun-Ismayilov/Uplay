@@ -8,7 +8,7 @@ namespace Uplay.Application.Services.Feedbacks;
 public interface IFeedbackService : IBaseService
 {
     Task<ActionResult<int>> Create(SaveFeedbackRequest command);
-    Task<FeedbackGetAllResponse> GetAll(int id, PaginationFilter paginationFilter);
+    Task<FeedbackGetAllResponse> GetAll(FeedbackFilter filter, PaginationFilter paginationFilter);
     Task<ActionResult<int>> CreateFeedbackType(SaveFeedbackTypeRequest command);
     Task<ActionResult<int>> DeleteFeedbackType(int feedbackTypeId);
     Task<ActionResult<int>> UpdateFeedbackType(int feedbackTypeId, SaveFeedbackTypeRequest request);

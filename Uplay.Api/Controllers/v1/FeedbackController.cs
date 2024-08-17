@@ -18,9 +18,9 @@ public class FeedbackController : BaseController
     }
 
     [HttpGet(ApiRoutes.FeedbackRoute.GetAll)]
-    public async Task<ActionResult<FeedbackGetAllResponse>> GetAll([FromQuery] PaginationFilter paginationFilter, int id)
+    public async Task<ActionResult<FeedbackGetAllResponse>> GetAll([FromQuery] PaginationFilter paginationFilter, [FromQuery] FeedbackFilter filter)
     {
-        var data = await _feedbackService.GetAll(id, paginationFilter);
+        var data = await _feedbackService.GetAll(filter, paginationFilter);
         return Ok(data);
     }
 

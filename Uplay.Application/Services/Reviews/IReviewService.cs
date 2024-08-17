@@ -7,5 +7,5 @@ namespace Uplay.Application.Services.Reviews;
 public interface IReviewService : IBaseService
 {
     Task<ActionResult<int>> Create(SaveReviewRequest command);
-    Task<ReviewGetAllResponse> GetAll(int id, PaginationFilter paginationFilter);
+    Task<ReviewGetAllResponse> GetAll(ReviewFilter filter, PaginationFilter paginationFilter);
 }

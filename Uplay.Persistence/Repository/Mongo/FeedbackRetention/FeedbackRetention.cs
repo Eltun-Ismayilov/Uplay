@@ -42,19 +42,20 @@ public class FeedbackRetention: IFeedbackRetention
         await collection.FindOneAndUpdateAsync(filter, update, new FindOneAndUpdateOptions<ReviewStatistics<string>> { IsUpsert = true });
     }
     
-    
-    public async Task<FeedbackStatistics<string>> ReadFeedbackRetention(int branchId)
+    public async Task<Dictionary<string, Dictionary<string, int>>> ReadFeedbackRetention(int branchId)
     {
         var collection = _mongoDb.GetCollection<FeedbackStatistics<string>>("feedback."+ branchId);
-
-        return await collection.Find(Builders<FeedbackStatistics<string>>.Filter.Empty).FirstOrDefaultAsync();
+        var feedbackStatisticsList = await collection.Find(Builders<FeedbackStatistics<string>>.Filter.Empty).ToListAsync();
+        var feedbackRetentionMap = feedbackStatisticsList.ToDictionary(stat => stat.Date, stat => stat.Types);
+        return feedbackRetentionMap;
     }
     
-    public async Task<ReviewStatistics<string>> ReadReviewRetention(int branchId)
+    public async Task<Dictionary<string, long>> ReadReviewRetention(int branchId)
     {
         var collection = _mongoDb.GetCollection<ReviewStatistics<string>>("review."+ branchId);
-
-        return await collection.Find(Builders<ReviewStatistics<string>>.Filter.Empty).FirstOrDefaultAsync();
+        var reviewStatisticsList = await collection.Find(Builders<ReviewStatistics<string>>.Filter.Empty).ToListAsync();
+        var reviewRetentionMap = reviewStatisticsList.ToDictionary(stat => stat.Date, stat => stat.reviewCount);
+        return reviewRetentionMap;
     }
     
     public async Task<ReviewStatistics<string>> ReadFeedbackRetentionInCompany(int companyId)

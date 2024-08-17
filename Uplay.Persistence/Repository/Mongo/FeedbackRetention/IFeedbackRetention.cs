@@ -7,7 +7,7 @@ namespace Uplay.Persistence.Repository.Mongo.FeedbackRetention;
 public interface IFeedbackRetention
 {
     Task RecordFeedback(Feedback feedback);
-    Task<FeedbackStatistics<string>> ReadFeedbackRetention(int branchId);
+    Task<Dictionary<string, Dictionary<string, int>>> ReadFeedbackRetention(int branchId);
     Task RecordReview(Review review);
-    Task<ReviewStatistics<string>> ReadReviewRetention(int branchId);
+    Task<Dictionary<string, long>> ReadReviewRetention(int branchId);
 }

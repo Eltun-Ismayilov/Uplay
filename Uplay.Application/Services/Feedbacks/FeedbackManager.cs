@@ -1,6 +1,8 @@
-﻿using AutoMapper;
+﻿using System.Linq.Expressions;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Uplay.Application.Exceptions;
+using Uplay.Application.Helpers;
 using Uplay.Application.Mappings;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Feedbacks;
@@ -35,11 +37,13 @@ public class FeedbackManager : BaseManager, IFeedbackService
         return data;
     }
 
-    public async Task<FeedbackGetAllResponse> GetAll(int id, PaginationFilter paginationFilter)
+    public async Task<FeedbackGetAllResponse> GetAll(FeedbackFilter filter, PaginationFilter paginationFilter)
     {
         FeedbackGetAllResponse response = new();
 
-        var feedbackQuery = _feedbackRepository.GetFeedbacksByBranch(id);
+        var predicate = PredicateBuilder.New<Feedback>();
+        predicate = CreateFeedbackFilterQuery(predicate, filter);
+        var feedbackQuery = _feedbackRepository.GetFeedbacksByBranch(predicate);
 
         var list = await feedbackQuery.PaginatedMappedListAsync<FeedbackDto, Feedback>(Mapper,
             paginationFilter.PageNumber,
@@ -50,14 +54,14 @@ public class FeedbackManager : BaseManager, IFeedbackService
     }
 
     #region Feedback type
-    
+
     public async Task<ActionResult<int>> CreateFeedbackType(SaveFeedbackTypeRequest command)
     {
         var mapping = Mapper.Map<FeedbackType>(command);
         var data = await _feedbackTypeRepository.InsertAsync(mapping);
         return data;
     }
-    
+
     public async Task<ActionResult<int>> DeleteFeedbackType(int feedbackTypeId)
     {
         var data = await _feedbackTypeRepository.GetByIdAsync(feedbackTypeId);
@@ -67,7 +71,7 @@ public class FeedbackManager : BaseManager, IFeedbackService
         await _feedbackTypeRepository.DeleteAsync(data);
         return 204;
     }
-    
+
     public async Task<ActionResult<int>> UpdateFeedbackType(int feedbackTypeId, SaveFeedbackTypeRequest request)
     {
         var data = await _feedbackTypeRepository.GetByIdAsync(feedbackTypeId);
@@ -78,7 +82,7 @@ public class FeedbackManager : BaseManager, IFeedbackService
         await _feedbackTypeRepository.UpdateAsync(mapping);
         return 204;
     }
-    
+
     public async Task<FeedbackTypeGetAllReponse> GetAllFeedbackTypes(PaginationFilter paginationFilter)
     {
         FeedbackTypeGetAllReponse response = new();
@@ -94,4 +98,26 @@ public class FeedbackManager : BaseManager, IFeedbackService
     }
 
     #endregion
+
+    private static Expression<Func<Feedback, bool>>? CreateFeedbackFilterQuery(
+        Expression<Func<Feedback, bool>>? predicate,
+        FeedbackFilter? filterQuery)
+    {
+        if (filterQuery is null || predicate is null) return predicate;
+
+        predicate = filterQuery.StartDate is not null && filterQuery.EndDate is not null ? predicate.And(
+                x =>
+                    x.CreatedDate.Date >= filterQuery.StartDate.Value.Date && x.CreatedDate.Date <= filterQuery.EndDate.Value.Date)
+            : filterQuery.StartDate is not null ? predicate.And(x =>
+                x.CreatedDate == filterQuery.StartDate.Value)
+            : predicate;
+
+        predicate = filterQuery.FeedbackTypeId is not null
+            ? predicate.And(x => x.FeedbackTypeId == filterQuery.FeedbackTypeId)
+            : predicate;
+
+        predicate = predicate.And(x => x.BranchId == filterQuery.BranchId);
+
+        return predicate;
+    }
 }

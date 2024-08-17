@@ -1,5 +1,7 @@
-﻿using AutoMapper;
+﻿using System.Linq.Expressions;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Uplay.Application.Helpers;
 using Uplay.Application.Mappings;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Reviews;
@@ -28,16 +30,35 @@ public class ReviewManager: BaseManager, IReviewService
         return data;
     }
 
-    public async Task<ReviewGetAllResponse> GetAll(int id, PaginationFilter paginationFilter)
+    public async Task<ReviewGetAllResponse> GetAll(ReviewFilter filter, PaginationFilter paginationFilter)
     {
         ReviewGetAllResponse response = new();
-
-        var reviewQuery = _reviewRepository.GetReviewsByBranch(id);
+        var predicate = PredicateBuilder.New<Review>();
+        predicate = CreateReviewFilterQuery(predicate, filter);
+        var reviewQuery = _reviewRepository.GetReviewsByBranch(predicate);
 
         var list = await reviewQuery.PaginatedMappedListAsync<ReviewDto, Review>(Mapper, paginationFilter.PageNumber,
             paginationFilter.PageSize);
         response.ReviewDtos = list;
 
         return response;
+    }
+    
+    private static Expression<Func<Review, bool>>? CreateReviewFilterQuery(
+        Expression<Func<Review, bool>>? predicate,
+        ReviewFilter? filterQuery)
+    {
+        if (filterQuery is null || predicate is null) return predicate;
+
+        predicate = filterQuery.StartDate is not null && filterQuery.EndDate is not null ? predicate.And(
+                x =>
+                    x.CreatedDate.Date >= filterQuery.StartDate.Value.Date && x.CreatedDate.Date <= filterQuery.EndDate.Value.Date)
+            : filterQuery.StartDate is not null ? predicate.And(x =>
+                x.CreatedDate == filterQuery.StartDate.Value)
+            : predicate;
+
+        predicate = predicate.And(x => x.BranchId == filterQuery.BranchId);
+
+        return predicate;
     }
 }

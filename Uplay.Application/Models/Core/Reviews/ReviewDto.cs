@@ -7,5 +7,5 @@ namespace Uplay.Application.Models.Core.Reviews;
 public class ReviewDto:BaseDto, IMapFrom<Review>
 {
     public string Name { get; set; }
-    public BranchDto Branch { get; set; }
+    public DateTime CreatedDate { get; set; }
 }
