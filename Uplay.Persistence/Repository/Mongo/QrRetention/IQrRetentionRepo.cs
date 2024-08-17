@@ -2,7 +2,7 @@
 
 namespace Uplay.Persistence.Repository.Mongo;
 
-public interface ICoreRepo<T>
+public interface IQrRetentionRepo<T>
 {
     Task WriteQrRetentionToCollection(int branchId);
     Task<T> ReadQrRetention(int branchId);

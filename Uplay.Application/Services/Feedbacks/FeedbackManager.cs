@@ -8,6 +8,7 @@ using Uplay.Application.Models.Feedbacks;
 using Uplay.Domain.Entities.Models.Landing;
 using Uplay.Domain.Entities.Models.Landings;
 using Uplay.Persistence.Repository;
+using Uplay.Persistence.Repository.Mongo.FeedbackRetention;
 
 namespace Uplay.Application.Services.Feedbacks;
 
@@ -15,19 +16,22 @@ public class FeedbackManager : BaseManager, IFeedbackService
 {
     private readonly IFeedbackRepository _feedbackRepository;
     private readonly IRepository<FeedbackType> _feedbackTypeRepository;
+    private readonly IFeedbackRetention _feedbackRetention;
 
     public FeedbackManager(IMapper mapper,
         IFeedbackRepository feedbackRepository,
-        IRepository<FeedbackType> feedbackTypeRepository) : base(mapper)
+        IRepository<FeedbackType> feedbackTypeRepository, IFeedbackRetention feedbackRetention) : base(mapper)
     {
         this._feedbackRepository = feedbackRepository;
         _feedbackTypeRepository = feedbackTypeRepository;
+        _feedbackRetention = feedbackRetention;
     }
 
     public async Task<ActionResult<int>> Create(SaveFeedbackRequest command)
     {
         var mapping = Mapper.Map<Feedback>(command);
         var data = await _feedbackRepository.InsertAsync(mapping);
+        await _feedbackRetention.RecordFeedback(mapping);
         return data;
     }
 

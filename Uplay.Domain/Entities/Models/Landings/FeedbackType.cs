@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Uplay.Domain.Entities.Models.Landing;
+﻿using Uplay.Domain.Entities.Models.Landing;
 
 namespace Uplay.Domain.Entities.Models.Landings
 {
