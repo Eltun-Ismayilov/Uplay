@@ -20,6 +20,11 @@
             public const string Create = Base + "/faq";
             public const string Delete = Base + "/faq/:id";
         }
+        public struct RatingRoute
+        {
+            public const string Create = Base + "/rating";
+        }
+        
         public struct CityRoute
         {
             public const string City = Base + "/CityRoute";
@@ -114,6 +119,7 @@
             public const string GetAllBranch = Base + "/branch";
             public const string DeleteBranch= Base + "/branch/delete/:id";
             public const string DisableBranch = Base + "/branch/disable/:id";
+            public const string GetBranchIdByQrcode = Base + "/branch/qrCode/:id";
         }
         
         public struct FeedbackTypeRoute

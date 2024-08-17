@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Uplay.Application.Extensions;
 using Uplay.Application.Mappings;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Branches;
 using Uplay.Application.Services.AppFiles;
 using Uplay.Domain.Entities.Models.Companies;
+using Uplay.Domain.Entities.Models.Landing;
 using Uplay.Domain.Entities.Models.Users;
 using Uplay.Domain.Enum;
 using Uplay.Persistence.Repository;
@@ -71,7 +73,9 @@ public class BranchManager : BaseManager, IBranchService
 
         mapping.Onwer.Password = passHash;
 
-        var qrCodebyte = QrCodeExtension.GenerateQr("https://www.youtube.com/watch?v=ZUWcHFJOSig");//TODO
+        var operationId = Guid.NewGuid();
+
+        var qrCodebyte = QrCodeExtension.GenerateQr($"https://localhost:7260/qr/:operationId?operationId={operationId}");//TODO
 
         var appFile = await _fileService.UploadPhoto(qrCodebyte);
 
@@ -79,7 +83,8 @@ public class BranchManager : BaseManager, IBranchService
         {
             new BranchQrCode
             {
-                AppFile = appFile
+                AppFile = appFile,
+                operationId = operationId
             }
         };
 
@@ -101,7 +106,7 @@ public class BranchManager : BaseManager, IBranchService
 
         return response;
     }
-    
+
     public async Task<int> DeleteBranch(int id)
     {
         var branch = await _branchRepository.GetByIdAsync(id);
@@ -112,7 +117,7 @@ public class BranchManager : BaseManager, IBranchService
 
         return await _branchRepository.SaveChangesAsync();
     }
-    
+
     public async Task<int> DisableBranch(int id)
     {
         var branch = await _branchRepository.GetByIdAsync(id);
@@ -120,5 +125,14 @@ public class BranchManager : BaseManager, IBranchService
 
         branch.Status = AccauntStatusEnum.Disabled;
         return await _branchRepository.SaveChangesAsync();
+    }
+
+    public async Task<string> GetByBranchIdAsync(int id)
+    {
+        var branch =  _branchRepository.GetAllQuery()
+                                       .Include(x=>x.BranchQrCodes)
+                                       .First(x => x.Id == id);
+
+        return HttpContextAccessor.GeneratePhotoUrl(branch.BranchQrCodes.First().AppFileId);
     }
 }

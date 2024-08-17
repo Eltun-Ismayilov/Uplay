@@ -4,6 +4,7 @@ using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Operations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using SkiaSharp;
@@ -123,7 +124,9 @@ namespace Uplay.Application.Services.Companys
 
             var brachCategory = command.CategoryIds.Select(ctgId => new BranchCategory() { CategoryId = ctgId }).ToList();
 
-            var qrCodebyte = QrCodeExtension.GenerateQr("https://www.youtube.com/watch?v=ZUWcHFJOSig"); //TODO
+            var operationId = Guid.NewGuid();
+
+            var qrCodebyte = QrCodeExtension.GenerateQr($"https://localhost:7260/qr/:operationId?operationId={operationId}");
 
             var appFile = await _fileService.UploadPhoto(qrCodebyte);
 
@@ -140,7 +143,8 @@ namespace Uplay.Application.Services.Companys
                 {
                     new BranchQrCode()
                     {
-                         AppFile = appFile
+                         AppFile = appFile,
+                         operationId = operationId,
                     }
                 }
             };
@@ -165,14 +169,22 @@ namespace Uplay.Application.Services.Companys
             smtp.Send(email);
             smtp.Disconnect(true);
 
-            return companyId;
+            return brachId;
         }
+        public async Task<ActionResult<int>> GetOperationId(Guid operationId)
+        {
+            var branchQrCode = _branchQrCodeRepository.GetQuery()
+                                                      .FirstOrDefault(x => x.operationId == operationId);
 
+            return branchQrCode.BranchId;
+        }
         public static int GenerateRandomSixDigitNumber()
         {
             Random random = new Random();
 
             return random.Next(100000, 999999 + 1);
         }
+
+
     }
 }

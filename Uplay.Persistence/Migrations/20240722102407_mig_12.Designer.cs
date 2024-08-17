@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Uplay.Persistence.Data;
@@ -11,9 +12,11 @@ using Uplay.Persistence.Data;
 namespace Uplay.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240722102407_mig_12")]
+    partial class mig_12
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -130,9 +133,6 @@ namespace Uplay.Persistence.Migrations
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("operationId")
-                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -773,10 +773,6 @@ namespace Uplay.Persistence.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("Desc")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
@@ -786,7 +782,7 @@ namespace Uplay.Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("FeedbackTypes", "Landing");
+                    b.ToTable("FeedbackTypes", "public");
                 });
 
             modelBuilder.Entity("Uplay.Domain.Entities.Models.Landings.RatingBranch", b =>
@@ -809,8 +805,9 @@ namespace Uplay.Persistence.Migrations
                     b.Property<bool>("Deleted")
                         .HasColumnType("boolean");
 
-                    b.Property<int>("Rating")
-                        .HasColumnType("integer");
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedDate")
                         .HasColumnType("timestamp with time zone");
@@ -819,7 +816,7 @@ namespace Uplay.Persistence.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("RatingBranchs", "Landing");
+                    b.ToTable("RatingBranchs");
                 });
 
             modelBuilder.Entity("Uplay.Domain.Entities.Models.Miscs.AppFile", b =>

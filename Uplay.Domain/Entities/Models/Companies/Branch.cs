@@ -1,4 +1,5 @@
 ﻿using Uplay.Domain.Entities.Models.Landing;
+using Uplay.Domain.Entities.Models.Landings;
 using Uplay.Domain.Entities.Models.PlayLists;
 using Uplay.Domain.Entities.Models.Users;
 using Uplay.Domain.Enum;
@@ -22,5 +23,8 @@ namespace Uplay.Domain.Entities.Models.Companies
         public virtual ICollection<Feedback> Feedbacks { get; set; }
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<BranchQrCode> BranchQrCodes { get; set; }
+        public virtual ICollection<RatingBranch> RatingBranchs { get; set; }
+
+        
     }
 }

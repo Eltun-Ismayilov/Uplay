@@ -48,7 +48,8 @@ namespace Uplay.Persistence.Data
         public virtual DbSet<SocialLink> SocialLinks { get; set; } = null!;
         public virtual DbSet<YouBusines> YouBusineses { get; set; } = null!;
         public virtual DbSet<FeedbackType> FeedbackTypes { get; set; } = null!;
-
+        public virtual DbSet<RatingBranch> RatingBranchs { get; set; } = null!;
+        
         #endregion
 
         #region Miscs
