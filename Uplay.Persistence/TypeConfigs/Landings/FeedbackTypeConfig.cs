@@ -18,7 +18,7 @@ namespace Uplay.Persistence.TypeConfigs.Landings
     {
         public void Configure(EntityTypeBuilder<FeedbackType> builder)
         {
-            builder.ToTable("FeedbackTypes", "public");
+            builder.ToTable("FeedbackTypes", "Landing");
             builder.HasKey(e => e.Id);
             builder.HasQueryFilter(e => !e.Deleted);
         }

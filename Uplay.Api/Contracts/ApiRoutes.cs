@@ -111,6 +111,7 @@
         {
             public const string GetAll = Base + "/feedback/:id";
             public const string Create = Base + "/feedback";
+            public const string GetStatistics = Base + "/feedback/statistics";
         }
         
         public struct BranchRoute
@@ -128,6 +129,13 @@
             public const string Create = Base + "/feedbackType";
             public const string Update = Base + "/feedbackType/:id";
             public const string Delete = Base + "/feedbackType/:id";
+        }
+        
+        public struct PlaylistRoute
+        {
+            public const string GetAll = Base + "/playlist";
+            public const string Create = Base + "/playlist";
+            public const string Update = Base + "/playlist/:id";
         }
     }
 }

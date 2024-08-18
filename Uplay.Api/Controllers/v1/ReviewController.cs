@@ -19,9 +19,9 @@ public class ReviewController : BaseController
     }
 
     [HttpGet(ApiRoutes.ReviewRoute.GetAll)]
-    public async Task<ActionResult<FaqGetAllResponse>> GetAll([FromQuery] PaginationFilter paginationFilter, int id)
+    public async Task<ActionResult<ReviewGetAllResponse>> GetAll([FromQuery] PaginationFilter paginationFilter, [FromQuery] ReviewFilter filter)
     {
-        var data = await _reviewService.GetAll(id, paginationFilter);
+        var data = await _reviewService.GetAll(filter, paginationFilter);
         return Ok(data);
     }
 

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Uplay.Application.Models;
 using Uplay.Domain.Entities.Models.Companies;
 using Uplay.Domain.Entities.Models.Miscs;
+using Uplay.Domain.Enum;
 
 namespace Uplay.Domain.Entities.Models.PlayLists
 {
-    public class PlayList:CommonEntity
+    public class PlayList:CommonEntity, IFilterable
     {
         public string Title { get; set; }
         public int FileId { get; set; }
@@ -16,6 +13,8 @@ namespace Uplay.Domain.Entities.Models.PlayLists
         public string Duration { get; set; }
         public int BranchId { get; set; }
         public Branch Branch { get; set; }
+        
+        public PlayListEnum Status { get; set; }
         public virtual ICollection<PlayListStatusHistory> PlayListStatusHistories { get; set; }
     }
 }

@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq.Expressions;
+using Microsoft.AspNetCore.Mvc;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Reviews;
+using Uplay.Domain.Entities.Models.Landing;
 
 namespace Uplay.Application.Services.Reviews;
 
 public interface IReviewService : IBaseService
 {
     Task<ActionResult<int>> Create(SaveReviewRequest command);
-    Task<ReviewGetAllResponse> GetAll(int id, PaginationFilter paginationFilter);
+    Task<ReviewGetAllResponse> GetAll(ReviewFilter filter, PaginationFilter paginationFilter);
 }

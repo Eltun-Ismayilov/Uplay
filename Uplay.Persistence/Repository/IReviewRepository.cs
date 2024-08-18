@@ -1,8 +1,9 @@
-﻿using Uplay.Domain.Entities.Models.Landing;
+﻿using System.Linq.Expressions;
+using Uplay.Domain.Entities.Models.Landing;
 
 namespace Uplay.Persistence.Repository;
 
 public interface IReviewRepository: IRepository<Review>
 {
-    IQueryable<Review> GetReviewsByBranch(int id);
+    IQueryable<Review> GetReviewsByBranch(Expression<Func<Review, bool>>? predicate);
 }

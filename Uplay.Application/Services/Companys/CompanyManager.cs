@@ -3,23 +3,14 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.Operations;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
-using SkiaSharp;
-using SkiaSharp.QrCode;
-using System.Collections;
-using System.Drawing;
-using System.Runtime.CompilerServices;
 using Uplay.Application.Extensions;
 using Uplay.Application.Models.Companies;
 using Uplay.Application.Services.AppFiles;
 using Uplay.Domain.Entities.Models.Companies;
-using Uplay.Domain.Entities.Models.Miscs;
 using Uplay.Domain.Enum;
 using Uplay.Persistence.Repository;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace Uplay.Application.Services.Companys
 {
