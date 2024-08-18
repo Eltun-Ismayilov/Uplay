@@ -7,26 +7,22 @@ using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Reviews;
 using Uplay.Domain.Entities.Models.Landing;
 using Uplay.Persistence.Repository;
-using Uplay.Persistence.Repository.Mongo.FeedbackRetention;
 
 namespace Uplay.Application.Services.Reviews;
 
-public class ReviewManager: BaseManager, IReviewService
+public class ReviewManager : BaseManager, IReviewService
 {
     private readonly IReviewRepository _reviewRepository;
-    private readonly IFeedbackRetention _feedbackRetention;
 
-    public ReviewManager(IMapper mapper, IReviewRepository reviewRepository, IFeedbackRetention feedbackRetention) : base(mapper)
+    public ReviewManager(IMapper mapper, IReviewRepository reviewRepository) : base(mapper)
     {
         this._reviewRepository = reviewRepository;
-        _feedbackRetention = feedbackRetention;
     }
 
     public async Task<ActionResult<int>> Create(SaveReviewRequest command)
     {
         var mapping = Mapper.Map<Review>(command);
         var data = await _reviewRepository.InsertAsync(mapping);
-        await _feedbackRetention.RecordReview(mapping);
         return data;
     }
 
@@ -43,8 +39,8 @@ public class ReviewManager: BaseManager, IReviewService
 
         return response;
     }
-    
-    private static Expression<Func<Review, bool>>? CreateReviewFilterQuery(
+
+    public static Expression<Func<Review, bool>>? CreateReviewFilterQuery(
         Expression<Func<Review, bool>>? predicate,
         ReviewFilter? filterQuery)
     {
@@ -52,7 +48,8 @@ public class ReviewManager: BaseManager, IReviewService
 
         predicate = filterQuery.StartDate is not null && filterQuery.EndDate is not null ? predicate.And(
                 x =>
-                    x.CreatedDate.Date >= filterQuery.StartDate.Value.Date && x.CreatedDate.Date <= filterQuery.EndDate.Value.Date)
+                    x.CreatedDate.Date >= filterQuery.StartDate.Value.Date &&
+                    x.CreatedDate.Date <= filterQuery.EndDate.Value.Date)
             : filterQuery.StartDate is not null ? predicate.And(x =>
                 x.CreatedDate == filterQuery.StartDate.Value)
             : predicate;

@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Uplay.Application.Exceptions;
+using Uplay.Application.Extensions;
 using Uplay.Application.Helpers;
 using Uplay.Application.Mappings;
 using Uplay.Application.Models;
@@ -9,31 +10,37 @@ using Uplay.Application.Models.Core.Feedbacks;
 using Uplay.Application.Models.Feedbacks;
 using Uplay.Domain.Entities.Models.Landing;
 using Uplay.Domain.Entities.Models.Landings;
+using Uplay.Domain.Entities.Models.PlayLists;
 using Uplay.Persistence.Repository;
-using Uplay.Persistence.Repository.Mongo.FeedbackRetention;
 
 namespace Uplay.Application.Services.Feedbacks;
 
 public class FeedbackManager : BaseManager, IFeedbackService
 {
     private readonly IFeedbackRepository _feedbackRepository;
+    private readonly IReviewRepository _reviewRepository;
+    private readonly IRatingRepository _ratingRepository;
+    private readonly IPlaylistRepository _playlistRepository;
     private readonly IRepository<FeedbackType> _feedbackTypeRepository;
-    private readonly IFeedbackRetention _feedbackRetention;
 
     public FeedbackManager(IMapper mapper,
         IFeedbackRepository feedbackRepository,
-        IRepository<FeedbackType> feedbackTypeRepository, IFeedbackRetention feedbackRetention) : base(mapper)
+        IRepository<FeedbackType> feedbackTypeRepository,
+        IReviewRepository reviewRepository,
+        IRatingRepository ratingRepository,
+        IPlaylistRepository playlistRepository) : base(mapper)
     {
         this._feedbackRepository = feedbackRepository;
         _feedbackTypeRepository = feedbackTypeRepository;
-        _feedbackRetention = feedbackRetention;
+        _reviewRepository = reviewRepository;
+        _ratingRepository = ratingRepository;
+        _playlistRepository = playlistRepository;
     }
 
     public async Task<ActionResult<int>> Create(SaveFeedbackRequest command)
     {
         var mapping = Mapper.Map<Feedback>(command);
         var data = await _feedbackRepository.InsertAsync(mapping);
-        await _feedbackRetention.RecordFeedback(mapping);
         return data;
     }
 
@@ -49,6 +56,28 @@ public class FeedbackManager : BaseManager, IFeedbackService
             paginationFilter.PageNumber,
             paginationFilter.PageSize);
         response.FeedbackDtos = list;
+
+        return response;
+    }
+
+    public CommonStatistics GetCommonStatistics(FilterQuery filter)
+    {
+        var response = new CommonStatistics();
+
+        var fbPredicate = CreateFilterQuery(PredicateBuilder.New<Feedback>(), filter);
+        var rPredicate = CreateFilterQuery(PredicateBuilder.New<Review>(), filter);
+        var rbPredicate = CreateFilterQuery(PredicateBuilder.New<RatingBranch>(), filter);
+        var plPredicate = CreateFilterQuery(PredicateBuilder.New<PlayList>(), filter);
+
+        var feedbackQuery = _feedbackRepository.GetFeedbacksByBranch(fbPredicate);
+        var reviewQuery = _reviewRepository.GetReviewsByBranch(rPredicate);
+        var ratingQuery = _ratingRepository.GetRatingsByBranch(rbPredicate);
+        var playlistQuery = _playlistRepository.GetPlaylistsByBranch(plPredicate);
+
+        response.FeedbackCount = feedbackQuery?.Count() ?? 0;
+        response.ReviewCount = reviewQuery?.Count() ?? 0;
+        response.RatingCount = ratingQuery?.Count() ?? 0;
+        response.SongCount = playlistQuery?.Count() ?? 0;
 
         return response;
     }
@@ -107,7 +136,8 @@ public class FeedbackManager : BaseManager, IFeedbackService
 
         predicate = filterQuery.StartDate is not null && filterQuery.EndDate is not null ? predicate.And(
                 x =>
-                    x.CreatedDate.Date >= filterQuery.StartDate.Value.Date && x.CreatedDate.Date <= filterQuery.EndDate.Value.Date)
+                    x.CreatedDate.Date >= filterQuery.StartDate.Value.Date &&
+                    x.CreatedDate.Date <= filterQuery.EndDate.Value.Date)
             : filterQuery.StartDate is not null ? predicate.And(x =>
                 x.CreatedDate == filterQuery.StartDate.Value)
             : predicate;
@@ -116,6 +146,34 @@ public class FeedbackManager : BaseManager, IFeedbackService
             ? predicate.And(x => x.FeedbackTypeId == filterQuery.FeedbackTypeId)
             : predicate;
 
+        predicate = predicate.And(x => x.BranchId == filterQuery.BranchId);
+
+        return predicate;
+    }
+
+    private static Expression<Func<T, bool>>? CreateFilterQuery<T>(
+        Expression<Func<T, bool>>? predicate,
+        FilterQuery? filterQuery) where T : IFilterable
+    {
+        if (filterQuery is null || predicate is null) return predicate;
+
+        // Filter by date range
+        if (filterQuery.StartDate.HasValue && filterQuery.EndDate.HasValue)
+        {
+            var startDate = filterQuery.StartDate.Value.Date;
+            var endDate = filterQuery.EndDate.Value.Date;
+
+            predicate = predicate.And(x =>
+                x.CreatedDate.Date >= startDate && x.CreatedDate.Date <= endDate);
+        }
+        else if (filterQuery.StartDate.HasValue)
+        {
+            var startDate = filterQuery.StartDate.Value.Date;
+            predicate = predicate.And(x =>
+                x.CreatedDate.Date == startDate);
+        }
+
+        // Filter by branch ID
         predicate = predicate.And(x => x.BranchId == filterQuery.BranchId);
 
         return predicate;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Uplay.Application.Extensions;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Feedbacks;
 using Uplay.Application.Models.Feedbacks;
@@ -13,4 +14,5 @@ public interface IFeedbackService : IBaseService
     Task<ActionResult<int>> DeleteFeedbackType(int feedbackTypeId);
     Task<ActionResult<int>> UpdateFeedbackType(int feedbackTypeId, SaveFeedbackTypeRequest request);
     Task<FeedbackTypeGetAllReponse> GetAllFeedbackTypes(PaginationFilter paginationFilter);
+    CommonStatistics GetCommonStatistics(FilterQuery filter);
 }

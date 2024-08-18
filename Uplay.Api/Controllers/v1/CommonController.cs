@@ -2,27 +2,27 @@
 using Microsoft.AspNetCore.Mvc;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
-using Uplay.Application.Models.Core.Branches;
-using Uplay.Application.Services.Branches;
 using Uplay.Application.Services.Companys;
+using Uplay.Application.Services.Feedbacks;
+using Uplay.Persistence.Data.Statistics;
 using Uplay.Persistence.Repository.Mongo;
-using Uplay.Persistence.Repository.Mongo.FeedbackRetention;
 
 namespace Uplay.Api.Controllers.v1;
 
+[AllowAnonymous]
 public class CommonController : BaseController
 {
-    private readonly IQrRetentionRepo<MonthlyScanAggregate> _qrRetentionRepo;
-    private readonly IFeedbackRetention _feedbackRetention;
+    private readonly IQrRetentionRepo _qrRetentionRepo;
     private readonly ICompanyService _companyService;
+    private readonly IFeedbackService _feedbackService;
 
-    public CommonController(IQrRetentionRepo<MonthlyScanAggregate> qrRetentionRepo,
-        IFeedbackRetention feedbackRetention,
-        ICompanyService companyService)
+    public CommonController(IQrRetentionRepo qrRetentionRepo,
+        ICompanyService companyService,
+        IFeedbackService feedbackService)
     {
         _qrRetentionRepo = qrRetentionRepo;
-        _feedbackRetention = feedbackRetention;
         _companyService = companyService;
+        _feedbackService = feedbackService;
     }
 
     [HttpGet("/qr/:branchId")]
@@ -40,20 +40,27 @@ public class CommonController : BaseController
     }
 
     [HttpGet("/qr/get/:branchId")]
-    public async Task<ActionResult<int>> QrRetentionGet(int branchId)
+    public async Task<ActionResult> QrRetentionGet([FromQuery] QrRetFilter filter)
     {
-        return Ok(await _qrRetentionRepo.ReadQrRetention(branchId));
+        return Ok(await _qrRetentionRepo.ReadQrRetention(filter));
     }
 
-    [HttpGet("/feedback/get/:branchId")]
-    public async Task<ActionResult<int>> FeedbackRetentionGet(int branchId)
+    [HttpGet(ApiRoutes.FeedbackRoute.GetStatistics)]
+    public ActionResult<int> GetFeedbackStatistics([FromQuery] FilterQuery filter)
     {
-        return Ok(await _feedbackRetention.ReadFeedbackRetention(branchId));
+        var data = _feedbackService.GetCommonStatistics(filter);
+        return Ok(data);
     }
 
-    [HttpGet("/review/get/:branchId")]
-    public async Task<ActionResult<int>> ReviewRetentionGet(int branchId)
-    {
-        return Ok(await _feedbackRetention.ReadReviewRetention(branchId));
-    }
+    // [HttpGet("/feedback/get/:branchId")]
+    // public async Task<ActionResult> FeedbackRetentionGet(int branchId)
+    // {
+    //     return Ok(await _feedbackRetention.ReadFeedbackRetention(branchId));
+    // }
+    //
+    // [HttpGet("/review/get/:branchId")]
+    // public async Task<ActionResult> ReviewRetentionGet(int branchId)
+    // {
+    //     return Ok(await _feedbackRetention.ReadReviewRetention(branchId));
+    // }
 }

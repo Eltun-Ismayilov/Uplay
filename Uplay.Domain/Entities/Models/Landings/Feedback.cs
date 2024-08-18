@@ -1,9 +1,10 @@
-﻿using Uplay.Domain.Entities.Models.Companies;
+﻿using Uplay.Application.Models;
+using Uplay.Domain.Entities.Models.Companies;
 using Uplay.Domain.Entities.Models.Landings;
 
 namespace Uplay.Domain.Entities.Models.Landing
 {
-    public class Feedback:CommonEntity
+    public class Feedback:CommonEntity, IFilterable
     {
         public string Name { get; set; }
         //public string Desc { get; set; }
