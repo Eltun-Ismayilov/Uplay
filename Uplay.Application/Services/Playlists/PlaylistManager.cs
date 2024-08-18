@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Uplay.Application.Exceptions;
+using Uplay.Application.Extensions;
 using Uplay.Application.Mappings;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Reviews;
@@ -18,7 +20,8 @@ public class PlaylistManager : BaseManager, IPlaylistService
     private readonly IPlaylistRepository _playlistRepository;
 
     public PlaylistManager(IPlaylistRepository playlistRepository,
-        IMapper mapper) : base(mapper)
+        IMapper mapper,
+        IHttpContextAccessor httpContextAccessor) : base(mapper, httpContextAccessor)
     {
         _playlistRepository = playlistRepository;
     }
@@ -49,6 +52,13 @@ public class PlaylistManager : BaseManager, IPlaylistService
         
         var list = await playlistQuery.PaginatedMappedListAsync<PlaylistDto, PlayList>(Mapper, paginationFilter.PageNumber, paginationFilter.PageSize);
         response.PlaylistDtos = list;
+        
+        foreach (var playList in playlistQuery)
+        {
+            var fileUrl = HttpContextAccessor.GeneratePhotoUrl(playList.FileId);
+            var datas = list.Items.FirstOrDefault(x => x.Id == playList.Id);
+            datas.File = fileUrl;
+        }
 
         return response;
     }

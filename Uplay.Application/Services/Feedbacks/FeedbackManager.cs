@@ -60,7 +60,7 @@ public class FeedbackManager : BaseManager, IFeedbackService
         return response;
     }
 
-    public CommonStatistics GetCommonStatistics(FilterQuery filter)
+    public async Task<CommonStatistics> GetCommonStatistics(FilterQuery filter)
     {
         var response = new CommonStatistics();
 
@@ -74,10 +74,13 @@ public class FeedbackManager : BaseManager, IFeedbackService
         var ratingQuery = _ratingRepository.GetRatingsByBranch(rbPredicate);
         var playlistQuery = _playlistRepository.GetPlaylistsByBranch(plPredicate);
 
+        var feedbackTypeSummary = await _feedbackRepository.GetFeedbackSummaryByTypeAsync(feedbackQuery);
+
         response.FeedbackCount = feedbackQuery?.Count() ?? 0;
         response.ReviewCount = reviewQuery?.Count() ?? 0;
         response.RatingCount = ratingQuery?.Count() ?? 0;
         response.SongCount = playlistQuery?.Count() ?? 0;
+        response.FeedbackTypeSummary = feedbackTypeSummary;
 
         return response;
     }

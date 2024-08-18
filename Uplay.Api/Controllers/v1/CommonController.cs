@@ -46,9 +46,9 @@ public class CommonController : BaseController
     }
 
     [HttpGet(ApiRoutes.FeedbackRoute.GetStatistics)]
-    public ActionResult<int> GetFeedbackStatistics([FromQuery] FilterQuery filter)
+    public async Task<ActionResult<int>> GetFeedbackStatistics([FromQuery] FilterQuery filter)
     {
-        var data = _feedbackService.GetCommonStatistics(filter);
+        var data = await _feedbackService.GetCommonStatistics(filter);
         return Ok(data);
     }
 

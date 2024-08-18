@@ -14,5 +14,5 @@ public interface IFeedbackService : IBaseService
     Task<ActionResult<int>> DeleteFeedbackType(int feedbackTypeId);
     Task<ActionResult<int>> UpdateFeedbackType(int feedbackTypeId, SaveFeedbackTypeRequest request);
     Task<FeedbackTypeGetAllReponse> GetAllFeedbackTypes(PaginationFilter paginationFilter);
-    CommonStatistics GetCommonStatistics(FilterQuery filter);
+    Task<CommonStatistics> GetCommonStatistics(FilterQuery filter);
 }

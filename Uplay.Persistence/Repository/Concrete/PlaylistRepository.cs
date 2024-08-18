@@ -41,6 +41,7 @@ public class PlaylistRepository : Repository<PlayList>, IPlaylistRepository
         {
             return GetTable()
                 .AsNoTracking()
+                .Include(x=>x.File)
                 .Where(x => statuses.Contains(x.Status))
                 .OrderByDescending(x => x.CreatedDate)
                 .AsQueryable();
