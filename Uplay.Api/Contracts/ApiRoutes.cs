@@ -24,6 +24,7 @@
         {
             public const string GetAll = Base + "/RatingBranch";
             public const string Get = Base + "/RatingBranch/:branchId";
+            public const string GetStatistics = Base + "/RatingBranchStatistics";
         }
 
 

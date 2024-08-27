@@ -7,19 +7,13 @@ namespace Uplay.Domain.Enum
         [Description("Requested")]
         Requested = 1,
 
-        [Description("Played")]
-        Played = 2,
+        [Description("Approved")]
+        Approved = 2,
 
         [Description("Blocked")]
         Blocked = 3,
 
-        [Description("Pending")]
-        Pending = 4,
-
-        [Description("Playing")]
-        Playing = 5,
-
         [Description("Delayed")]
-        Delayed = 6,
+        Delayed = 4,
     }
 }
