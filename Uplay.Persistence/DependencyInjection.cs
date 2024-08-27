@@ -79,6 +79,7 @@ namespace Uplay.Persistence
             services.AddScoped(typeof(IQrRetentionRepo), typeof(QrRetentionRepo));
             services.AddScoped(typeof(IRatingRepository), typeof(RatingRepository));
             services.AddScoped(typeof(IPlaylistRepository), typeof(PlaylistRepository));
+            services.AddScoped(typeof(IRatingBranchRepository), typeof(RatingBranchRepository));
             return services;
         }
     }

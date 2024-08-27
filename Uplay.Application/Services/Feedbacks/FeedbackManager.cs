@@ -66,7 +66,7 @@ public class FeedbackManager : BaseManager, IFeedbackService
 
         var fbPredicate = CreateFilterQuery(PredicateBuilder.New<Feedback>(), filter);
         var rPredicate = CreateFilterQuery(PredicateBuilder.New<Review>(), filter);
-        var rbPredicate = CreateFilterQuery(PredicateBuilder.New<RatingBranch>(), filter);
+        var rbPredicate = CreateFilterQuery(PredicateBuilder.New<Uplay.Domain.Entities.Models.Landings.RatingBranch>(), filter);
         var plPredicate = CreateFilterQuery(PredicateBuilder.New<PlayList>(), filter);
 
         var feedbackQuery = _feedbackRepository.GetFeedbacksByBranch(fbPredicate);

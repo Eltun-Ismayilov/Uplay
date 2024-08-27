@@ -20,6 +20,14 @@
             public const string Create = Base + "/faq";
             public const string Delete = Base + "/faq/:id";
         }
+        public struct RatingBranchRoute
+        {
+            public const string GetAll = Base + "/RatingBranch";
+            public const string Get = Base + "/RatingBranch/:branchId";
+        }
+
+
+        
         public struct RatingRoute
         {
             public const string Create = Base + "/rating";

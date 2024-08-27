@@ -19,7 +19,7 @@ namespace Uplay.Application.Services.Ratings
 
         public async Task<ActionResult<int>> Create(SaveRatingRequest command)
         {
-            var mapping = Mapper.Map<RatingBranch>(command);
+            var mapping = Mapper.Map<Uplay.Domain.Entities.Models.Landings.RatingBranch>(command);
 
             var data = await _ratingRepository.InsertAsync(mapping);
 
