@@ -40,4 +40,10 @@ public class PlaylistController : BaseController
         await _playlistService.Update(id, status);
         return NoContent();
     }
+    
+    [HttpPut(ApiRoutes.PlaylistRoute.Topthree)]
+    public async Task<ActionResult<int>> Topthree(int branchId)
+    {
+        return Ok(await _playlistService.getTopThreeMusic(branchId));
+    }
 }

@@ -5,7 +5,6 @@ using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Text.RegularExpressions;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Http;
@@ -52,19 +51,19 @@ namespace Uplay.Application.Services.Users
             if (company.Aktiv == false)
                 throw new NotFoundException("Qeydiyyat uğurla tamamlanib, biraz gözləyin.");
 
-            return new(GenerateToken(user));
+            return new(GenerateToken(user, company.Id));
         }
 
         public async Task<UserLoginResponse> BranchLogin(UserLoginRequest request)
         {
             var user = await ValidateUser(request.Username, request.Password);
 
-            var company = await _branchRepository.GetByUserId(user.Id);
+            var branch = await _branchRepository.GetByUserId(user.Id);
 
-            if (company.Status == AccauntStatusEnum.Disabled)
+            if (branch.Status == AccauntStatusEnum.Disabled)
                 throw new NotFoundException("Qeydiyyat uğurla tamamlanib, biraz gözləyin.");
 
-            return new(GenerateToken(user));
+            return new(GenerateToken(user, branch.Id));
         }
 
         public async Task<string> SubscibeConfirm(int otpCode)
@@ -163,7 +162,7 @@ namespace Uplay.Application.Services.Users
             return user;
         }
 
-        private string GenerateToken(User user)
+        private string GenerateToken(User user, int id)
         {
             List<Claim> authClaims = new()
             {
@@ -173,6 +172,7 @@ namespace Uplay.Application.Services.Users
                 new("Surname", user.Surname),
                 new("Phone", user.Phone),
                 new("Email", user.Email),
+                new("DashId", $"{id}"),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 

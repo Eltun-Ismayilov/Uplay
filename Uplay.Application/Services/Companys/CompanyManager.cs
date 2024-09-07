@@ -5,12 +5,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
+using Uplay.Application.Exceptions;
 using Uplay.Application.Extensions;
 using Uplay.Application.Models.Companies;
 using Uplay.Application.Services.AppFiles;
 using Uplay.Domain.Entities.Models.Companies;
 using Uplay.Domain.Enum;
 using Uplay.Persistence.Repository;
+using Uplay.Persistence.Repository.Mongo;
 
 namespace Uplay.Application.Services.Companys
 {
@@ -24,6 +26,7 @@ namespace Uplay.Application.Services.Companys
         readonly IConfiguration _configuration;
         readonly IHttpContextAccessor _httpContextAccessor;
         readonly IBranchQrCodeRepository _branchQrCodeRepository;
+        private readonly IQrRetentionRepo _qrRetentionRepo;
 
         public CompanyManager(
             IMapper mapper,
@@ -34,7 +37,8 @@ namespace Uplay.Application.Services.Companys
             IBranchRepository branchRepository,
             ICompanyBranchRepository companyBranchRepository,
             IFileService fileService,
-            IBranchQrCodeRepository branchQrCodeRepository)
+            IBranchQrCodeRepository branchQrCodeRepository,
+            IQrRetentionRepo qrRetentionRepo)
             : base(mapper)
         {
             _companyRepository = companyRepository;
@@ -45,14 +49,18 @@ namespace Uplay.Application.Services.Companys
             _companyBranchRepository = companyBranchRepository;
             _fileService = fileService;
             _branchQrCodeRepository = branchQrCodeRepository;
+            _qrRetentionRepo = qrRetentionRepo;
         }
 
         public async Task<ActionResult<int>> CreateCorporateAsync(SaveCompanyRequest command)
         {
             var users = await _userRepository.GetAllAsync();
 
-            if (users.Any(x => x.UserName == command.Onwer.UserName || x.Email == command.Onwer.Email || x.UserName == command.Onwer.UserName))
-                throw new BadHttpRequestException("Daxil etdiyiniz Username,Email ve ya UserName adinda isdifadeci movcudur");
+            if (users.Any(x =>
+                    x.UserName == command.Onwer.UserName || x.Email == command.Onwer.Email ||
+                    x.UserName == command.Onwer.UserName))
+                throw new BadHttpRequestException(
+                    "Daxil etdiyiniz Username,Email ve ya UserName adinda isdifadeci movcudur");
 
             var mapping = Mapper.Map<Company>(command);
 
@@ -64,7 +72,8 @@ namespace Uplay.Application.Services.Companys
 
             mapping.Onwer.OtpCode = randomValue;
 
-            string passHash = AesOperation.ComputeSha256Hash(command.Onwer.Email + command.Onwer.Password + mapping.Onwer.Salt);
+            string passHash =
+                AesOperation.ComputeSha256Hash(command.Onwer.Email + command.Onwer.Password + mapping.Onwer.Salt);
 
             mapping.Onwer.Password = passHash;
 
@@ -78,22 +87,28 @@ namespace Uplay.Application.Services.Companys
 
             email.Subject = _configuration["EmailSettings:displayName"];
 
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Zehmet olmasa {randomValue} OTP codu ile girisivizi testiqleyin" };
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+                { Text = $"Zehmet olmasa {randomValue} OTP codu ile girisivizi testiqleyin" };
 
             using var smtp = new SmtpClient();
-            smtp.Connect(_configuration["EmailSettings:smtpServer"], Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
+            smtp.Connect(_configuration["EmailSettings:smtpServer"],
+                Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
             smtp.Authenticate(_configuration["EmailSettings:UserName"], _configuration["EmailSettings:password"]);
             smtp.Send(email);
             smtp.Disconnect(true);
 
             return data;
         }
+
         public async Task<ActionResult<int>> CreatePersonalAsync(SavePersonalRequest command)
         {
             var users = await _userRepository.GetAllAsync();
 
-            if (users.Any(x => x.UserName == command.Onwer.UserName || x.Email == command.Onwer.Email || x.Phone == command.Onwer.Phone))
-                throw new BadHttpRequestException("Daxil etdiyiniz Username,Email ve ya Nomre adinda isdifadeci movcudur");
+            if (users.Any(x =>
+                    x.UserName == command.Onwer.UserName || x.Email == command.Onwer.Email ||
+                    x.Phone == command.Onwer.Phone))
+                throw new BadHttpRequestException(
+                    "Daxil etdiyiniz Username,Email ve ya Nomre adinda isdifadeci movcudur");
 
             var mapping = Mapper.Map<Company>(command);
 
@@ -101,7 +116,8 @@ namespace Uplay.Application.Services.Companys
 
             mapping.Onwer.EmailConfirmed = false;
 
-            string passHash = AesOperation.ComputeSha256Hash(command.Onwer.Email + command.Onwer.Password + mapping.Onwer.Salt);
+            string passHash =
+                AesOperation.ComputeSha256Hash(command.Onwer.Email + command.Onwer.Password + mapping.Onwer.Salt);
 
             mapping.Onwer.Password = passHash;
 
@@ -113,11 +129,13 @@ namespace Uplay.Application.Services.Companys
 
             var userId = await _companyRepository.GetByIdAsync(companyId);
 
-            var brachCategory = command.CategoryIds.Select(ctgId => new BranchCategory() { CategoryId = ctgId }).ToList();
+            var brachCategory = command.CategoryIds.Select(ctgId => new BranchCategory() { CategoryId = ctgId })
+                .ToList();
 
             var operationId = Guid.NewGuid();
 
-            var qrCodebyte = QrCodeExtension.GenerateQr($"https://localhost:7260/qr/:operationId?operationId={operationId}");
+            var qrCodebyte =
+                QrCodeExtension.GenerateQr($"https://localhost:7260/qr/:operationId?operationId={operationId}");
 
             var appFile = await _fileService.UploadPhoto(qrCodebyte);
 
@@ -134,8 +152,8 @@ namespace Uplay.Application.Services.Companys
                 {
                     new BranchQrCode()
                     {
-                         AppFile = appFile,
-                         operationId = operationId,
+                        AppFile = appFile,
+                        operationId = operationId,
                     }
                 }
             };
@@ -152,30 +170,37 @@ namespace Uplay.Application.Services.Companys
 
             email.Subject = _configuration["EmailSettings:displayName"];
 
-            email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Zehmet olmasa {randomValue} OTP codu ile girisivizi testiqleyin" };
+            email.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+                { Text = $"Zehmet olmasa {randomValue} OTP codu ile girisivizi testiqleyin" };
 
             using var smtp = new SmtpClient();
-            smtp.Connect(_configuration["EmailSettings:smtpServer"], Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
+            smtp.Connect(_configuration["EmailSettings:smtpServer"],
+                Convert.ToInt32(_configuration["EmailSettings:smtpPort"]), SecureSocketOptions.StartTls);
             smtp.Authenticate(_configuration["EmailSettings:UserName"], _configuration["EmailSettings:password"]);
             smtp.Send(email);
             smtp.Disconnect(true);
 
             return brachId;
         }
+
         public async Task<ActionResult<int>> GetOperationId(Guid operationId)
         {
             var branchQrCode = _branchQrCodeRepository.GetQuery()
-                                                      .FirstOrDefault(x => x.operationId == operationId);
+                .FirstOrDefault(x => x.operationId == operationId);
+            
+            if (branchQrCode is null)
+                throw new NotFoundException("Branch Qr not found");
+
+            await _qrRetentionRepo.WriteQrRetentionToCollection(branchQrCode.BranchId);
 
             return branchQrCode.BranchId;
         }
+
         public static int GenerateRandomSixDigitNumber()
         {
             Random random = new Random();
 
             return random.Next(100000, 999999 + 1);
         }
-
-
     }
 }

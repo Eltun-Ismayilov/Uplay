@@ -40,7 +40,7 @@ namespace Uplay.Application.Services.RatingBranchs
             var mapping = new RatingBranchDto
             {
                 TotalStar = ratingBranchs.Count(),
-                AverageStar = averageStar / ratingBranchs.Count(),
+                AverageStar = ratingBranchs.Count() == 0 ? 0: averageStar / ratingBranchs.Count(),
             };
 
             response.RatingBranchDto = mapping;
@@ -93,6 +93,9 @@ namespace Uplay.Application.Services.RatingBranchs
                 predicate = predicate.And(x =>
                     x.CreatedDate.Date == startDate);
             }
+            
+            predicate = predicate.And(x =>
+                x.BranchId == filterQuery.BranchId);
             return predicate;
         }
     }

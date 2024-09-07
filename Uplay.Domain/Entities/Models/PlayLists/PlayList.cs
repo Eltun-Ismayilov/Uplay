@@ -8,6 +8,7 @@ namespace Uplay.Domain.Entities.Models.PlayLists
     public class PlayList:CommonEntity, IFilterable
     {
         public string Title { get; set; }
+        public long YoutubeId { get; set; }
         public int FileId { get; set; }
         public AppFile File { get; set; }
         public string Duration { get; set; }

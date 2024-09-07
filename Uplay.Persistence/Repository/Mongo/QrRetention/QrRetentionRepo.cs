@@ -1,17 +1,16 @@
-﻿using MongoDB.Driver;
+﻿using Microsoft.EntityFrameworkCore;
+using Uplay.Domain.Entities.Models.Miscs;
 using Uplay.Persistence.Data.Statistics;
 
 namespace Uplay.Persistence.Repository.Mongo;
 
 public class QrRetentionRepo : IQrRetentionRepo
 {
-    private const string Collection = "branchStatistics";
-    private const string DateFormat = "dd-MM-yy";
-    private readonly IMongoDatabase _mongoDb;
+    private readonly IRepository<BranchQrRetention> _branchQrRetentionRepository;
 
-    public QrRetentionRepo(IMongoDatabase mongoDb)
+    public QrRetentionRepo( IRepository<BranchQrRetention> branchQrRetentionRepository)
     {
-        _mongoDb = mongoDb;
+        _branchQrRetentionRepository = branchQrRetentionRepository;
     }
 
     public async Task WriteQrRetentionToCollection(int branchId)
@@ -21,50 +20,57 @@ public class QrRetentionRepo : IQrRetentionRepo
 
     public async Task<Dictionary<string, long>> ReadQrRetention(QrRetFilter filter)
     {
-        var collection = _mongoDb.GetCollection<BranchStatistics>($"{Collection}." + filter.BranchId);
-
-        var filterBuilder = Builders<BranchStatistics>.Filter;
-        var sort = Builders<BranchStatistics>.Sort.Descending(u => u.Date);
-        var filterDefinition = filterBuilder.Empty;
-        var projection = Builders<BranchStatistics>.Projection.Include("QrRetCount").Include("Date");
-
+        var query = _branchQrRetentionRepository.GetQuery();
+        
         if (filter.StartDate.HasValue && filter.EndDate.HasValue)
         {
-            filterDefinition = filterBuilder.And(
-                filterDefinition,
-                filterBuilder.Gte("Date", filter.StartDate.Value.Date.ToString(DateFormat)),
-                filterBuilder.Lte("Date", filter.EndDate.Value.Date.ToString(DateFormat))
-            );
+            var formattedStartDate = filter.StartDate.Value.ToString("yyyy-MM-dd");
+            var formattedEndDate = filter.EndDate.HasValue ? filter.EndDate.Value.ToString("yyyy-MM-dd")
+                : DateTime.Now.ToString("yyyy-MM-dd");
+            query = query.Where(x => string.Compare(x.Date, formattedStartDate) >= 0 &&
+                                     string.Compare(x.Date, formattedEndDate) <= 0);
         }
         else if (filter.StartDate.HasValue)
         {
-            filterDefinition = filterBuilder.And(
-                filterDefinition,
-                filterBuilder.Gte("Date", filter.StartDate.Value.Date.ToString(DateFormat)),
-                filterBuilder.Lte("Date", DateTime.Now.Date.ToString(DateFormat))
-            );
+            var formattedStartDate = filter.StartDate.Value.ToString("yyyy-MM-dd");
+            query = query.Where(x => string.Compare(x.Date, formattedStartDate) >= 0 &&
+                                     String.CompareOrdinal(x.Date, DateTime.Now.ToString("yyyy-MM-dd")) <= 0);
         }
 
-        var qrRets = await collection.Find(filterDefinition)
-            .Project<BranchStatistics>(projection)
-            .Sort(sort)
+        var qrRets = await query
+            .Select(x => new { x.Date, x.QrRetCount })
+            .OrderBy(x=>x.Date)
             .ToListAsync();
 
         var feedbackRetentionMap = qrRets
             .ToDictionary(stat => stat.Date, stat => stat.QrRetCount);
+
         return feedbackRetentionMap;
     }
 
     private async Task IncrementDailyScan(int branchId)
     {
-        var collection = _mongoDb.GetCollection<BranchStatistics>($"{Collection}." + branchId);
-        var date = DateTime.Now.AddDays(-1);
-        var currentDateKey = date.ToString(DateFormat); // Format for daily key
-        // var currentMonthKey = DateTime.UtcNow.ToString("MMMM"); // Format for monthly key
-        var filter = Builders<BranchStatistics>.Filter.Eq(x => x.Date, currentDateKey);
-        var update = Builders<BranchStatistics>.Update.Inc($"QrRetCount", 1);
-        // var updateMonthKey = Builders<T>.Update.Inc($"MonthlyRetentions.{currentMonthKey}", 1);
-
-        await collection.UpdateOneAsync(filter, update, new UpdateOptions { IsUpsert = true });
+        var date = DateTime.UtcNow;
+        var currentDateKey = date.ToString("yyyy-MM-dd"); // Use your DateFormat here
+        
+        var branchStatistic = await _branchQrRetentionRepository.GetQuery()
+            .FirstOrDefaultAsync(x => x.BranchId == branchId && x.Date == currentDateKey);
+        
+        if (branchStatistic != null)
+        {
+            branchStatistic.QrRetCount += 1;
+        }
+        else
+        {
+            branchStatistic = new BranchQrRetention()
+            {
+                BranchId = branchId,
+                Date = currentDateKey,
+                QrRetCount = 1
+            };
+            await _branchQrRetentionRepository.GetTable().AddAsync(branchStatistic);
+        }
+        
+        await _branchQrRetentionRepository.SaveChangesAsync();
     }
 }

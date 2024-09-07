@@ -9,4 +9,5 @@ public interface IPlaylistRepository: IRepository<PlayList>
     IQueryable<PlayList> GetPlaylistsByBranch(Expression<Func<PlayList, bool>>? predicate);
     IQueryable<PlayList> GetPlaylistsInStatuses(List<PlayListEnum> statuses);
     Task<PlayList?> GetById(int id);
+    Task<IQueryable<PlayList>> GetTop3PlaylistsByPlays(int branchId);
 }

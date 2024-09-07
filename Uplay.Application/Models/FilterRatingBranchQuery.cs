@@ -8,6 +8,7 @@ namespace Uplay.Application.Models
 {
     public class FilterRatingBranchQuery
     {
+        public int BranchId { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
     }

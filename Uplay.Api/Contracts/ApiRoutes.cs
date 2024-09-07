@@ -120,7 +120,7 @@
         {
             public const string GetAll = Base + "/feedback/:id";
             public const string Create = Base + "/feedback";
-            public const string GetStatistics = Base + "/feedback/statistics";
+            public const string GetStatistics = Base + "/branch/statistics";
         }
         
         public struct BranchRoute
@@ -145,6 +145,7 @@
             public const string GetAll = Base + "/playlist";
             public const string Create = Base + "/playlist";
             public const string Update = Base + "/playlist/:id";
+            public const string Topthree = Base + "/topThreePlaylist/:branchId";
         }
     }
 }

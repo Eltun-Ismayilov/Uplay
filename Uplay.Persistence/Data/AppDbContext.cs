@@ -55,6 +55,7 @@ namespace Uplay.Persistence.Data
         #region Miscs
 
         public virtual DbSet<AppFile> Files { get; set; } = null!;
+        public virtual DbSet<BranchQrRetention> BranchQrRetentions { get; set; } = null!;
 
         #endregion
 

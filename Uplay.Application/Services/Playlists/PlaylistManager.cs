@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Uplay.Application.Exceptions;
 using Uplay.Application.Extensions;
 using Uplay.Application.Mappings;
@@ -45,12 +46,32 @@ public class PlaylistManager : BaseManager, IPlaylistService
         await _playlistRepository.UpdateAsync(playlist);
     }
 
-    public async Task<GetAllPlaylistResponse> getAllByStatuses(List<PlayListEnum> statuses, PaginationFilter paginationFilter)
+    public async Task<GetAllPlaylistResponse> getAllByStatuses(List<PlayListEnum> statuses,
+        PaginationFilter paginationFilter)
     {
         var response = new GetAllPlaylistResponse();
         var playlistQuery = _playlistRepository.GetPlaylistsInStatuses(statuses);
-        
-        var list = await playlistQuery.PaginatedMappedListAsync<PlaylistDto, PlayList>(Mapper, paginationFilter.PageNumber, paginationFilter.PageSize);
+
+        var list = await playlistQuery.PaginatedMappedListAsync<PlaylistDto, PlayList>(Mapper,
+            paginationFilter.PageNumber, paginationFilter.PageSize);
+        response.PlaylistDtos = list;
+
+        foreach (var playList in playlistQuery)
+        {
+            var fileUrl = HttpContextAccessor.GeneratePhotoUrl(playList.FileId);
+            var datas = list.Items.FirstOrDefault(x => x.Id == playList.Id);
+            datas.File = fileUrl;
+        }
+
+        return response;
+    }
+
+    public async Task<GetAllPlaylistResponse> getTopThreeMusic(int branchId)
+    {
+        var response = new GetAllPlaylistResponse();
+        var playlistQuery = await _playlistRepository.GetTop3PlaylistsByPlays(branchId);
+
+        var list = await playlistQuery.PaginatedMappedListAsync<PlaylistDto, PlayList>(Mapper, 1, 3);
         response.PlaylistDtos = list;
         
         foreach (var playList in playlistQuery)

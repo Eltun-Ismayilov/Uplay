@@ -25,13 +25,6 @@ public class CommonController : BaseController
         _feedbackService = feedbackService;
     }
 
-    [HttpGet("/qr/:branchId")]
-    public async Task<ActionResult<int>> QrRetentionChekcer(int branchId)
-    {
-        await _qrRetentionRepo.WriteQrRetentionToCollection(branchId);
-        return Created(string.Empty, "");
-    }
-
     [HttpGet("/qr/:operationId")]
     public async Task<ActionResult<int>> QrCodeOperation(Guid operationId)
     {
@@ -51,18 +44,4 @@ public class CommonController : BaseController
         var data = await _feedbackService.GetCommonStatistics(filter);
         return Ok(data);
     }
-
-
-
-    // [HttpGet("/feedback/get/:branchId")]
-    // public async Task<ActionResult> FeedbackRetentionGet(int branchId)
-    // {
-    //     return Ok(await _feedbackRetention.ReadFeedbackRetention(branchId));
-    // }
-    //
-    // [HttpGet("/review/get/:branchId")]
-    // public async Task<ActionResult> ReviewRetentionGet(int branchId)
-    // {
-    //     return Ok(await _feedbackRetention.ReadReviewRetention(branchId));
-    // }
 }
