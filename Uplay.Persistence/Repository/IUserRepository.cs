@@ -8,6 +8,7 @@ namespace Uplay.Persistence.Repository
     {
         Task<User> Login(string username);
         Task<User> GetUserByUsername(string username);
+        Task<User> GetUserByUsernameWithBranch(string username);
         Task<User> GetUserByEmail(string email);
         Task<User> CheckUser(Expression<Func<User, bool>> predicate);
         Task<User> CheckOtpCode(int optCode);

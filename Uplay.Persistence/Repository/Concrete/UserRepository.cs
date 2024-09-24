@@ -19,6 +19,15 @@ namespace Uplay.Persistence.Repository.Concrete
             return user;
         }
         
+        public async Task<User> GetUserByUsernameWithBranch(string username)
+        {
+            var user = await AsQueryable().AsNoTracking()
+                .Include(x=>x.Branches)
+                .FirstOrDefaultAsync(x => x.UserName == username || x.Email == username);
+
+            return user;
+        }
+        
         public async Task<User> GetUserByUsername(string username)
         {
             var user = await AsQueryable().AsNoTracking()

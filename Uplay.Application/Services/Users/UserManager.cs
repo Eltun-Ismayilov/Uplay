@@ -12,6 +12,7 @@ using MimeKit;
 using Uplay.Application.Exceptions;
 using Uplay.Application.Extensions;
 using Uplay.Application.Models.Users;
+using Uplay.Domain.Entities.Models.Companies;
 using Uplay.Domain.Entities.Models.Users;
 using Uplay.Domain.Enum;
 using Uplay.Persistence.Repository;
@@ -39,7 +40,7 @@ namespace Uplay.Application.Services.Users
 
         public string Username
         {
-            get => ParseJwt(_contextAccessor);
+            get =>"mayils";
             set { throw new NotImplementedException(); }
         }
 
@@ -250,6 +251,113 @@ namespace Uplay.Application.Services.Users
             smtp.Disconnect(true);
 
             return "Qeydiyyat uğurla tamamlandi";
+        }
+        
+        public async Task DeleteBranchAccount(int branchId)
+        {
+            var user = await ValidateBranch(branchId);
+            var branch = user.Branches.FirstOrDefault(x=>x.Id == branchId);
+            if (branch is null)
+                throw new BadHttpRequestException("Cannot delete account");
+            
+            branch.Deleted = true;
+            user.Branches = new List<Branch>() { branch };
+            
+            await _userRepository.DeleteAsync(user);
+        }
+
+        public async Task DeleteCorporateAccount(int companyId)
+        {
+            var user = await ValidateCompany(companyId);
+            var company = user.Companies.FirstOrDefault(x=>x.Id == companyId);
+            if (company is null)
+                throw new BadHttpRequestException("Cannot delete account");
+            
+            company.Deleted = true;
+            user.Companies = new List<Company>() { company };
+            
+            await _userRepository.DeleteAsync(user);
+        }
+
+        public async Task<UserDto> GetBranchAccountInfo(int branchId)
+        {
+            var user = await ValidateBranch(branchId);
+            var branch = user.Branches.FirstOrDefault(x=>x.Id == branchId);
+            if (branch is null)
+                throw new BadHttpRequestException("Cannot get account");
+            
+            var company = user.Companies.FirstOrDefault();
+            if (company is null)
+                throw new BadHttpRequestException("Cannot get account");
+            
+            var mappedAccountInfo = Mapper.Map<UserDto>(user);
+            mappedAccountInfo.BrandName = company.BrandName;
+            return mappedAccountInfo;
+        }
+        
+        public async Task<CompanyAccountInfoDto> GetCompanyAccountInfo(int companyId)
+        {
+            var user = await ValidateCompany(companyId);
+            var company = user.Companies.FirstOrDefault(x=>x.Id == companyId);
+            if (company is null)
+                throw new BadHttpRequestException("Cannot get account");
+            
+            var mappedAccountInfo = Mapper.Map<CompanyAccountInfoDto>(user);
+            return mappedAccountInfo;
+        }
+
+        public async Task UpdateBranchAccountInfo(int branchId, BranchAccountRequest request)
+        {
+            var user = await ValidateBranch(branchId);
+            var branch = user.Branches.FirstOrDefault(x=>x.Id == branchId);
+            if (branch is null)
+                throw new BadHttpRequestException("Cannot update account");
+
+            user.Name = request.Name;
+            user.Surname = request.Surname;
+            user.Phone = request.Phone;
+            branch.City = request.City;
+            branch.Location = request.Location;
+            user.Branches = new List<Branch>() { branch };
+
+            await  _userRepository.UpdateAsync(user);
+        }
+        
+        public async Task UpdateCompanyAccountInfo(int companyId, BranchAccountRequest request)
+        {
+            var user = await ValidateCompany(companyId);
+            var company = user.Companies.FirstOrDefault(x=>x.Id == companyId);
+            if (company is null)
+                throw new BadHttpRequestException("Cannot update account");
+
+            user.Name = request.Name;
+            user.Surname = request.Surname;
+            user.Phone = request.Phone;
+            company.City = request.City;
+            company.Location = request.Location;
+            user.Companies = new List<Company>() { company };
+
+            await  _userRepository.UpdateAsync(user);
+        }
+
+        private async Task<User> ValidateBranch(int branchId)
+        {
+            var user = await _userRepository.GetUserByUsernameWithBranch(Username);
+            if (user is null) throw new BadHttpRequestException("User not found");
+            if (user.Branches is null || user.Branches.Count == 0) 
+                throw new BadHttpRequestException("Branches not found");
+
+            return user;
+        }
+        
+        private async Task<User> ValidateCompany(int branchId)
+        {
+            var user = await _userRepository.GetUserByUsername(Username);
+            if (user is null) throw new BadHttpRequestException("User not found");
+            if (user.Companies is null || user.Companies.Count == 0) 
+                throw new BadHttpRequestException("Branches not found");
+
+            return user;
         }
     }
 }

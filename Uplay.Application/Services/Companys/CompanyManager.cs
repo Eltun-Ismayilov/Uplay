@@ -3,6 +3,7 @@ using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using MimeKit;
 using Uplay.Application.Exceptions;
@@ -194,6 +195,21 @@ namespace Uplay.Application.Services.Companys
             await _qrRetentionRepo.WriteQrRetentionToCollection(branchQrCode.BranchId);
 
             return branchQrCode.BranchId;
+        }
+        
+        public async Task<ActionResult<CompanyDetailsDto>> GetCompany(int companyId)
+        {
+            var company = await _companyRepository.GetQuery().Include(x=>x.File)
+                .FirstOrDefaultAsync(x => x.Id == companyId);
+            
+            if (company is null)
+                throw new NotFoundException("Company not found");
+
+            return new CompanyDetailsDto()
+            {
+                Name = company.BrandName,
+                File = _httpContextAccessor.GeneratePhotoUrl(company.FileId)
+            };
         }
 
         public static int GenerateRandomSixDigitNumber()

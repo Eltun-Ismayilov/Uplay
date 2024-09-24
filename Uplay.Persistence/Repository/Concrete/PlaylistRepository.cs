@@ -36,13 +36,13 @@ public class PlaylistRepository : Repository<PlayList>, IPlaylistRepository
         }
     }
 
-    public IQueryable<PlayList> GetPlaylistsInStatuses(List<PlayListEnum> statuses)
+    public IQueryable<PlayList> GetPlaylistsInStatuses(int branchId, List<PlayListEnum> statuses)
     {
         {
             return GetTable()
                 .AsNoTracking()
                 .Include(x => x.File)
-                .Where(x => statuses.Contains(x.Status))
+                .Where(x => statuses.Contains(x.Status) && x.BranchId == branchId)
                 .OrderByDescending(x => x.CreatedDate)
                 .AsQueryable();
         }

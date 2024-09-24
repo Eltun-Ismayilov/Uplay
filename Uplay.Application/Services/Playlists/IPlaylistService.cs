@@ -9,6 +9,6 @@ public interface IPlaylistService : IBaseService
 {
     Task<ActionResult<int>> Create(SavePlaylistRequest command);
     Task Update(int id, PlayListEnum statusId);
-    Task<GetAllPlaylistResponse> getAllByStatuses(List<PlayListEnum> statuses, PaginationFilter paginationFilter);
+    Task<GetAllPlaylistResponse> getAllByStatuses(int branchId,List<PlayListEnum> statuses, PaginationFilter paginationFilter);
     Task<GetAllPlaylistResponse> getTopThreeMusic(int branchId);
 }

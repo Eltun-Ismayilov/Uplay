@@ -24,7 +24,5 @@ namespace Uplay.Domain.Entities.Models.Companies
         public virtual ICollection<Review> Reviews { get; set; }
         public virtual ICollection<BranchQrCode> BranchQrCodes { get; set; }
         public virtual ICollection<RatingBranch> RatingBranchs { get; set; }
-
-        
     }
 }

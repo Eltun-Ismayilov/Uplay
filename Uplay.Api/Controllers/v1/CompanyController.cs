@@ -31,5 +31,13 @@ namespace Uplay.Api.Controllers.v1
             var data = await _companyService.CreatePersonalAsync(command);
             return Ok(data.Value);
         }
+        
+        [AllowAnonymous]
+        [HttpGet(ApiRoutes.CompanyRoute.Get)]
+        public async Task<ActionResult<CompanyDetailsDto>> GetCompany(int companyId)
+        {
+            var data = await _companyService.GetCompany(companyId);
+            return Ok(data.Value);
+        }
     }
 }

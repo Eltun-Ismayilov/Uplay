@@ -12,5 +12,11 @@ namespace Uplay.Application.Services.Users
         Task<string> SendForgotPasswordEmail(string email);
         Task<string> SendOtpAsync(string emailAddress);
         Task<string> ConfirmResetPassword( ConfirmResetPasswordRequest request);
+        Task DeleteBranchAccount(int branchId);
+        Task DeleteCorporateAccount(int companyId);
+        Task<UserDto> GetBranchAccountInfo(int branchId);
+        Task<CompanyAccountInfoDto> GetCompanyAccountInfo(int companyId);
+        Task UpdateBranchAccountInfo(int branchid, BranchAccountRequest request);
+        Task UpdateCompanyAccountInfo(int companyId, BranchAccountRequest request);
     }
 }

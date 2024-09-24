@@ -5,5 +5,5 @@ namespace Uplay.Application.Models.Core.Reviews;
 
 public class ReviewGetAllResponse
 {
-    [JsonPropertyName("feedbacks")] public PaginatedMappedList<ReviewDto, Review> ReviewDtos { get; set; }
+    [JsonPropertyName("reviews")] public PaginatedMappedList<ReviewDto, Review> ReviewDtos { get; set; }
 }

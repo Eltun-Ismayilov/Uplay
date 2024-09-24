@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Feedbacks;
@@ -20,10 +21,10 @@ public class PlaylistController : BaseController
     }
 
     [HttpGet(ApiRoutes.PlaylistRoute.GetAll)]
-    public async Task<ActionResult<FeedbackGetAllResponse>> GetAll([FromQuery] PaginationFilter paginationFilter,
+    public async Task<ActionResult<FeedbackGetAllResponse>> GetAll([FromQuery] int branchId, [FromQuery] PaginationFilter paginationFilter,
         [FromQuery] List<PlayListEnum> statuses)
     {
-        var data = await _playlistService.getAllByStatuses(statuses, paginationFilter);
+        var data = await _playlistService.getAllByStatuses(branchId, statuses, paginationFilter);
         return Ok(data);
     }
 
@@ -41,7 +42,7 @@ public class PlaylistController : BaseController
         return NoContent();
     }
     
-    [HttpPut(ApiRoutes.PlaylistRoute.Topthree)]
+    [HttpGet(ApiRoutes.PlaylistRoute.Topthree)]
     public async Task<ActionResult<int>> Topthree(int branchId)
     {
         return Ok(await _playlistService.getTopThreeMusic(branchId));

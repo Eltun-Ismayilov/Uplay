@@ -1,14 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json.Linq;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models.Users;
 using Uplay.Application.Services.Users;
-using Uplay.Domain.Entities.Models.Users;
 
 namespace Uplay.Api.Controllers.v1
 {
@@ -72,6 +66,52 @@ namespace Uplay.Api.Controllers.v1
         {
             var data = await _userService.ConfirmResetPassword(request);
             return Ok(data);
+        }
+        
+        [AllowAnonymous]
+        [HttpDelete(ApiRoutes.UserRoute.DeleteBranchAccount)]
+        public async Task<IActionResult> DeleteBranchAccount(int branchId)
+        {
+            await _userService.DeleteBranchAccount(branchId);
+            return NoContent();
+        }
+        
+        [AllowAnonymous]
+        [HttpDelete(ApiRoutes.UserRoute.DeleteCompanyAccount)]
+        public async Task<IActionResult> DeleteCompanyAccount(int companyId)
+        {
+            await _userService.DeleteCorporateAccount(companyId);
+            return NoContent();
+        }
+         
+        [AllowAnonymous]
+        [HttpGet(ApiRoutes.UserRoute.GetBranchAccountInfo)]
+        public async Task<IActionResult> GetBranchAccountInfo(int branchId)
+        {
+            return Ok(await _userService.GetBranchAccountInfo(branchId));
+        }
+        
+        [AllowAnonymous]
+        [HttpGet(ApiRoutes.UserRoute.GetCompanyAccountInfo)]
+        public async Task<IActionResult> GetCompanyAccountInfo(int companyId)
+        {
+            return Ok(await _userService.GetCompanyAccountInfo(companyId));
+        }
+        
+        [AllowAnonymous]
+        [HttpPut(ApiRoutes.UserRoute.UpdateBranchAccountInfo)]
+        public async Task<IActionResult> UpdateBranchAccountInfo(int branchId, BranchAccountRequest request)
+        {
+            await _userService.UpdateBranchAccountInfo(branchId, request);
+            return NoContent();
+        }
+        
+        [AllowAnonymous]
+        [HttpPut(ApiRoutes.UserRoute.UpdateCompanyAccountInfo)]
+        public async Task<IActionResult> UpdateCompanyAccountInfo(int companyId, BranchAccountRequest request)
+        {
+            await _userService.UpdateCompanyAccountInfo(companyId, request);
+            return NoContent();
         }
     }
 }

@@ -46,11 +46,13 @@ public class PlaylistManager : BaseManager, IPlaylistService
         await _playlistRepository.UpdateAsync(playlist);
     }
 
-    public async Task<GetAllPlaylistResponse> getAllByStatuses(List<PlayListEnum> statuses,
+    public async Task<GetAllPlaylistResponse> getAllByStatuses(
+        int branchId,
+        List<PlayListEnum> statuses,
         PaginationFilter paginationFilter)
     {
         var response = new GetAllPlaylistResponse();
-        var playlistQuery = _playlistRepository.GetPlaylistsInStatuses(statuses);
+        var playlistQuery = _playlistRepository.GetPlaylistsInStatuses(branchId, statuses);
 
         var list = await playlistQuery.PaginatedMappedListAsync<PlaylistDto, PlayList>(Mapper,
             paginationFilter.PageNumber, paginationFilter.PageSize);

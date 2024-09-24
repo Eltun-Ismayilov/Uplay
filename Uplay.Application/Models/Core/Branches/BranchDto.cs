@@ -8,4 +8,5 @@ public class BranchDto: BaseDto, IMapFrom<Branch>
     public string Name { get; set; }
     public string City { get; set; }
     public string Location { get; set; }
+    public string Tin { get; set; }
 }

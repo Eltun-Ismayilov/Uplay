@@ -8,7 +8,6 @@ public interface IBranchService: IBaseService
 {
     Task<ActionResult<int>> CreateBranchAsync(SaveBranchRequest command);
     Task<BranchGetAllResponse> GetAll(PaginationFilter paginationFilter);
-    
     Task<int> DeleteBranch(int id);
     Task<string> GetByBranchIdAsync(int id);
     Task<int> DisableBranch(int id);

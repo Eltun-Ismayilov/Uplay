@@ -87,6 +87,12 @@
             public const string ForgetPassword = Base + "/forgetpassword";
             public const string ConfirmForgetPassword = Base + "/confirmforgotpassword";
             public const string SendOtp = Base + "/SendOtp";
+            public const string DeleteBranchAccount = Base + "/branch/account";
+            public const string DeleteCompanyAccount = Base + "/company/account";
+            public const string GetBranchAccountInfo = Base + "/branch/account";
+            public const string GetCompanyAccountInfo = Base + "/company/account";
+            public const string UpdateBranchAccountInfo = Base + "/branch/account";
+            public const string UpdateCompanyAccountInfo = Base + "/company/account";
             
         }
         public struct PublicReviewRoute
@@ -108,6 +114,7 @@
         {
             public const string CreateCorporate = Base + "/corporate";
             public const string CreatePersonal = Base + "/personal";
+            public const string Get = Base + "/company/:id";
         }
 
         public struct ReviewRoute
@@ -127,6 +134,7 @@
         {
             public const string CreateBranch= Base + "/branch";
             public const string GetAllBranch = Base + "/branch";
+            public const string GetBranch = Base + "/branch/:id";
             public const string DeleteBranch= Base + "/branch/delete/:id";
             public const string DisableBranch = Base + "/branch/disable/:id";
             public const string GetBranchIdByQrcode = Base + "/branch/qrCode/:id";
