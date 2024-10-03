@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Uplay.Application.Models;
+using Uplay.Application.Models.Companies;
 using Uplay.Application.Models.Core.Branches;
 
 namespace Uplay.Application.Services.Branches;
@@ -11,4 +12,5 @@ public interface IBranchService: IBaseService
     Task<int> DeleteBranch(int id);
     Task<string> GetByBranchIdAsync(int id);
     Task<int> DisableBranch(int id);
+    Task<CompanyDetailsDto> GetBranchByiD(int id);
 }

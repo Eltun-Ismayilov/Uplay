@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Uplay.Application.Exceptions;
 using Uplay.Application.Extensions;
 using Uplay.Application.Mappings;
 using Uplay.Application.Models;
+using Uplay.Application.Models.Companies;
 using Uplay.Application.Models.Core.Branches;
 using Uplay.Application.Services.AppFiles;
 using Uplay.Domain.Entities.Models.Companies;
@@ -125,6 +127,21 @@ public class BranchManager : BaseManager, IBranchService
 
         branch.Status = AccauntStatusEnum.Disabled;
         return await _branchRepository.SaveChangesAsync();
+    }
+
+    public async Task<CompanyDetailsDto> GetBranchByiD(int id)
+    {
+        var branch = await _branchRepository.GetQuery()
+            .FirstOrDefaultAsync(x => x.Id == id);
+            
+        if (branch is null)
+            throw new NotFoundException("Branch not found");
+
+        return new CompanyDetailsDto()
+        {
+            Name = branch.Name,
+            File = null
+        };
     }
 
     public async Task<string> GetByBranchIdAsync(int id)

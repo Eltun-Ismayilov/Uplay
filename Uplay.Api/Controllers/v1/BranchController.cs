@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
+using Uplay.Application.Models.Companies;
 using Uplay.Application.Models.Core.Branches;
 using Uplay.Application.Services.Branches;
 
@@ -48,6 +49,14 @@ public class BranchController : BaseController
     public async Task<ActionResult<string>> GetBranchIdByQrcode([Required][FromQuery] int id)
     {
         var data = await _branchService.GetByBranchIdAsync(id);
+        return Ok(data);
+    }
+    
+    [AllowAnonymous]
+    [HttpGet(ApiRoutes.BranchRoute.GetBranch)]
+    public async Task<ActionResult<CompanyDetailsDto>> GetBranch(int branchId)
+    {
+        var data = await _branchService.GetBranchByiD(branchId);
         return Ok(data);
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
+using Uplay.Application.Models.Core.Reviews;
 using Uplay.Application.Models.Feedbacks;
 using Uplay.Application.Models.Playlists;
 using Uplay.Application.Services.Playlists;
@@ -21,10 +22,10 @@ public class PlaylistController : BaseController
     }
 
     [HttpGet(ApiRoutes.PlaylistRoute.GetAll)]
-    public async Task<ActionResult<FeedbackGetAllResponse>> GetAll([FromQuery] int branchId, [FromQuery] PaginationFilter paginationFilter,
+    public async Task<ActionResult<FeedbackGetAllResponse>> GetAll([FromQuery] ReviewFilter filter , [FromQuery] PaginationFilter paginationFilter,
         [FromQuery] List<PlayListEnum> statuses)
     {
-        var data = await _playlistService.getAllByStatuses(branchId, statuses, paginationFilter);
+        var data = await _playlistService.getAllByStatuses(filter, statuses, paginationFilter);
         return Ok(data);
     }
 
