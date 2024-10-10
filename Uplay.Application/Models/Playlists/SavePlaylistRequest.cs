@@ -11,7 +11,7 @@ public class SavePlaylistRequest: IMapFrom<PlayList>
     public IFormFile File { get; set; }
     public string Duration { get; set; }
     public int BranchId { get; set; }
-    public long YoutubeId { get; set; }
+    public string YoutubeId { get; set; }
     
     public void Mapping(Profile profile)
     {
