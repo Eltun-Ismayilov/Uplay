@@ -9,10 +9,12 @@ namespace Uplay.Application.Models.Companies.Validators
         {
             RuleFor(a => a.Name).NotNull().NotEmpty().WithMessage("Name is required");
             RuleFor(a => a.Surname).NotNull().NotEmpty().WithMessage("Surname is required");
-            RuleFor(a => a.Phone).NotNull().NotEmpty().WithMessage("Phone is required").Must(PhoneNumberExtensions.IsValidPhoneNumber);
+            RuleFor(a => a.Phone).NotNull().NotEmpty().WithMessage("Phone is required");
+                // .Must(PhoneNumberExtensions.IsValidPhoneNumber);
             RuleFor(a => a.UserName).NotNull().NotEmpty().WithMessage("UserName is required");
             RuleFor(a => a.Email).NotNull().NotEmpty().WithMessage("Email is required").EmailAddress().WithMessage("Email is not format");
-            RuleFor(a => a.Password).NotNull().NotEmpty().WithMessage("Password is required").Must(PhoneNumberExtensions.IsValidPassword);
+            RuleFor(a => a.Password).NotNull().NotEmpty().WithMessage("Password is required");
+                // .Must(PhoneNumberExtensions.IsValidPassword);
             RuleFor(a => a.ConfirmPassword).NotNull().NotEmpty().WithMessage("ConfirmPassword is required");
         }
     }
