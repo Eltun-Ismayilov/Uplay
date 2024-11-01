@@ -23,6 +23,7 @@ namespace Uplay.Persistence.Repository.Concrete
         {
             var user = await AsQueryable().AsNoTracking()
                 .Include(x=>x.Branches)
+                .Include(x=>x.Companies)
                 .FirstOrDefaultAsync(x => x.UserName == username || x.Email == username);
 
             return user;

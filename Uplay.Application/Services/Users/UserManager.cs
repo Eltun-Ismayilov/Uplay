@@ -40,7 +40,7 @@ namespace Uplay.Application.Services.Users
 
         public string Username
         {
-            get =>"mayils";
+            get => ParseJwt(_contextAccessor);
             set { throw new NotImplementedException(); }
         }
 
