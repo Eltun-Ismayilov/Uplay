@@ -7,11 +7,13 @@ using Uplay.Application.Helpers;
 using Uplay.Application.Mappings;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Feedbacks;
+using Uplay.Application.Models.Faqs;
 using Uplay.Application.Models.Feedbacks;
 using Uplay.Domain.Entities.Models.Landing;
 using Uplay.Domain.Entities.Models.Landings;
 using Uplay.Domain.Entities.Models.PlayLists;
 using Uplay.Persistence.Repository;
+using Uplay.Persistence.Repository.Concrete;
 
 namespace Uplay.Application.Services.Feedbacks;
 
@@ -180,5 +182,16 @@ public class FeedbackManager : BaseManager, IFeedbackService
         predicate = predicate.And(x => x.BranchId == filterQuery.BranchId);
 
         return predicate;
+    }
+
+    public async Task<FeedbackTypeGetResponse> Get(int id)
+    {
+        FeedbackTypeGetResponse response = new();
+
+        var feedbackType = await _feedbackTypeRepository.GetByIdAsync(id);
+        var mapping = Mapper.Map<FeedbackTypeDto>(feedbackType);
+        response.FeedbackTypeDto = mapping;
+
+        return response;
     }
 }

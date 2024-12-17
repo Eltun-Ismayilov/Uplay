@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Uplay.Application.Exceptions;
 using Uplay.Application.Extensions;
@@ -6,6 +7,7 @@ using Uplay.Application.Mappings;
 using Uplay.Application.Models;
 using Uplay.Application.Models.PublicReviews;
 using Uplay.Domain.Entities.Models.Landing;
+using Uplay.Domain.Entities.Models.PlayLists;
 using Uplay.Persistence.Repository;
 
 namespace Uplay.Application.Services.PublicReviews
@@ -15,8 +17,9 @@ namespace Uplay.Application.Services.PublicReviews
         private readonly IPublicReviewRepository _publicReviewRepository;
 
         public PublicReviewManager(
-            IPublicReviewRepository publicReviewRepository, 
-            IMapper mapper) : base(mapper)
+            IPublicReviewRepository publicReviewRepository,
+            IHttpContextAccessor httpContextAccessor,
+            IMapper mapper) : base(mapper, httpContextAccessor)
         {
             _publicReviewRepository = publicReviewRepository;
         }
@@ -70,7 +73,7 @@ namespace Uplay.Application.Services.PublicReviews
             {
                 var fileUrl = HttpContextAccessor.GeneratePhotoUrl(publicReview.FileId);
 
-                var datas = list.Items.FirstOrDefault(x => x.Url == null);
+                var datas = list.Items.FirstOrDefault(x => x.Id == publicReview.Id);
 
                 datas.Url = fileUrl;
             }

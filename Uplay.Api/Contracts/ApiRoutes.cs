@@ -146,8 +146,9 @@
             public const string Create = Base + "/feedbackType";
             public const string Update = Base + "/feedbackType/:id";
             public const string Delete = Base + "/feedbackType/:id";
+            public const string Get = Base + "/feedbackType/:id";
         }
-        
+
         public struct PlaylistRoute
         {
             public const string GetAll = Base + "/playlist";

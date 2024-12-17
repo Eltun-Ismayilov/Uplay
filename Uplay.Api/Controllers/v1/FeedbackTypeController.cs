@@ -4,7 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Feedbacks;
+using Uplay.Application.Models.Faqs;
 using Uplay.Application.Models.Feedbacks;
+using Uplay.Application.Services.Faqs;
 using Uplay.Application.Services.Feedbacks;
 
 namespace Uplay.Api.Controllers.v1;
@@ -23,6 +25,14 @@ public class FeedbackTypeController : BaseController
     public async Task<ActionResult<FeedbackTypeGetAllReponse>> GetAll([FromQuery] PaginationFilter paginationFilter)
     {
         var data = await _feedbackService.GetAllFeedbackTypes(paginationFilter);
+        return Ok(data);
+    }
+
+    [AllowAnonymous]
+    [HttpGet(ApiRoutes.FeedbackTypeRoute.Get)]
+    public async Task<ActionResult<FeedbackTypeGetResponse>> Get([Required] int id)
+    {
+        var data = await _feedbackService.Get(id);
         return Ok(data);
     }
 
