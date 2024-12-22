@@ -56,15 +56,16 @@ public class PlaylistManager : BaseManager, IPlaylistService
 
         var a = await playlistQuery.ToListAsync();
         var predicate = PredicateBuilder.New<PlayList>();
-        predicate = CreatePlaylistFilterQuery(predicate, filter);
+        var predicateDto = CreatePlaylistFilterQuery(predicate, filter, paginationFilter);
 
-        if (predicate != null) 
+        if (predicateDto.Predicate != null) 
             playlistQuery = playlistQuery.Where(predicate);
         var list = await playlistQuery.PaginatedMappedListAsync<PlaylistDto, PlayList>(Mapper,
             paginationFilter.PageNumber, paginationFilter.PageSize);
         response.PlaylistDtos = list;
 
-        foreach (var playList in playlistQuery)
+        foreach (var playList in playlistQuery.Skip(predicateDto.Skip)
+                     .Take(predicateDto.Take))
         {
             var fileUrl = HttpContextAccessor.GeneratePhotoUrl(playList.FileId);
             var datas = list.Items.FirstOrDefault(x => x.Id == playList.Id);
@@ -91,11 +92,20 @@ public class PlaylistManager : BaseManager, IPlaylistService
         return response;
     }
     
-    public static Expression<Func<PlayList, bool>>? CreatePlaylistFilterQuery(
+    public static PlaylistPredicateDto CreatePlaylistFilterQuery(
         Expression<Func<PlayList, bool>>? predicate,
-        ReviewFilter? filterQuery)
+        ReviewFilter? filterQuery,
+        PaginationFilter paginationFilter)
     {
-        if (filterQuery is null || predicate is null) return predicate;
+        if (filterQuery is null || predicate is null)
+        {
+            return new PlaylistPredicateDto
+            {
+                Predicate = predicate,
+                Skip = 0,
+                Take = 0
+            };;
+        }
 
         predicate = filterQuery.StartDate is not null && filterQuery.EndDate is not null ? predicate.And(
                 x =>
@@ -105,6 +115,21 @@ public class PlaylistManager : BaseManager, IPlaylistService
                 x.CreatedDate == filterQuery.StartDate.Value)
             : predicate;
         
-        return predicate;
+        int skip = (paginationFilter.PageNumber - 1) * paginationFilter.PageSize;
+        int take = paginationFilter.PageSize;
+
+        return new PlaylistPredicateDto
+        {
+            Predicate = predicate,
+            Skip = skip,
+            Take = take
+        };
     }
+}
+
+public class PlaylistPredicateDto
+{
+    public  Expression<Func<PlayList, bool>>? Predicate { get; set; }
+    public int Skip { get; set; }
+    public int Take { get; set; }
 }

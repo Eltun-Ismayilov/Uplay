@@ -39,7 +39,7 @@ namespace Uplay.Application.Services.RatingBranchs
 
             var mapping = new RatingBranchDto
             {
-                TotalStar = ratingBranchs.Count(),
+                TotalStar = ratingBranchs.Count()/5,
                 AverageStar = ratingBranchs.Count() == 0 ? 0: averageStar / ratingBranchs.Count(),
             };
 
