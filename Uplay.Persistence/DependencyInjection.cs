@@ -80,6 +80,7 @@ namespace Uplay.Persistence
             services.AddScoped(typeof(IRatingRepository), typeof(RatingRepository));
             services.AddScoped(typeof(IPlaylistRepository), typeof(PlaylistRepository));
             services.AddScoped(typeof(IRatingBranchRepository), typeof(RatingBranchRepository));
+            services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
             return services;
         }
     }
