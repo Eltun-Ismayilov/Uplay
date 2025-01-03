@@ -11,13 +11,13 @@ namespace Uplay.Application.Services
 
         protected readonly IMapper Mapper;
 
-        private readonly IUserService _authService;
+        private readonly IAdminService _authService;
         protected string Username => _authService.Username;
         protected BaseManager(IMapper mapper, IHttpContextAccessor httpContextAccessor)
         {
             Mapper = mapper;
             HttpContextAccessor = httpContextAccessor;
-            _authService = httpContextAccessor.HttpContext?.RequestServices?.GetRequiredService<IUserService>() ??
+            _authService = httpContextAccessor.HttpContext?.RequestServices?.GetRequiredService<IAdminService>() ??
                            throw new ArgumentException("Auth service can't be null");
         }
         

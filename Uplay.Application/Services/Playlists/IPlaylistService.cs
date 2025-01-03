@@ -3,7 +3,7 @@ using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Reviews;
 using Uplay.Application.Models.Playlists;
 using Uplay.Domain.Entities.Models.Landing;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 
 namespace Uplay.Application.Services.Playlists;
 

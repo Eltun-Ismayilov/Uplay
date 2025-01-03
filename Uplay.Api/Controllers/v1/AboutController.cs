@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Uplay.Api.Attributes;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models.Abouts;
 using Uplay.Application.Models.Faqs;
@@ -8,6 +9,7 @@ using Uplay.Application.Models.Services;
 using Uplay.Application.Services.Abouts;
 using Uplay.Application.Services.Faqs;
 using Uplay.Application.Services.Services;
+using Uplay.Domain.Enums.User;
 
 namespace Uplay.Api.Controllers.v1
 {
@@ -21,6 +23,7 @@ namespace Uplay.Api.Controllers.v1
             _aboutService = aboutService;
         }
 
+        [CheckPermission((int)ClaimEnum.About_Post)]
         [HttpPost(ApiRoutes.AboutRoute.Create)]
         public async Task<ActionResult<int>> Create([Required][FromForm] SaveAboutRequest command)
         {
@@ -34,7 +37,7 @@ namespace Uplay.Api.Controllers.v1
                 => Ok(await _aboutService.Get());
 
 
-
+        [CheckPermission((int)ClaimEnum.About_Put)]
         [HttpPut(ApiRoutes.AboutRoute.Update)]
         public async Task<IActionResult> Update([Required] int id, [FromForm] SaveAboutRequest updateAboutDto)
         {

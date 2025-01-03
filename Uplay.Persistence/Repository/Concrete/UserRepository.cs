@@ -14,6 +14,10 @@ namespace Uplay.Persistence.Repository.Concrete
         public async Task<User> Login(string username)
         {
             var user = await AsQueryable()
+                              .Include(x=>x.UserRoles)
+                              .ThenInclude(x=>x.Role)
+                              .ThenInclude(x=>x.RoleClaims)
+                              .ThenInclude(x=>x.Claim)
                               .FirstOrDefaultAsync(x => x.UserName == username || x.Email == username);
 
             return user;

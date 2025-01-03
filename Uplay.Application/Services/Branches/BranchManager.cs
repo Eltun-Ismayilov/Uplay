@@ -12,7 +12,7 @@ using Uplay.Application.Services.AppFiles;
 using Uplay.Domain.Entities.Models.Companies;
 using Uplay.Domain.Entities.Models.Landing;
 using Uplay.Domain.Entities.Models.Users;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 using Uplay.Persistence.Repository;
 
 namespace Uplay.Application.Services.Branches;

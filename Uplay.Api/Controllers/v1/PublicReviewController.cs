@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Uplay.Api.Attributes;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
 using Uplay.Application.Models.PublicReviews;
 using Uplay.Application.Services.PublicReviews;
+using Uplay.Domain.Enums.User;
 
 namespace Uplay.Api.Controllers.v1
 {
@@ -24,12 +26,14 @@ namespace Uplay.Api.Controllers.v1
             return Ok(data);
         }
 
+        [CheckPermission((int)ClaimEnum.PublicReview_Post)]
         [HttpPost(ApiRoutes.PublicReviewRoute.Create)]
         public async Task<ActionResult<int>> Create([FromForm] SavePublicReviewRequest command)
         {
             var data = await _publicReviewService.Create(command);
             return Ok(data.Value);
         }
+
         [AllowAnonymous]
         [HttpGet(ApiRoutes.PublicReviewRoute.Get)]
         public async Task<ActionResult<PublicReviewGetResponse>> Get([Required] int id)
@@ -38,6 +42,8 @@ namespace Uplay.Api.Controllers.v1
             return Ok(data);
         }
 
+
+        [CheckPermission((int)ClaimEnum.PublicReview_Delete)]
         [HttpDelete(ApiRoutes.PublicReviewRoute.Delete)]
         public async Task<IActionResult> Delete([Required] int id)
         {
@@ -45,6 +51,8 @@ namespace Uplay.Api.Controllers.v1
             return NoContent();
         }
 
+
+        [CheckPermission((int)ClaimEnum.PublicReview_Put)]
         [HttpPut(ApiRoutes.PublicReviewRoute.Update)]
         public async Task<IActionResult> Update(int id, [FromForm] SavePublicReviewRequest request)
         {

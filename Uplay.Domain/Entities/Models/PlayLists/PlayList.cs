@@ -1,7 +1,7 @@
 ﻿using Uplay.Application.Models;
 using Uplay.Domain.Entities.Models.Companies;
 using Uplay.Domain.Entities.Models.Miscs;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 
 namespace Uplay.Domain.Entities.Models.PlayLists
 {

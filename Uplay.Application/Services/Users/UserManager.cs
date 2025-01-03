@@ -14,12 +14,12 @@ using Uplay.Application.Extensions;
 using Uplay.Application.Models.Users;
 using Uplay.Domain.Entities.Models.Companies;
 using Uplay.Domain.Entities.Models.Users;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 using Uplay.Persistence.Repository;
 
 namespace Uplay.Application.Services.Users
 {
-    public class UserManager : BaseManager, IUserService
+    public class UserManager : BaseManager, IAdminService
     {
         private readonly IUserRepository _userRepository;
         private readonly ICompanyRepository _companyRepository;
@@ -165,7 +165,7 @@ namespace Uplay.Application.Services.Users
 
         private string GenerateToken(User user, int id)
         {
-            List<Claim> authClaims = new()
+            List<System.Security.Claims.Claim> authClaims = new()
             {
                 //TODO ELAVE EDERIK NE LAZIM OLSA 
                 new("Name", user.Name),

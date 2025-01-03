@@ -1,5 +1,6 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using Uplay.Domain.Entities.Models.Companies;
+using Uplay.Domain.Entities.Models.Pricings;
 
 namespace Uplay.Domain.Entities.Models.Users
 {
@@ -21,5 +22,6 @@ namespace Uplay.Domain.Entities.Models.Users
         public int OtpCode { get; set; }
         public virtual ICollection<Company> Companies { get; set; }
         public virtual ICollection<Branch> Branches { get; set; }
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 }

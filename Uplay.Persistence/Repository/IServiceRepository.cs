@@ -1,5 +1,5 @@
 ﻿using Uplay.Domain.Entities.Models.Landing;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 
 namespace Uplay.Persistence.Repository
 {

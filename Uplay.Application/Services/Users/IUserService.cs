@@ -2,7 +2,7 @@
 
 namespace Uplay.Application.Services.Users
 {
-    public interface IUserService : IBaseService
+    public interface IAdminService : IBaseService
     {
         Task<string> SubscibeConfirm(int otp);
         Task<UserLoginResponse> Login(UserLoginRequest request);

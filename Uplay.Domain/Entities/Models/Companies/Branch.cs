@@ -2,7 +2,7 @@
 using Uplay.Domain.Entities.Models.Landings;
 using Uplay.Domain.Entities.Models.PlayLists;
 using Uplay.Domain.Entities.Models.Users;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 
 namespace Uplay.Domain.Entities.Models.Companies
 {

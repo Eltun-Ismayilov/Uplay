@@ -7,6 +7,7 @@ using Uplay.Application.Services.Companys;
 namespace Uplay.Api.Controllers.v1
 {
 
+    [AllowAnonymous]
     public class CompanyController : BaseController
     {
         private readonly ICompanyService _companyService;
@@ -16,7 +17,6 @@ namespace Uplay.Api.Controllers.v1
             _companyService = companyService;
         }
 
-        [AllowAnonymous]
         [HttpPost(ApiRoutes.CompanyRoute.CreateCorporate)]
         public async Task<ActionResult<int>> CreateCorporate([FromForm] SaveCompanyRequest command)
         {
@@ -24,7 +24,6 @@ namespace Uplay.Api.Controllers.v1
             return Ok(data.Value);
         }
 
-        [AllowAnonymous]
         [HttpPost(ApiRoutes.CompanyRoute.CreatePersonal)]
         public async Task<ActionResult<int>> CreatePersonal([FromForm] SavePersonalRequest command)
         {
@@ -32,7 +31,6 @@ namespace Uplay.Api.Controllers.v1
             return Ok(data.Value);
         }
         
-        [AllowAnonymous]
         [HttpGet(ApiRoutes.CompanyRoute.Get)]
         public async Task<ActionResult<CompanyDetailsDto>> GetCompany(int companyId)
         {

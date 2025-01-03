@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Uplay.Application.Mappings;
 using Uplay.Domain.Entities.Models.PlayLists;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 
 namespace Uplay.Application.Models.Playlists;
 

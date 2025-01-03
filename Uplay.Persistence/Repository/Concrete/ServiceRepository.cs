@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Uplay.Domain.Entities.Models.Landing;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 using Uplay.Persistence.Data;
 
 namespace Uplay.Persistence.Repository.Concrete

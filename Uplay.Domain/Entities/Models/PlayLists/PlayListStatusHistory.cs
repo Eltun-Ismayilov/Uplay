@@ -1,4 +1,4 @@
-﻿using Uplay.Domain.Enum;
+﻿using Uplay.Domain.Enums;
 
 namespace Uplay.Domain.Entities.Models.PlayLists
 {

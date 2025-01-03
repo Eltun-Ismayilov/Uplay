@@ -38,7 +38,12 @@
         {
             public const string City = Base + "/CityRoute";
         }
-        
+
+        public struct RoleRoute
+        {
+            public const string Role = Base + "/role";
+        }
+
         public struct PricingRoute
         {
             public const string GetAll = Base + "/pricing";
@@ -83,6 +88,13 @@
             public const string Get = Base + "/about";
             public const string Update = Base + "/about/:id";
             public const string Create = Base + "/about";
+        }
+
+        public struct AdminRoute
+        {
+            public const string Login = Base + "/admin/login";
+            public const string Register = Base + "/admin/register";
+            public const string GetAllUsers = Base + "/admin/users";
         }
 
         public struct UserRoute

@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Uplay.Domain.Entities.Models.Landings;
 using Uplay.Domain.Entities.Models.PlayLists;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 using Uplay.Persistence.Data;
 
 namespace Uplay.Persistence.Repository.Concrete;

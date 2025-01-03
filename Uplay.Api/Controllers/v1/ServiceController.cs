@@ -6,8 +6,10 @@ using Uplay.Application.Models;
 using Uplay.Application.Services.Faqs;
 using Uplay.Application.Services.Services;
 using Uplay.Application.Models.Services;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
+using Uplay.Api.Attributes;
+using Uplay.Domain.Enums.User;
 
 namespace Uplay.Api.Controllers.v1
 {
@@ -27,6 +29,8 @@ namespace Uplay.Api.Controllers.v1
             var data = await _serviceService.GetAll(serviceTypeId, paginationFilter);
             return Ok(data);
         }
+
+        [CheckPermission((int)ClaimEnum.Service_Post)]
         [HttpPost(ApiRoutes.ServiceRoute.Create)]
         public async Task<ActionResult<int>> Create([FromForm] SaveServiceRequest command)
         {
@@ -41,6 +45,7 @@ namespace Uplay.Api.Controllers.v1
             return Ok(data);
         }
 
+        [CheckPermission((int)ClaimEnum.Service_Delete)]
         [HttpDelete(ApiRoutes.ServiceRoute.Delete)]
         public async Task<IActionResult> Delete([Required] int id)
         {
@@ -48,6 +53,7 @@ namespace Uplay.Api.Controllers.v1
             return NoContent();
         }
 
+        [CheckPermission((int)ClaimEnum.Service_Put)]
         [HttpPut(ApiRoutes.ServiceRoute.Update)]
         public async Task<IActionResult> Update(int id, [FromForm] SaveServiceRequest updateServiceDto)
         {

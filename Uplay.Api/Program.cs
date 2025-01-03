@@ -20,7 +20,6 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ApiExceptionFilterAttribute>();
-    options.Filters.Add(new AuthorizeFilter((new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build())));
 }).AddFluentValidationCustom();
 
 builder.Services.AddApplication(configuration);

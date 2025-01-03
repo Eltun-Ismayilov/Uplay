@@ -11,7 +11,7 @@ using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Reviews;
 using Uplay.Application.Models.Playlists;
 using Uplay.Domain.Entities.Models.PlayLists;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 using Uplay.Persistence.Repository;
 
 namespace Uplay.Application.Services.Playlists;

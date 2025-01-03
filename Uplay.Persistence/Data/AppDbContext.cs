@@ -77,6 +77,10 @@ namespace Uplay.Persistence.Data
         #region Users
 
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<Claim> Claims { get; set; } = null!;
+        public virtual DbSet<Role> Roles { get; set; } = null!;
+        public virtual DbSet<RoleClaim> RoleClaims { get; set; } = null!;
+        public virtual DbSet<UserRole> UserRoles { get; set; } = null!;
 
         #endregion
 

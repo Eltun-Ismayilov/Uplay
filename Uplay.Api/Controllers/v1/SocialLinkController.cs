@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Uplay.Api.Attributes;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models.SocialLinks;
 using Uplay.Application.Services.SocialLinks;
+using Uplay.Domain.Enums.User;
 
 namespace Uplay.Api.Controllers.v1
 {
@@ -15,8 +17,8 @@ namespace Uplay.Api.Controllers.v1
         {
             _socialLinkService = socialLinkService;
         }
-        
 
+        [CheckPermission((int)ClaimEnum.SocialLink_Post)]
         [HttpPost(ApiRoutes.SocialLinkRoute.Create)]
         public async Task<ActionResult<int>> Create([FromBody] SaveSocialLinkRequest command)
         {
@@ -31,6 +33,7 @@ namespace Uplay.Api.Controllers.v1
             return Ok(data);
         }
 
+        [CheckPermission((int)ClaimEnum.SocialLink_Put)]
         [HttpPut(ApiRoutes.SocialLinkRoute.Update)]
         public async Task<IActionResult> Update([Required]int id, [FromBody] SaveSocialLinkRequest updateFaqDto)
         {

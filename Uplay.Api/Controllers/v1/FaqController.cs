@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Uplay.Api.Attributes;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Faqs;
 using Uplay.Application.Services.Faqs;
+using Uplay.Domain.Enums.User;
 
 namespace Uplay.Api.Controllers.v1;
 
@@ -25,6 +27,7 @@ public class FaqController : BaseController
         return Ok(data);
     }
 
+    [CheckPermission((int)ClaimEnum.Faq_Post)]
     [HttpPost(ApiRoutes.FaqRoute.Create)]
     public async Task<ActionResult<int>> Create([FromBody] SaveFaqRequest command)
     {
@@ -39,6 +42,7 @@ public class FaqController : BaseController
         return Ok(data);
     }
 
+    [CheckPermission((int)ClaimEnum.Faq_Delete)]
     [HttpDelete(ApiRoutes.FaqRoute.Delete)]
     public async Task<IActionResult> Delete([Required] int id)
     {
@@ -46,6 +50,7 @@ public class FaqController : BaseController
         return NoContent();
     }
 
+    [CheckPermission((int)ClaimEnum.Faq_Put)]
     [HttpPut(ApiRoutes.FaqRoute.Update)]
     public async Task<IActionResult> Update(int faqId, [FromBody] SaveFaqRequest updateFaqDto)
     {

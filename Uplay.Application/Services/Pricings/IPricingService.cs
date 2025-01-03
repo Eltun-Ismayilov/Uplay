@@ -9,7 +9,7 @@ using Uplay.Application.Models.Partners;
 using Uplay.Application.Models.Pricings;
 using Uplay.Application.Models.PublicReviews;
 using Uplay.Domain.Entities.Models.Pricings;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 
 namespace Uplay.Application.Services.Pricings
 {

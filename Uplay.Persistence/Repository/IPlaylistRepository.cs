@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Uplay.Domain.Entities.Models.PlayLists;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 
 namespace Uplay.Persistence.Repository;
 

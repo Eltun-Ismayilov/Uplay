@@ -11,7 +11,7 @@ using Uplay.Application.Extensions;
 using Uplay.Application.Models.Companies;
 using Uplay.Application.Services.AppFiles;
 using Uplay.Domain.Entities.Models.Companies;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 using Uplay.Persistence.Repository;
 using Uplay.Persistence.Repository.Mongo;
 

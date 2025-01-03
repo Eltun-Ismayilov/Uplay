@@ -1,12 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Uplay.Api.Attributes;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Faqs;
 using Uplay.Application.Models.Partners;
 using Uplay.Application.Services.Faqs;
 using Uplay.Application.Services.Partners;
+using Uplay.Domain.Enums.User;
 
 namespace Uplay.Api.Controllers.v1;
 
@@ -26,12 +28,15 @@ public class PartnerController : BaseController
         return Ok(data);
     }
 
+
+    [CheckPermission((int)ClaimEnum.Partner_Post)]
     [HttpPost(ApiRoutes.PartnerRoute.Create)]
     public async Task<ActionResult<int>> Create([FromForm] SavePartnerRequest command)
     {
         var data = await _partnerService.Create(command);
         return Ok(data.Value);
     }
+
     [AllowAnonymous]
     [HttpGet(ApiRoutes.PartnerRoute.Get)]
     public async Task<ActionResult<FaqGetResponse>> Get([Required] int id)
@@ -40,6 +45,7 @@ public class PartnerController : BaseController
         return Ok(data);
     }
 
+    [CheckPermission((int)ClaimEnum.Partner_Delete)]
     [HttpDelete(ApiRoutes.PartnerRoute.Delete)]
     public async Task<IActionResult> Delete([Required] int id)
     {
@@ -47,6 +53,7 @@ public class PartnerController : BaseController
         return NoContent();
     }
 
+    [CheckPermission((int)ClaimEnum.Partner_Put)]
     [HttpPut(ApiRoutes.PartnerRoute.Update)]
     public async Task<IActionResult> Update(int id, [FromForm] SavePartnerRequest request)
     {

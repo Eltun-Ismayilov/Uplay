@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Uplay.Domain.Enum
+namespace Uplay.Domain.Enums
 {
     public enum PricingTypeEnum : byte
     {

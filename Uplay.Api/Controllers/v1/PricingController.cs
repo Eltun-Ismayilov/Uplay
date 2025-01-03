@@ -10,7 +10,7 @@ using Uplay.Application.Services.Faqs;
 using Uplay.Application.Services.Partners;
 using Uplay.Application.Services.Pricings;
 using Uplay.Application.Services.Services;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 
 namespace Uplay.Api.Controllers.v1
 {

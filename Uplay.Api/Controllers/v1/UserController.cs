@@ -1,16 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Uplay.Api.Attributes;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models.Users;
 using Uplay.Application.Services.Users;
+using Uplay.Domain.Enums.User;
 
 namespace Uplay.Api.Controllers.v1
 {
     public class UserController : BaseController
     {
-        private readonly IUserService _userService;
+        private readonly IAdminService _userService;
 
-        public UserController(IUserService userService) => _userService = userService;
+        public UserController(IAdminService userService) => _userService = userService;
 
         [AllowAnonymous]
         [HttpGet("subscribe-confirm")]
@@ -67,16 +69,16 @@ namespace Uplay.Api.Controllers.v1
             var data = await _userService.ConfirmResetPassword(request);
             return Ok(data);
         }
-        
-        [AllowAnonymous]
+
+        [CheckPermission((int)ClaimEnum.Branch_Delete)]
         [HttpDelete(ApiRoutes.UserRoute.DeleteBranchAccount)]
         public async Task<IActionResult> DeleteBranchAccount(int branchId)
         {
             await _userService.DeleteBranchAccount(branchId);
             return NoContent();
         }
-        
-        [AllowAnonymous]
+
+        [CheckPermission((int)ClaimEnum.Company_Delete)]
         [HttpDelete(ApiRoutes.UserRoute.DeleteCompanyAccount)]
         public async Task<IActionResult> DeleteCompanyAccount(int companyId)
         {

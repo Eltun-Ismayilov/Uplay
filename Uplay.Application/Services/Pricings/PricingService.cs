@@ -5,7 +5,7 @@ using Uplay.Application.Exceptions;
 using Uplay.Application.Models.Pricings;
 using Uplay.Domain.Entities.Models.Landing;
 using Uplay.Domain.Entities.Models.Pricings;
-using Uplay.Domain.Enum;
+using Uplay.Domain.Enums;
 using Uplay.Persistence.Repository;
 using Uplay.Persistence.Repository.Concrete;
 
