@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Uplay.Application.Exceptions;
 using Uplay.Application.Extensions;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Categories;
@@ -57,6 +58,17 @@ namespace Uplay.Application.Services.Categories
             }
 
             return response;
+        }
+
+        public async Task<int> Update(int categoryId, SaveCategoryRequest command)
+        {
+            var data = await _categoryRepository.GetByIdAsync(categoryId);
+            if (data is null)
+                throw new NotFoundException($"ID-si {categoryId} olan Category Yoxdur.");
+
+            var mapping = Mapper.Map(command, data);
+            await _categoryRepository.UpdateAsync(mapping, true);
+            return 204;
         }
     }
 }

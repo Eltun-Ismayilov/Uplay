@@ -46,7 +46,7 @@ namespace Uplay.Application.Services.Admins
 
         public bool CheckIfRoleHasClaim(int roleId, int claimId)
         {
-           return _roleClaimRepository.GetQuery().Any(x => x.RoleId == roleId && x.ClaimId == claimId);
+            return _roleClaimRepository.GetQuery().Any(x => x.RoleId == roleId && x.ClaimId == claimId);
         }
 
 
@@ -99,6 +99,37 @@ namespace Uplay.Application.Services.Admins
             await _userRepository.InsertAsync(user);
         }
 
+        public async Task<int> Update(int userId, CreateUserDto request)
+        {
+            if (request.RoleId == RoleEnum.SuperAdmin.ToInt())
+                throw new BadHttpRequestException("Bu rolda istifadechi Update ede bilmersiniz.");
+
+            var userExist = await _userRepository.CheckUser(x => x.UserName == request.Username);
+
+            if (userExist is not null)
+                throw new BadHttpRequestException("Daxil etdiyiniz Username ve ya Email ile bagli isdifadeci movcudur.");
+
+            var user = _userRepository.GetAllQuery()
+                                      .Include(x => x.UserRoles)
+                                      .FirstOrDefault(x => x.Id == userId);
+
+            if (user is null)
+                throw new BadHttpRequestException($"Bu {userId}-Idli istifadechi movcud deyil.");
+
+            user.Salt = Guid.NewGuid();
+            user.Email = request.Email;
+            user.UserName = request.Username;
+            user.UserRoles = new List<UserRole>() { new UserRole { RoleId = request.RoleId } };
+
+            string passHash = AesOperation.ComputeSha256Hash(request.Password + user.Salt);
+
+            user.Password = passHash;
+
+            await _userRepository.UpdateAsync(user);
+
+            return 200;
+        }
+
         private async Task<User> ValidateUser(string username, string password)
         {
             var user = await _userRepository.Login(username);
@@ -144,6 +175,7 @@ namespace Uplay.Application.Services.Admins
 
             return result;
         }
+
 
     }
 }

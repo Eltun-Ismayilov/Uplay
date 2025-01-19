@@ -1,5 +1,6 @@
 ﻿using Uplay.Application.Models;
 using Uplay.Application.Models.Admins;
+using Uplay.Application.Models.Categories;
 using Uplay.Application.Models.Users;
 
 namespace Uplay.Application.Services.Admins
@@ -10,5 +11,7 @@ namespace Uplay.Application.Services.Admins
         Task AddUser(CreateUserDto request);
         bool CheckIfRoleHasClaim(int roleId, int claimId);
         Task<GetAllUsersResponse> GetAllUsers(PaginationFilter paging);
+        Task<int> Update(int userId, CreateUserDto command);
+
     }
 }

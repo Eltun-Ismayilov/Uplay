@@ -81,8 +81,9 @@
         {
             public const string GetAll = Base + "/category";
             public const string Create = Base + "/category";
+            public const string Update = Base + "/category/:id";
         }
-        
+
         public struct AboutRoute
         {
             public const string Get = Base + "/about";
@@ -95,6 +96,7 @@
             public const string Login = Base + "/admin/login";
             public const string Register = Base + "/admin/register";
             public const string GetAllUsers = Base + "/admin/users";
+            public const string UpdateUser = Base + "/admin/userUpdate";
         }
 
         public struct UserRoute
@@ -139,6 +141,8 @@
         {
             public const string GetAll = Base + "/review/:id";
             public const string Create = Base + "/review";
+            public const string Update = Base + "/review/:id";
+
         }
 
         public struct FeedbackRoute

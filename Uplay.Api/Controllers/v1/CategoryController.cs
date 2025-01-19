@@ -28,6 +28,15 @@ namespace Uplay.Api.Controllers.v1
             var data = await _categoryService.Create(command);
             return Ok(data.Value);
         }
+        
+        [CheckPermission((int)ClaimEnum.Category_Put)]
+        [HttpPut(ApiRoutes.CategoryRoute.Update)]
+        public async Task<IActionResult> Update(int categoryId, [FromForm] SaveCategoryRequest updateFaqDto)
+        {
+            await _categoryService.Update(categoryId, updateFaqDto);
+            return NoContent();
+        }
+
         [AllowAnonymous]
         [HttpGet(ApiRoutes.CategoryRoute.GetAll)]
         public async Task<ActionResult<CategoryGetAllResponse>> GetAll()

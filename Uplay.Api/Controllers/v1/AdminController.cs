@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using Uplay.Api.Attributes;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
@@ -41,9 +42,16 @@ namespace Uplay.Api.Controllers.v1
 
         [HttpPost(ApiRoutes.AdminRoute.GetAllUsers)]
         [CheckPermission((int)ClaimEnum.Get_All_Users)]
-        public async Task<IActionResult> GetAllUsers([FromQuery]PaginationFilter paging)
+        public async Task<IActionResult> GetAllUsers([FromQuery] PaginationFilter paging)
         {
             return Ok(await _adminService.GetAllUsers(paging));
+        }
+        [HttpPut(ApiRoutes.AdminRoute.UpdateUser)]
+        [CheckPermission((int)ClaimEnum.User_Put)]
+        public async Task<IActionResult> UpdateUser([Required] int userId, [FromBody] CreateUserDto request)
+        {
+            await _adminService.Update(userId, request);
+            return Ok();
         }
     }
 }

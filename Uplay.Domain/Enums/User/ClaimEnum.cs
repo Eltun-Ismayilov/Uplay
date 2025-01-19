@@ -93,5 +93,16 @@ namespace Uplay.Domain.Enums.User
 
         [Description("Get_All_Users")]
         Get_All_Users = 30,
+
+        [Description("Category_Put")]
+        Category_Put = 31,
+        [Description("User_Put")]
+        User_Put = 32,
+        [Description("Pricing_Put")]
+        Pricing_Put = 33,
+        [Description("Review_Put")]
+        Review_Put = 34,
+        
+
     }
 }

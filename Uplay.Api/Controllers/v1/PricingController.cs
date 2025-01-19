@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
+using Uplay.Api.Attributes;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Partners;
@@ -11,6 +12,7 @@ using Uplay.Application.Services.Partners;
 using Uplay.Application.Services.Pricings;
 using Uplay.Application.Services.Services;
 using Uplay.Domain.Enums;
+using Uplay.Domain.Enums.User;
 
 namespace Uplay.Api.Controllers.v1
 {
@@ -41,13 +43,13 @@ namespace Uplay.Api.Controllers.v1
         //    return Ok(data);
         //}
 
-
-        //[HttpPut(ApiRoutes.PricingRoute.Update)]
-        //public async Task<IActionResult> Update(int id, [FromBody] SavePricingRequest request)
-        //{
-        //    await _pricingService.Update(id, request);
-        //    return NoContent();
-        //}
+        [CheckPermission((int)ClaimEnum.Pricing_Put)]
+        [HttpPut(ApiRoutes.PricingRoute.Update)]
+        public async Task<IActionResult> Update([Required] int id, [FromBody] SavePricingRequest request)
+        {
+            await _pricingService.Update(id, request);
+            return NoContent();
+        }
 
         //[HttpDelete(ApiRoutes.PricingRoute.Delete)]
         //public async Task<IActionResult> Delete([Required] int id)

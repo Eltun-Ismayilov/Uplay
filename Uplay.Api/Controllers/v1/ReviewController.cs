@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Uplay.Api.Attributes;
 using Uplay.Api.Contracts;
 using Uplay.Application.Models;
 using Uplay.Application.Models.Core.Reviews;
 using Uplay.Application.Models.Faqs;
+using Uplay.Application.Services.Faqs;
 using Uplay.Application.Services.Reviews;
+using Uplay.Domain.Enums.User;
 
 namespace Uplay.Api.Controllers.v1;
 
@@ -30,5 +33,14 @@ public class ReviewController : BaseController
     {
         var data = await _reviewService.Create(command);
         return Ok(data.Value);
+    }
+    [AllowAnonymous]
+
+   // [CheckPermission((int)ClaimEnum.Review_Put)]
+    [HttpPut(ApiRoutes.ReviewRoute.Update)]
+    public async Task<IActionResult> Update(int reviewId, [FromBody] SaveReviewRequest request)
+    {
+        await _reviewService.Update(reviewId, request);
+        return NoContent();
     }
 }
