@@ -11,6 +11,7 @@ namespace Uplay.Application.Services.Admins
         Task AddUser(CreateUserDto request);
         bool CheckIfRoleHasClaim(int roleId, int claimId);
         Task<GetAllUsersResponse> GetAllUsers(PaginationFilter paging);
+        Task<GetUserDetail> GetUserDetail(int id, int userTypeId);
         Task<int> Update(int userId, CreateUserDto command);
 
     }

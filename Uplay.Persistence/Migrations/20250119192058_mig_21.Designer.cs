@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Uplay.Persistence.Data;
@@ -11,9 +12,11 @@ using Uplay.Persistence.Data;
 namespace Uplay.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250119192058_mig_21")]
+    partial class mig_21
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1111,6 +1114,246 @@ namespace Uplay.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Claims", "User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8517),
+                            Deleted = false,
+                            Name = "About_Post"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8533),
+                            Deleted = false,
+                            Name = "About_Put"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8544),
+                            Deleted = false,
+                            Name = "Branch_Delete"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8552),
+                            Deleted = false,
+                            Name = "Branch_Disable"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8559),
+                            Deleted = false,
+                            Name = "Category_Post"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8568),
+                            Deleted = false,
+                            Name = "Branch_Statistics_Get"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8576),
+                            Deleted = false,
+                            Name = "Branch_Qr_Retention_Get"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8584),
+                            Deleted = false,
+                            Name = "Contact_Get"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8592),
+                            Deleted = false,
+                            Name = "Contact_Details"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8599),
+                            Deleted = false,
+                            Name = "Faq_Post"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8606),
+                            Deleted = false,
+                            Name = "Faq_Put"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8614),
+                            Deleted = false,
+                            Name = "Faq_Delete"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8621),
+                            Deleted = false,
+                            Name = "FeedbackType_Post"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8665),
+                            Deleted = false,
+                            Name = "FeedbackType_Delete"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8674),
+                            Deleted = false,
+                            Name = "FeedbackType_Put"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8681),
+                            Deleted = false,
+                            Name = "Partner_Post"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8688),
+                            Deleted = false,
+                            Name = "Partner_Delete"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8698),
+                            Deleted = false,
+                            Name = "Partner_Put"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8706),
+                            Deleted = false,
+                            Name = "Playlist_Put"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8713),
+                            Deleted = false,
+                            Name = "PublicReview_Post"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8721),
+                            Deleted = false,
+                            Name = "PublicReview_Delete"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8728),
+                            Deleted = false,
+                            Name = "PublicReview_Put"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8735),
+                            Deleted = false,
+                            Name = "Service_Post"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8742),
+                            Deleted = false,
+                            Name = "Service_Delete"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8751),
+                            Deleted = false,
+                            Name = "Service_Put"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8758),
+                            Deleted = false,
+                            Name = "SocialLink_Post"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8766),
+                            Deleted = false,
+                            Name = "SocialLink_Put"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8772),
+                            Deleted = false,
+                            Name = "Company_Delete"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8779),
+                            Deleted = false,
+                            Name = "Add_User_Post"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8785),
+                            Deleted = false,
+                            Name = "Get_All_Users"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8792),
+                            Deleted = false,
+                            Name = "Category_Put"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8798),
+                            Deleted = false,
+                            Name = "User_Put"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8805),
+                            Deleted = false,
+                            Name = "Pricing_Put"
+                        },
+                        new
+                        {
+                            Id = 34,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 849, DateTimeKind.Utc).AddTicks(8813),
+                            Deleted = false,
+                            Name = "Review_Put"
+                        });
                 });
 
             modelBuilder.Entity("Uplay.Domain.Entities.Models.Users.Role", b =>
@@ -1145,35 +1388,35 @@ namespace Uplay.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2025, 1, 19, 20, 29, 48, 550, DateTimeKind.Utc).AddTicks(6250),
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(1538),
                             Deleted = false,
                             Name = "SuperAdmin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2025, 1, 19, 20, 29, 48, 550, DateTimeKind.Utc).AddTicks(6266),
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(1552),
                             Deleted = false,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2025, 1, 19, 20, 29, 48, 550, DateTimeKind.Utc).AddTicks(6274),
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(1561),
                             Deleted = false,
                             Name = "Operator"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2025, 1, 19, 20, 29, 48, 550, DateTimeKind.Utc).AddTicks(6281),
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(1568),
                             Deleted = false,
                             Name = "Company"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedDate = new DateTime(2025, 1, 19, 20, 29, 48, 550, DateTimeKind.Utc).AddTicks(6289),
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(1577),
                             Deleted = false,
                             Name = "Branch"
                         });
@@ -1212,6 +1455,360 @@ namespace Uplay.Persistence.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("RoleClaims", "User");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ClaimId = 1,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(2),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ClaimId = 2,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(6),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ClaimId = 3,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(8),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ClaimId = 4,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(10),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            ClaimId = 5,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(12),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 6,
+                            ClaimId = 6,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(14),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 7,
+                            ClaimId = 7,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(16),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            ClaimId = 8,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(49),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 9,
+                            ClaimId = 9,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(51),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 10,
+                            ClaimId = 10,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(111),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 11,
+                            ClaimId = 11,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(112),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 12,
+                            ClaimId = 12,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(114),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 13,
+                            ClaimId = 13,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(116),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 14,
+                            ClaimId = 14,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(117),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 15,
+                            ClaimId = 15,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(119),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 16,
+                            ClaimId = 16,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(120),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 17,
+                            ClaimId = 17,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(122),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 18,
+                            ClaimId = 18,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(125),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 19,
+                            ClaimId = 19,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(127),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 20,
+                            ClaimId = 20,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(128),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 21,
+                            ClaimId = 21,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(130),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 22,
+                            ClaimId = 22,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(131),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 23,
+                            ClaimId = 23,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(133),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 24,
+                            ClaimId = 24,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(134),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 25,
+                            ClaimId = 25,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(136),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 26,
+                            ClaimId = 26,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(137),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 27,
+                            ClaimId = 27,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(139),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 28,
+                            ClaimId = 28,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(140),
+                            Deleted = false,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            Id = 29,
+                            ClaimId = 1,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(142),
+                            Deleted = false,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 30,
+                            ClaimId = 20,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(143),
+                            Deleted = false,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 31,
+                            ClaimId = 5,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(145),
+                            Deleted = false,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 32,
+                            ClaimId = 6,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(146),
+                            Deleted = false,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 33,
+                            ClaimId = 23,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(148),
+                            Deleted = false,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 34,
+                            ClaimId = 7,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(150),
+                            Deleted = false,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 35,
+                            ClaimId = 8,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(152),
+                            Deleted = false,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 36,
+                            ClaimId = 26,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(153),
+                            Deleted = false,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 37,
+                            ClaimId = 9,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(155),
+                            Deleted = false,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 38,
+                            ClaimId = 10,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(156),
+                            Deleted = false,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 39,
+                            ClaimId = 13,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(158),
+                            Deleted = false,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 40,
+                            ClaimId = 16,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(159),
+                            Deleted = false,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            Id = 41,
+                            ClaimId = 6,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(161),
+                            Deleted = false,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 42,
+                            ClaimId = 7,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(162),
+                            Deleted = false,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 43,
+                            ClaimId = 8,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(164),
+                            Deleted = false,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            Id = 44,
+                            ClaimId = 9,
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 20, 58, 850, DateTimeKind.Utc).AddTicks(165),
+                            Deleted = false,
+                            RoleId = 3
+                        });
                 });
 
             modelBuilder.Entity("Uplay.Domain.Entities.Models.Users.User", b =>
@@ -1269,10 +1866,6 @@ namespace Uplay.Persistence.Migrations
 
                     b.Property<int>("UserType")
                         .HasColumnType("integer");
-
-                    b.Property<string>("YoutubeToken")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

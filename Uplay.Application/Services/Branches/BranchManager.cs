@@ -13,6 +13,7 @@ using Uplay.Domain.Entities.Models.Companies;
 using Uplay.Domain.Entities.Models.Landing;
 using Uplay.Domain.Entities.Models.Users;
 using Uplay.Domain.Enums;
+using Uplay.Domain.Enums.User;
 using Uplay.Persistence.Repository;
 
 namespace Uplay.Application.Services.Branches;
@@ -55,6 +56,7 @@ public class BranchManager : BaseManager, IBranchService
             Phone = "",
             EmailConfirmed = true,
             UserName = command.Username,
+            UserType = UserTypeEnum.CorporateBranch,
         };
 
         mapping.BranchCategories =

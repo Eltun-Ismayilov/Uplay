@@ -12,6 +12,8 @@ using Uplay.Application.Models.Companies;
 using Uplay.Application.Services.AppFiles;
 using Uplay.Domain.Entities.Models.Companies;
 using Uplay.Domain.Enums;
+using Uplay.Domain.Enums.User;
+using Uplay.Domain.Extension;
 using Uplay.Persistence.Repository;
 using Uplay.Persistence.Repository.Mongo;
 
@@ -77,7 +79,7 @@ namespace Uplay.Application.Services.Companys
                 AesOperation.ComputeSha256Hash(command.Onwer.Email + command.Onwer.Password + mapping.Onwer.Salt);
 
             mapping.Onwer.Password = passHash;
-
+            mapping.Onwer.UserType = UserTypeEnum.Corporative;
             var data = await _companyRepository.InsertAsync(mapping);
 
             var email = new MimeMessage();
@@ -116,6 +118,7 @@ namespace Uplay.Application.Services.Companys
             mapping.Onwer.Salt = Guid.NewGuid();
 
             mapping.Onwer.EmailConfirmed = false;
+            mapping.Onwer.UserType = UserTypeEnum.Personal;
 
             string passHash =
                 AesOperation.ComputeSha256Hash(command.Onwer.Email + command.Onwer.Password + mapping.Onwer.Salt);

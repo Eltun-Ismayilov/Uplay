@@ -12,7 +12,7 @@ namespace Uplay.Persistence.TypeConfigs.Users
             builder.ToTable("Claims", "User");
             builder.HasKey(e => e.Id);
             builder.HasQueryFilter(e => !e.Deleted);
-            builder.HasData(EntitySeeders.SeedClaims());
+            //builder.HasData(EntitySeeders.SeedClaims());
 
         }
     }

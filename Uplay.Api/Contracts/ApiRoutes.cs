@@ -96,6 +96,7 @@
             public const string Login = Base + "/admin/login";
             public const string Register = Base + "/admin/register";
             public const string GetAllUsers = Base + "/admin/users";
+            public const string GetUserDetail = Base + "/admin/users/:id";
             public const string UpdateUser = Base + "/admin/userUpdate";
         }
 

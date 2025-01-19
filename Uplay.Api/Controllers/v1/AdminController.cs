@@ -39,13 +39,22 @@ namespace Uplay.Api.Controllers.v1
             await _adminService.AddUser(request);
             return Ok();
         }
-
-        [HttpPost(ApiRoutes.AdminRoute.GetAllUsers)]
-        [CheckPermission((int)ClaimEnum.Get_All_Users)]
+        [AllowAnonymous]
+        [HttpGet(ApiRoutes.AdminRoute.GetAllUsers)]
+        //[CheckPermission((int)ClaimEnum.Get_All_Users)]
         public async Task<IActionResult> GetAllUsers([FromQuery] PaginationFilter paging)
         {
             return Ok(await _adminService.GetAllUsers(paging));
         }
+
+        [AllowAnonymous]
+        [HttpGet(ApiRoutes.AdminRoute.GetUserDetail)]
+        //[CheckPermission((int)ClaimEnum.Get_User_Detail)]
+        public async Task<IActionResult> GetUserDetail([Required]int id, [Required] int userTypeId)
+        {
+            return Ok(await _adminService.GetUserDetail(id, userTypeId));
+        }
+
         [HttpPut(ApiRoutes.AdminRoute.UpdateUser)]
         [CheckPermission((int)ClaimEnum.User_Put)]
         public async Task<IActionResult> UpdateUser([Required] int userId, [FromBody] CreateUserDto request)

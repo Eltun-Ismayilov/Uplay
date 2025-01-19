@@ -8,6 +8,7 @@ using Uplay.Application.Mappings;
 using Uplay.Application.Models.Faqs;
 using Uplay.Domain.Entities.Models.Landing;
 using Uplay.Domain.Entities.Models.Users;
+using Uplay.Domain.Enums.User;
 
 namespace Uplay.Application.Models.Admins
 {
@@ -32,5 +33,7 @@ namespace Uplay.Application.Models.Admins
 
         [JsonPropertyName("email")]
         public string Email { get; set; }
+        [JsonPropertyName("userType")]
+        public UserTypeEnum UserType { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 using Uplay.Domain.Entities.Models.Companies;
 using Uplay.Domain.Entities.Models.Pricings;
+using Uplay.Domain.Enums.User;
 
 namespace Uplay.Domain.Entities.Models.Users
 {
@@ -20,6 +21,8 @@ namespace Uplay.Domain.Entities.Models.Users
         public Guid Salt { get; set; }
         public bool EmailConfirmed { get; set; }
         public int OtpCode { get; set; }
+        public UserTypeEnum UserType { get; set; }
+        public string YoutubeToken { get; set; }
         public virtual ICollection<Company> Companies { get; set; }
         public virtual ICollection<Branch> Branches { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Uplay.Persistence.Data;
@@ -11,9 +12,11 @@ using Uplay.Persistence.Data;
 namespace Uplay.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250119191932_mig_20")]
+    partial class mig_20
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1145,35 +1148,35 @@ namespace Uplay.Persistence.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2025, 1, 19, 20, 29, 48, 550, DateTimeKind.Utc).AddTicks(6250),
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 19, 32, 380, DateTimeKind.Utc).AddTicks(6250),
                             Deleted = false,
                             Name = "SuperAdmin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2025, 1, 19, 20, 29, 48, 550, DateTimeKind.Utc).AddTicks(6266),
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 19, 32, 380, DateTimeKind.Utc).AddTicks(6275),
                             Deleted = false,
                             Name = "Admin"
                         },
                         new
                         {
                             Id = 3,
-                            CreatedDate = new DateTime(2025, 1, 19, 20, 29, 48, 550, DateTimeKind.Utc).AddTicks(6274),
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 19, 32, 380, DateTimeKind.Utc).AddTicks(6294),
                             Deleted = false,
                             Name = "Operator"
                         },
                         new
                         {
                             Id = 4,
-                            CreatedDate = new DateTime(2025, 1, 19, 20, 29, 48, 550, DateTimeKind.Utc).AddTicks(6281),
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 19, 32, 380, DateTimeKind.Utc).AddTicks(6302),
                             Deleted = false,
                             Name = "Company"
                         },
                         new
                         {
                             Id = 5,
-                            CreatedDate = new DateTime(2025, 1, 19, 20, 29, 48, 550, DateTimeKind.Utc).AddTicks(6289),
+                            CreatedDate = new DateTime(2025, 1, 19, 19, 19, 32, 380, DateTimeKind.Utc).AddTicks(6310),
                             Deleted = false,
                             Name = "Branch"
                         });
@@ -1269,10 +1272,6 @@ namespace Uplay.Persistence.Migrations
 
                     b.Property<int>("UserType")
                         .HasColumnType("integer");
-
-                    b.Property<string>("YoutubeToken")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

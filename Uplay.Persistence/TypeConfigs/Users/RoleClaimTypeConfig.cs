@@ -12,7 +12,7 @@ namespace Uplay.Persistence.TypeConfigs.Users
             builder.ToTable("RoleClaims", "User");
             builder.HasKey(e => e.Id);
             builder.HasQueryFilter(e => !e.Deleted);
-            builder.HasData(EntitySeeders.SeedRoleClaims());
+            //builder.HasData(EntitySeeders.SeedRoleClaims());
         }
     }
 }

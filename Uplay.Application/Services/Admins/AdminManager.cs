@@ -86,6 +86,7 @@ namespace Uplay.Application.Services.Admins
                 Phone = "",
                 EmailConfirmed = true,
                 UserName = request.Username,
+                UserType = UserTypeEnum.Administrative,
                 UserRoles = new List<UserRole>()
                 {
                     new(){RoleId = request.RoleId}
@@ -176,6 +177,17 @@ namespace Uplay.Application.Services.Admins
             return result;
         }
 
+        public async Task<GetUserDetail> GetUserDetail(int id,int userTypeId)
+        {
+            var user = await _userRepository.GetTable()
+                                      .Include(x => x.Companies)
+                                      .ThenInclude(x => x.CompanyBranchs)
+                                      .ThenInclude(x => x.Branch)
+                                      .ThenInclude(x => x.Onwer)
+                                      .FirstOrDefaultAsync(x => x.Id == id) 
+                                      ?? throw new NotFoundException("User not found");
 
+            return UserDetailMapper.MapUserDetail(user, userTypeId);
+        }
     }
 }

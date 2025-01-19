@@ -102,7 +102,8 @@ namespace Uplay.Domain.Enums.User
         Pricing_Put = 33,
         [Description("Review_Put")]
         Review_Put = 34,
-        
 
+        [Description("Get_User_Detail")]
+        Get_User_Detail = 35,
     }
 }
