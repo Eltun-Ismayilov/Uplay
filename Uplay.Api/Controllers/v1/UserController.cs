@@ -86,7 +86,7 @@ namespace Uplay.Api.Controllers.v1
             return NoContent();
         }
          
-        [AllowAnonymous]
+   //     [AllowAnonymous]
         [HttpGet(ApiRoutes.UserRoute.GetBranchAccountInfo)]
         public async Task<IActionResult> GetBranchAccountInfo(int branchId)
         {

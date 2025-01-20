@@ -157,6 +157,7 @@ namespace Uplay.Application.Services.Admins
                 new("Phone", user.Phone),
                 new("Email", user.Email),
                 new("Role", $"{user.UserRoles.FirstOrDefault().Role.Id}"),
+                new("Claims", string.Join(",", user.UserRoles.FirstOrDefault()?.Role.RoleClaims.Select(c => c.Claim.Name))),
 
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };

@@ -175,6 +175,7 @@ namespace Uplay.Application.Services.Users
                 new("Email", user.Email),
                 new("DashId", $"{id}"),
                 new("YoutubeToken", $"{user.YoutubeToken}"),
+                new("Claims", string.Join(",", user.UserRoles.FirstOrDefault()?.Role.RoleClaims.Select(c => c.Claim.Name))),
                 new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
