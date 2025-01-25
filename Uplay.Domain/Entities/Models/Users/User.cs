@@ -22,7 +22,7 @@ namespace Uplay.Domain.Entities.Models.Users
         public bool EmailConfirmed { get; set; }
         public int OtpCode { get; set; }
         public UserTypeEnum UserType { get; set; }
-        public string YoutubeToken { get; set; }
+        public string? YoutubeToken { get; set; }
         public virtual ICollection<Company> Companies { get; set; }
         public virtual ICollection<Branch> Branches { get; set; }
         public virtual ICollection<UserRole> UserRoles { get; set; }
