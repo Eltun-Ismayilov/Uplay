@@ -165,19 +165,35 @@ namespace Uplay.Application.Services.Users
 
         private string GenerateToken(User user, int id)
         {
+            //List<System.Security.Claims.Claim> authClaims = new()
+            //{
+            //    new("Name", user.Name),
+            //    new("UserName", user.UserName),
+            //    new("Surname", user.Surname),
+            //    new("Phone", user.Phone),
+            //    new("Email", user.Email),
+            //    new("DashId", $"{id}"),
+            //    new("YoutubeToken", $"{user.YoutubeToken}"),
+            //    new("Claims", string.Join(",", user.UserRoles.FirstOrDefault()?.Role.RoleClaims.Select(c => c.Claim.Name))),
+            //    new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            //};
+
             List<System.Security.Claims.Claim> authClaims = new()
             {
-                //TODO ELAVE EDERIK NE LAZIM OLSA 
-                new("Name", user.Name),
-                new("UserName", user.UserName),
-                new("Surname", user.Surname),
-                new("Phone", user.Phone),
-                new("Email", user.Email),
-                new("DashId", $"{id}"),
-                new("YoutubeToken", $"{user.YoutubeToken}"),
-                new("Claims", string.Join(",", user.UserRoles.FirstOrDefault()?.Role.RoleClaims.Select(c => c.Claim.Name))),
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                   new("Name", user.Name),
+                   new("UserName", user.UserName),
+                   new("Surname", user.Surname),
+                   new("Phone", user.Phone),
+                   new("Email", user.Email),
+                   new("DashId", $"{id}"),
+                   new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
+
+            if (!string.IsNullOrEmpty(user.YoutubeToken))
+                authClaims.Add(new("YoutubeToken", user.YoutubeToken));
+
+            if (user.UserRoles.Any() && user.UserRoles.FirstOrDefault()?.Role.RoleClaims.Any() == true)
+                authClaims.Add(new("Claims", string.Join(",", user.UserRoles.FirstOrDefault()?.Role.RoleClaims.Select(c => c.Claim.Name))));
 
             SymmetricSecurityKey authSigningKey =
                 new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Secret"]));
@@ -254,56 +270,56 @@ namespace Uplay.Application.Services.Users
 
             return "Qeydiyyat uğurla tamamlandi";
         }
-        
+
         public async Task DeleteBranchAccount(int branchId)
         {
             var user = await ValidateBranch(branchId);
-            var branch = user.Branches.FirstOrDefault(x=>x.Id == branchId);
+            var branch = user.Branches.FirstOrDefault(x => x.Id == branchId);
             if (branch is null)
                 throw new BadHttpRequestException("Cannot delete account");
-            
+
             branch.Deleted = true;
             user.Branches = new List<Branch>() { branch };
-            
+
             await _userRepository.DeleteAsync(user);
         }
 
         public async Task DeleteCorporateAccount(int companyId)
         {
             var user = await ValidateCompany(companyId);
-            var company = user.Companies.FirstOrDefault(x=>x.Id == companyId);
+            var company = user.Companies.FirstOrDefault(x => x.Id == companyId);
             if (company is null)
                 throw new BadHttpRequestException("Cannot delete account");
-            
+
             company.Deleted = true;
             user.Companies = new List<Company>() { company };
-            
+
             await _userRepository.DeleteAsync(user);
         }
 
         public async Task<UserDto> GetBranchAccountInfo(int branchId)
         {
             var user = await ValidateBranch(branchId);
-            var branch = user.Branches.FirstOrDefault(x=>x.Id == branchId);
+            var branch = user.Branches.FirstOrDefault(x => x.Id == branchId);
             if (branch is null)
                 throw new BadHttpRequestException("Cannot get account");
-            
+
             var company = user.Companies.FirstOrDefault();
             if (company is null)
                 throw new BadHttpRequestException("Cannot get account");
-            
+
             var mappedAccountInfo = Mapper.Map<UserDto>(user);
             mappedAccountInfo.BrandName = company.BrandName;
             return mappedAccountInfo;
         }
-        
+
         public async Task<CompanyAccountInfoDto> GetCompanyAccountInfo(int companyId)
         {
             var user = await ValidateCompany(companyId);
-            var company = user.Companies.FirstOrDefault(x=>x.Id == companyId);
+            var company = user.Companies.FirstOrDefault(x => x.Id == companyId);
             if (company is null)
                 throw new BadHttpRequestException("Cannot get account");
-            
+
             var mappedAccountInfo = Mapper.Map<CompanyAccountInfoDto>(user);
             return mappedAccountInfo;
         }
@@ -311,7 +327,7 @@ namespace Uplay.Application.Services.Users
         public async Task UpdateBranchAccountInfo(int branchId, BranchAccountRequest request)
         {
             var user = await ValidateBranch(branchId);
-            var branch = user.Branches.FirstOrDefault(x=>x.Id == branchId);
+            var branch = user.Branches.FirstOrDefault(x => x.Id == branchId);
             if (branch is null)
                 throw new BadHttpRequestException("Cannot update account");
 
@@ -322,13 +338,13 @@ namespace Uplay.Application.Services.Users
             branch.Location = request.Location;
             user.Branches = new List<Branch>() { branch };
 
-            await  _userRepository.UpdateAsync(user);
+            await _userRepository.UpdateAsync(user);
         }
-        
+
         public async Task UpdateCompanyAccountInfo(int companyId, BranchAccountRequest request)
         {
             var user = await ValidateCompany(companyId);
-            var company = user.Companies.FirstOrDefault(x=>x.Id == companyId);
+            var company = user.Companies.FirstOrDefault(x => x.Id == companyId);
             if (company is null)
                 throw new BadHttpRequestException("Cannot update account");
 
@@ -339,24 +355,24 @@ namespace Uplay.Application.Services.Users
             company.Location = request.Location;
             user.Companies = new List<Company>() { company };
 
-            await  _userRepository.UpdateAsync(user);
+            await _userRepository.UpdateAsync(user);
         }
 
         private async Task<User> ValidateBranch(int branchId)
         {
             var user = await _userRepository.GetUserByUsernameWithBranch(Username);
             if (user is null) throw new BadHttpRequestException("User not found");
-            if (user.Branches is null || user.Branches.Count == 0) 
+            if (user.Branches is null || user.Branches.Count == 0)
                 throw new BadHttpRequestException("Branches not found");
 
             return user;
         }
-        
+
         private async Task<User> ValidateCompany(int branchId)
         {
             var user = await _userRepository.GetUserByUsername(Username);
             if (user is null) throw new BadHttpRequestException("User not found");
-            if (user.Companies is null || user.Companies.Count == 0) 
+            if (user.Companies is null || user.Companies.Count == 0)
                 throw new BadHttpRequestException("Branches not found");
 
             return user;
