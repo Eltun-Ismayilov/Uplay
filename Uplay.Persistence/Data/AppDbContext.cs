@@ -91,7 +91,7 @@ namespace Uplay.Persistence.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Server=89.117.63.250;Port=5433;Database=Uplay-Dev;User Id=postgres;Password=eltun123;",
+            optionsBuilder.UseNpgsql("Host=62.171.181.136;Port=5432;Database=uplay_db;Username=uplay_user;Password=StrongPass123!",
                 b => b.MigrationsAssembly("Uplay.Persistence"));
         }
 
