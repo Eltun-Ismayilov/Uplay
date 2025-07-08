@@ -16,6 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 IConfiguration configuration = builder.Configuration;
 Accessor.AppConfiguration = configuration;
 
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddControllers(options =>
 {
